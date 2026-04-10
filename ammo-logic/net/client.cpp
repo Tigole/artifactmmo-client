@@ -60,7 +60,7 @@ void Client::Get_All_Data(const char* path, std::vector<nlohmann::json>& all_dat
     int page_count   = 2;
     for (int page = 1; page <= page_count; page++)
     {
-        std::cout << path << " page: " << page << '\n';
+        printf("path: '%s' page %d\n", path, page);
         httplib::Params l_Params = {
             { "page",   std::to_string(page) },
             { "size", std::to_string(l_Size) },
@@ -127,7 +127,10 @@ void Client::mt_Get_Characters(std::vector<std::string>& characters)
 
 void Client::mt_Get_Bank_Items(nlohmann::json& items)
 {
-    items = mt_Get_JSON("/my/bank/items");
+    std::vector<nlohmann::json> data;
+    Get_All_Data("/my/bank/items", data);
+    /// Todo: fix-me
+    // for ()
 }
 
 void Client::Get_Bank_Detail(nlohmann::json& detail)
@@ -385,7 +388,7 @@ nlohmann::json Client::mt_Get_JSON(const char* path)
 
 nlohmann::json Client::mt_Get_JSON(const char* path, const httplib::Params& params)
 {
-    printf("get: '%s'\n", path);
+    printf("GET - path: '%s'\n", path);
     auto res = m_Client.Get(path, params, httplib::Headers());
 
     if (res == nullptr)
@@ -394,7 +397,7 @@ nlohmann::json Client::mt_Get_JSON(const char* path, const httplib::Params& para
     }
     if (res->status != 200)
     {
-        throw std::runtime_error(fmt::format("{} {}", path, res->status));
+        throw std::runtime_error(fmt::format("path: '{}' status: '{}'", path, res->status));
     }
 
     auto body = nlohmann::json::parse(res->body);
@@ -404,7 +407,7 @@ nlohmann::json Client::mt_Get_JSON(const char* path, const httplib::Params& para
 
 nlohmann::json Client::mt_Post(const char* path)
 {
-    printf("post: '%s'\n", path);
+    printf("POST - path: '%s'\n", path);
     auto res = m_Client.Post(path);
 
     if (res == nullptr)
@@ -425,7 +428,7 @@ nlohmann::json Client::mt_Post(const char* path)
 
 nlohmann::json Client::mt_Post(const char* path, const nlohmann::json& body)
 {
-    printf("post: '%s'\n", path);
+    printf("POST - path: '%s'\n", path);
     auto res = m_Client.Post(path, httplib::Headers(), to_string(body), "application/json");
 
     if (res == nullptr)

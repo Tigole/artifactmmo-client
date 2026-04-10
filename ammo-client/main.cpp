@@ -33,6 +33,8 @@
 int main(int argc, char** argv)
 {
     Client l_Client;
+    Token::LoadFromFile("token.txt");
+    l_Client.Initialize();
 
     MapManager l_Map_Manager(l_Client);
     ResourceManager l_Resource_Manager;
@@ -69,9 +71,6 @@ int main(int argc, char** argv)
     };
     CharacterPipeline& l_Gear_Crafting_Pipeling = l_Pipeline[0];
     auto clk                                    = std::chrono::high_resolution_clock::now();
-
-    Token::LoadFromFile("token.txt");
-    l_Client.Initialize();
 
     l_Pipeline[0].Set_Character("Niva");
     l_Pipeline[1].Set_Character("Jackie");
