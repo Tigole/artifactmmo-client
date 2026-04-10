@@ -1,0 +1,9 @@
+{
+    
+    "C_Cpp.autoAddFileAssociations": false,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-vscode.cpptools",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+}
