@@ -19,7 +19,7 @@ void InventoryManagementSystem::Fill_Pipeline(Character& character)
         }
         else
         {
-            m_Inventory_Manager.Deposit_Resources(character, character.Get_Task().c_str());
+            m_Inventory_Manager.Deposit_Resources(this, character, character.Get_Task().c_str());
         }
     }
 }

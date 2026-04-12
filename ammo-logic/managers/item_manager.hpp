@@ -58,6 +58,7 @@ class InventoryManager;
 class NPCManager;
 class FightSystem;
 class Character;
+class System;
 
 struct ItemRequiredSkill
 {
@@ -70,8 +71,8 @@ public:
     ItemCraftingManager(ResourceManager& resource_manager, ItemManager& item_manager, InventoryManager& inventory_manager,
                         NPCManager& npc_manager, FightSystem& fight_system);
 
-    void Make_Craft_Item(Character& character, const ItemOrder& item);
-    void Make_Recycle_Item(Character& character, const ItemOrder& item);
+    void Make_Craft_Item(const System* sys, Character& character, const ItemOrder& item);
+    void Make_Recycle_Item(const System* sys, Character& character, const ItemOrder& item);
     bool May_Craft(Character& character, const char* item_code) const;
 
     ItemRequiredSkill Get_Required_Skill(const char* item_code) const;
@@ -84,7 +85,7 @@ private:
     FightSystem& m_Fight_System;
     std::map<std::string, MapCoord> m_Workshop_Coords;
 
-    void Get_Item(Character& character, const ItemOrder& item);
+    void Get_Item(const System* sys, Character& character, const ItemOrder& item);
 };
 
 #endif  // _ITEM_MANAGER_HPP

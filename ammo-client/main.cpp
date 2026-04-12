@@ -29,6 +29,7 @@
 #include "systems/task_system.hpp"
 #include "systems/tool_craft_system.hpp"
 #include "systems/woodcutting_system.hpp"
+#include "ui/ui.hpp"
 
 int main(int argc, char** argv)
 {
@@ -71,6 +72,7 @@ int main(int argc, char** argv)
     };
     CharacterPipeline& l_Gear_Crafting_Pipeling = l_Pipeline[0];
     auto clk                                    = std::chrono::high_resolution_clock::now();
+    ArtifactUI l_UI(l_Pipeline);
 
     l_Pipeline[0].Set_Character("Niva");
     l_Pipeline[1].Set_Character("Jackie");
@@ -84,7 +86,7 @@ int main(int argc, char** argv)
     l_Pipeline[0].Add_System(&l_Tool_Craft_System);
     l_Pipeline[0].Add_System(&l_Woodcutting_System);
     l_Pipeline[0].Add_System(&l_Fight_Equipement_System);
-    // l_Pipeline[0].Add_System(&l_Stuff_System);
+    l_Pipeline[0].Add_System(&l_Stuff_System);
     l_Pipeline[0].Add_System(&l_Task_System);
     l_Pipeline[0].Add_System(&l_Weaponcrafting_Level_System);
     l_Pipeline[0].Add_System(&l_Global_Improvement_System);
@@ -93,7 +95,7 @@ int main(int argc, char** argv)
     l_Pipeline[1].Add_System(&l_Inventory_Management_System);
     l_Pipeline[1].Add_System(&l_Alchemy_System);
     l_Pipeline[1].Add_System(&l_Fight_Equipement_System);
-    // l_Pipeline[1].Add_System(&l_Stuff_System);
+    l_Pipeline[1].Add_System(&l_Stuff_System);
     l_Pipeline[1].Add_System(&l_Task_System);
     l_Pipeline[1].Add_System(&l_Alchemy_Level_System);
     l_Pipeline[1].Add_System(&l_Global_Improvement_System);
@@ -103,7 +105,7 @@ int main(int argc, char** argv)
     l_Pipeline[2].Add_System(&l_Mining_System);
     l_Pipeline[2].Add_System(&l_Gearcrafting_System);
     l_Pipeline[2].Add_System(&l_Fight_Equipement_System);
-    // l_Pipeline[2].Add_System(&l_Stuff_System);
+    l_Pipeline[2].Add_System(&l_Stuff_System);
     l_Pipeline[2].Add_System(&l_Task_System);
     l_Pipeline[2].Add_System(&l_Gearcrafting_Level_System);
     l_Pipeline[2].Add_System(&l_Global_Improvement_System);
@@ -112,7 +114,7 @@ int main(int argc, char** argv)
     l_Pipeline[3].Add_System(&l_Inventory_Management_System);
     l_Pipeline[3].Add_System(&l_Cooking_System);
     l_Pipeline[3].Add_System(&l_Fight_Equipement_System);
-    // l_Pipeline[3].Add_System(&l_Stuff_System);
+    l_Pipeline[3].Add_System(&l_Stuff_System);
     l_Pipeline[3].Add_System(&l_Task_System);
     l_Pipeline[3].Add_System(&l_Cooking_Level_System);
     l_Pipeline[3].Add_System(&l_Global_Improvement_System);
@@ -121,7 +123,7 @@ int main(int argc, char** argv)
     l_Pipeline[4].Add_System(&l_Inventory_Management_System);
     l_Pipeline[4].Add_System(&l_Fishing_System);
     l_Pipeline[4].Add_System(&l_Fight_Equipement_System);
-    // l_Pipeline[4].Add_System(&l_Stuff_System);
+    l_Pipeline[4].Add_System(&l_Stuff_System);
     l_Pipeline[4].Add_System(&l_Task_System);
     l_Pipeline[4].Add_System(&l_Jewelrycrafting_Level_System);
     l_Pipeline[4].Add_System(&l_Global_Improvement_System);
@@ -153,6 +155,7 @@ int main(int argc, char** argv)
         }
     }
 
+    l_UI.Initialize();
     for (;;)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -163,6 +166,8 @@ int main(int argc, char** argv)
             CharacterPipeline& p = l_Pipeline[l_Characters_To_Update[ii]];
             p.Update(elapsed_time);
         }
+        l_UI.Update(elapsed_time);
+        l_UI.Render();
         clk = std::chrono::high_resolution_clock::now();
     }
 

@@ -48,7 +48,7 @@ void CraftSystem::Fill_Pipeline(Character& pipeline)
         std::size_t index = rand() % l_Available_Items.size();
         const Recipe* r   = m_Item_Manager.Get_Recipe(m_Items[l_Available_Items[index]].c_str());
 
-        pipeline.Add_Move(m_Workshop_Coords[r->skill_name]);
-        pipeline.Add_Craft({ r->target_item, 1 });
+        pipeline.Add_Move(this, m_Workshop_Coords[r->skill_name]);
+        pipeline.Add_Craft(this, { r->target_item, 1 });
     }
 }

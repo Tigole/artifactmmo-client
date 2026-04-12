@@ -145,7 +145,7 @@ public:
 
             if (l_Is_Object_To_Be_Crafted == true)
             {
-                m_Item_Crafting_Manager.Make_Craft_Item(character, { l_Order.target_item_code, 1 });
+                m_Item_Crafting_Manager.Make_Craft_Item(this, character, { l_Order.target_item_code, 1 });
             }
         }
     }

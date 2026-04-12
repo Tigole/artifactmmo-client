@@ -31,9 +31,9 @@ public:
 
     void Fill_Pipeline(Character& character) override;
 
-    void Fight_Against(Character& character, const char* monster, const FightContext& context);
+    void Fight_Against(const System* sys, Character& character, const char* monster, const FightContext& context);
 
-    void Add_Healing(Character& character);
+    void Add_Healing(const System* sys, Character& character);
 
     bool MayWin(const Character& character, const char* monster, FightContext& context);
 
@@ -48,7 +48,8 @@ private:
     const InventoryManager& m_Bank;
     std::vector<std::string> m_Monsters;
 
-    static void Handle_Equipment(Character& character, const MapCoord& bank_pos, const char* equipment_name, const char* equipmenet_type);
+    void Handle_Equipment(const System* sys, Character& character, const MapCoord& bank_pos, const char* equipment_name,
+                          const char* equipmenet_type);
 };
 
 #endif  // _FIGHT_SYSTEM_HPP
