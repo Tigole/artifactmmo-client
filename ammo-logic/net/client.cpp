@@ -129,8 +129,11 @@ void Client::mt_Get_Bank_Items(nlohmann::json& items)
 {
     std::vector<nlohmann::json> data;
     Get_All_Data("/my/bank/items", data);
-    /// Todo: fix-me
-    // for ()
+    for (auto d: data)
+    {
+        items["data"].push_back(d);
+    }
+    printf("items.dump: %s\n", items.dump(4).c_str());
 }
 
 void Client::Get_Bank_Detail(nlohmann::json& detail)
