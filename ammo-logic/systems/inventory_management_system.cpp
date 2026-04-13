@@ -15,7 +15,11 @@ void InventoryManagementSystem::Fill_Pipeline(Character& character)
     {
         if (character.Is_Task_Item() == true)
         {
-            //
+            const int task_item_count = character.Get_Item_Count(character.Get_Task().c_str());
+            if (task_item_count != 0)
+            {
+                m_Inventory_Manager.Deposit_Resources(this, character, character.Get_Task().c_str());
+            }
         }
         else
         {
