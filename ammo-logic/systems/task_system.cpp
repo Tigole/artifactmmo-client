@@ -127,10 +127,11 @@ void TaskSystemItem::Fill_Pipeline(Character& character)
     else
     {
         const int l_Task_Coin_Count = m_Inventory_Manager.Get_Bank_Item_Count("tasks_coin");
-        m_Inventory_Manager.Deposit_Resources(this, character, character.Get_Task().c_str());
 
+        printf("tasks_coin count: %d\n", l_Task_Coin_Count);
         if (l_Task_Coin_Count < 50)
         {
+            m_Inventory_Manager.Deposit_Resources(this, character, character.Get_Task().c_str());
             character.Add_Move(this, m_Item_Task_Master_Coord);
             character.Add_Task_New(this);
         }
