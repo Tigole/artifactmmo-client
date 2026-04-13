@@ -41,7 +41,10 @@ void CraftOrderSystem::Fill_Pipeline(Character& character)
                 }
                 else
                 {
-                    character.Add_Deposit_Item(this, { l_Item.item_code, l_Character_Item_Amount });
+                    if (l_Character_Item_Amount > 0)
+                    {
+                        character.Add_Deposit_Item(this, { l_Item.item_code, l_Character_Item_Amount });
+                    }
                     return;
                 }
             }
