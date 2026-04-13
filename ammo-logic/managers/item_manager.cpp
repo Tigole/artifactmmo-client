@@ -269,14 +269,20 @@ bool ItemCraftingManager::May_Craft(Character& character, const char* item_code)
     {
         if (r->skill_level <= character.Get_Skill_Level(r->skill_name.c_str()))
         {
+            bool may_craft = true;
             for (const ItemOrder& i: r->required_items)
             {
-                if (May_Craft(character, i.code.c_str()) == false)
+                const int inventory_count = character.Get_Item_Count(i.code.c_str());
+                const int bank_count      = m_Inventory_Manager.Get_Bank_Item_Count(i.code.c_str());
+
+                if (bank_count < i.quantity)
                 {
-                    return false;
+                    may_craft = false;
+                    printf("'%s' not enough '%s' for crafting '%s' (have %d required %d)\n", character.Get_Character(), i.code.c_str(),
+                           item_code, bank_count, i.quantity);
                 }
             }
-            return true;
+            return may_craft;
         }
         return false;
     }
