@@ -43,7 +43,11 @@ InventoryManager::InventoryManager(Client& client, ItemManager& item_manager) : 
 
 void InventoryManager::Deposit_Resources(System* sys, Character& character, const char* keep) const
 {
-    character.Add_Move(sys, Get_Bank_Nearest_Coord(character));
+    const MapCoord coord = Get_Bank_Nearest_Coord(character);
+    if (character.Should_Move(coord))
+    {
+        character.Add_Move(sys, coord);
+    }
 
     for (const char* item_code: m_Resources_To_Deposit)
     {
