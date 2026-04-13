@@ -135,6 +135,7 @@ void Character::Update(float elapsed_time)
             const CharacterOrder& l_Order = m_Orders[m_Current_Index];
             try
             {
+                printf("'%s' order type %d from system '%s'\n", m_Character_Name, static_cast<int>(l_Order.type), l_Order.system);
                 switch (l_Order.type)
                 {
                 case CharacterOrderType::Move:
