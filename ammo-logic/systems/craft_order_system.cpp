@@ -9,15 +9,6 @@ CraftOrderSystem::CraftOrderSystem(const char* system_name, ItemCraftingManager&
 
 void CraftOrderSystem::Fill_Pipeline(Character& character)
 {
-    if (character.Is_Task_Item())
-    {
-        // return;
-    }
-    if (character.Is_Task_Monster())
-    {
-        /// If MayWin so return;
-        // return;
-    }
     for (const CraftOrder& l_Item: m_Items)
     {
         const int bank_amount = m_Bank.Get_Bank_Item_Count(l_Item.item_code);
