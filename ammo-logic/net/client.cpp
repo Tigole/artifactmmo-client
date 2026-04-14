@@ -4,6 +4,8 @@
 
 #include "token.hpp"
 
+Client Client::singleton;
+
 Client::Client() : m_Client("https://api.artifactsmmo.com") {}
 
 void Client::Initialize(void)

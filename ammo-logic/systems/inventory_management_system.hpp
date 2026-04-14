@@ -7,14 +7,14 @@ class InventoryManager;
 
 class InventoryManagementSystem: public System
 {
+    InventoryManagementSystem();
+
 public:
-    InventoryManagementSystem(InventoryManager& inventory_manager);
+    static InventoryManagementSystem singleton;
 
     void Fill_Pipeline(Character& character) override;
 
 private:
-    InventoryManager& m_Inventory_Manager;
-
     bool Has_Task_Item(Character& character);
 };
 

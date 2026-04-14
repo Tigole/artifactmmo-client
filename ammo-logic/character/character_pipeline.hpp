@@ -10,7 +10,7 @@ class System;
 class CharacterPipeline
 {
 public:
-    CharacterPipeline(Client& client, InventoryManager& bank);
+    CharacterPipeline();
 
     void Set_Character(const char* character_name);
     const char* Get_Character(void) const;

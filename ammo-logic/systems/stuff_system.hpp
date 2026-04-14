@@ -1,6 +1,8 @@
 #ifndef _STUFF_SYSTEM_HPP
 #define _STUFF_SYSTEM_HPP 1
 
+#if 0
+
 struct StuffOrder
 {
     int required_combat_level;
@@ -10,9 +12,7 @@ struct StuffOrder
 
 class StuffSystem: public System
 {
-public:
-    StuffSystem(ItemManager& item_manager, ItemCraftingManager& item_crafting_manager) :
-        System("StuffSystem"), m_Item_Manager(item_manager), m_Item_Crafting_Manager(item_crafting_manager)
+    StuffSystem() : System("StuffSystem")
     {
         m_Orders.push_back({
             1,
@@ -128,32 +128,36 @@ public:
         });
     }
 
+public:
+    static StuffSystem singleton;
+
     void Fill_Pipeline(Character& character) override
     {
         for (std::size_t ii = 0; ii < m_Orders.size() && character.Is_Empty(); ii++)
         {
             const StuffOrder& l_Order          = m_Orders[ii];
-            const bool l_May_Object_Be_Crafted = m_Item_Crafting_Manager.May_Craft(character, l_Order.target_item_code.c_str());
+            const bool l_May_Object_Be_Crafted = ItemCraftingManager::singleton.May_Craft(character, l_Order.target_item_code.c_str());
             const bool l_Is_Combat_Level_Ok    = character.Get_Skill_Level("combat") >= l_Order.required_combat_level;
             const bool l_Is_Object_Crafted     = character.Is_Item_Equiped(l_Order.target_item_code.c_str()) ||
                                                  character.Get_Item_Count(l_Order.target_item_code.c_str()) > 0;
-            const int l_Target_Object_Level    = m_Item_Manager.Get_Item_Level(l_Order.target_item_code.c_str());
-            const int l_Equipped_Object_Level  = m_Item_Manager.Get_Item_Level(character.Get_Equiped_Item(l_Order.equipment_type).c_str());
+            const int l_Target_Object_Level    = ItemManager::singleton.Get_Item_Level(l_Order.target_item_code.c_str());
+            const int l_Equipped_Object_Level =
+                ItemManager::singleton.Get_Item_Level(character.Get_Equiped_Item(l_Order.equipment_type).c_str());
             const bool l_Is_Target_Object_Better = l_Target_Object_Level > l_Equipped_Object_Level;
             const bool l_Is_Object_To_Be_Crafted =
                 l_May_Object_Be_Crafted && l_Is_Combat_Level_Ok && !l_Is_Object_Crafted && l_Is_Target_Object_Better;
 
             if (l_Is_Object_To_Be_Crafted == true)
             {
-                m_Item_Crafting_Manager.Make_Craft_Item(this, character, { l_Order.target_item_code, 1 });
+                ItemCraftingManager::singleton.Make_Craft_Item(this, character, { l_Order.target_item_code, 1 });
             }
         }
     }
 
 private:
-    ItemCraftingManager& m_Item_Crafting_Manager;
-    ItemManager& m_Item_Manager;
     std::vector<StuffOrder> m_Orders;
 };
+
+#endif
 
 #endif  // _STUFF_SYSTEM_HPP

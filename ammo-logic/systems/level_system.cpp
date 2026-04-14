@@ -3,9 +3,7 @@
 #include "managers/item_manager.hpp"
 #include "managers/training_manager.hpp"
 
-LevelSystem::LevelSystem(TrainingManager& training_manager, ItemCraftingManager& item_crafting_manager, const char* skill) :
-    System(skill), m_Training_Manager(training_manager), m_Item_Crafting_Manager(item_crafting_manager), m_Skill(skill)
-{}
+LevelSystem::LevelSystem(const char* skill) : System(skill), m_Skill(skill) {}
 
 void LevelSystem::Fill_Pipeline(Character& character)
 {
@@ -16,7 +14,7 @@ void LevelSystem::Fill_Pipeline(Character& character)
     if (character.Is_Task_Item() == true)
     {
         const std::string l_Item        = character.Get_Task();
-        const ItemRequiredSkill l_Skill = m_Item_Crafting_Manager.Get_Required_Skill(l_Item.c_str());
+        const ItemRequiredSkill l_Skill = ItemCraftingManager::singleton.Get_Required_Skill(l_Item.c_str());
 
         for (auto& r: l_Skill.requirements)
         {
@@ -36,30 +34,36 @@ void LevelSystem::Make_Train(Character& character, const char* skill_name, int s
 {
     if (strcmp(skill_name, "alchemy") == 0)
     {
-        m_Training_Manager.Train_Alchemy(this, character, skill_level);
+        TrainingManager::singleton.Train_Alchemy(this, character, skill_level);
     }
     else if (strcmp(skill_name, "fishing") == 0)
     {
-        m_Training_Manager.Train_Fishing(this, character, skill_level);
+        TrainingManager::singleton.Train_Fishing(this, character, skill_level);
     }
     else if (strcmp(skill_name, "woodcutting") == 0)
     {
-        m_Training_Manager.Train_Woodcutting(this, character, skill_level);
+        TrainingManager::singleton.Train_Woodcutting(this, character, skill_level);
     }
     else if (strcmp(skill_name, "weaponcrafting") == 0)
     {
-        m_Training_Manager.Train_Weaponcrafting(this, character, skill_level);
+        TrainingManager::singleton.Train_Weaponcrafting(this, character, skill_level);
     }
     else if (strcmp(skill_name, "gearcrafting") == 0)
     {
-        m_Training_Manager.Train_Gearcrafting(this, character, skill_level);
+        TrainingManager::singleton.Train_Gearcrafting(this, character, skill_level);
     }
     else if (strcmp(skill_name, "jewelrycrafting") == 0)
     {
-        m_Training_Manager.Train_Jewelrycrafting(this, character, skill_level);
+        TrainingManager::singleton.Train_Jewelrycrafting(this, character, skill_level);
     }
     else if (strcmp(skill_name, "cooking") == 0)
     {
-        m_Training_Manager.Train_Cooking(this, character, skill_level);
+        TrainingManager::singleton.Train_Cooking(this, character, skill_level);
     }
 }
+
+GearcraftingLevelSystem GearcraftingLevelSystem::singleton;
+WeaponcraftingLevelSystem WeaponcraftingLevelSystem::singleton;
+JewelrycraftingLevelSystem JewelrycraftingLevelSystem::singleton;
+CookingLevelSystem CookingLevelSystem::singleton;
+AlchemyLevelSystem AlchemyLevelSystem::singleton;

@@ -9,13 +9,11 @@ class TrainingManager;
 class LevelSystem: public System
 {
 public:
-    LevelSystem(TrainingManager& training_manager, ItemCraftingManager& item_crafting_manager, const char* skill);
+    LevelSystem(const char* skill);
 
     void Fill_Pipeline(Character& character) override;
 
 private:
-    TrainingManager& m_Training_Manager;
-    ItemCraftingManager& m_Item_Crafting_Manager;
     const char* m_Skill;
 
     void Make_Train(Character& character, const char* skill_name, int skill_level) const;
@@ -23,42 +21,42 @@ private:
 
 class GearcraftingLevelSystem: public LevelSystem
 {
+    GearcraftingLevelSystem() : LevelSystem("gearcrafting") {}
+
 public:
-    GearcraftingLevelSystem(TrainingManager& training_manager, ItemCraftingManager& item_crafting_manager) :
-        LevelSystem(training_manager, item_crafting_manager, "gearcrafting")
-    {}
+    static GearcraftingLevelSystem singleton;
 };
 
 class WeaponcraftingLevelSystem: public LevelSystem
 {
+    WeaponcraftingLevelSystem() : LevelSystem("weaponcrafting") {}
+
 public:
-    WeaponcraftingLevelSystem(TrainingManager& training_manager, ItemCraftingManager& item_crafting_manager) :
-        LevelSystem(training_manager, item_crafting_manager, "weaponcrafting")
-    {}
+    static WeaponcraftingLevelSystem singleton;
 };
 
 class JewelrycraftingLevelSystem: public LevelSystem
 {
+    JewelrycraftingLevelSystem() : LevelSystem("jewelrycrafting") {}
+
 public:
-    JewelrycraftingLevelSystem(TrainingManager& training_manager, ItemCraftingManager& item_crafting_manager) :
-        LevelSystem(training_manager, item_crafting_manager, "jewelrycrafting")
-    {}
+    static JewelrycraftingLevelSystem singleton;
 };
 
 class CookingLevelSystem: public LevelSystem
 {
+    CookingLevelSystem() : LevelSystem("cooking") {}
+
 public:
-    CookingLevelSystem(TrainingManager& training_manager, ItemCraftingManager& item_crafting_manager) :
-        LevelSystem(training_manager, item_crafting_manager, "cooking")
-    {}
+    static CookingLevelSystem singleton;
 };
 
 class AlchemyLevelSystem: public LevelSystem
 {
+    AlchemyLevelSystem() : LevelSystem("alchemy") {}
+
 public:
-    AlchemyLevelSystem(TrainingManager& training_manager, ItemCraftingManager& item_crafting_manager) :
-        LevelSystem(training_manager, item_crafting_manager, "alchemy")
-    {}
+    static AlchemyLevelSystem singleton;
 };
 
 #endif  // _LEVEL_SYSTEM_HPP

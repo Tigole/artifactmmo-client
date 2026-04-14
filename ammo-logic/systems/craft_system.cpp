@@ -2,7 +2,9 @@
 
 #include "managers/item_manager.hpp"
 
-CraftSystem::CraftSystem(ItemManager& item_manager) : System("CraftSystem"), m_Item_Manager(item_manager)
+#if 0
+
+CraftSystem::CraftSystem() : System("CraftSystem")
 {
     m_Workshop_Coords["mining"]          = { 1, 5 };
     m_Workshop_Coords["woodcutting"]     = { -2, -3 };
@@ -16,7 +18,7 @@ CraftSystem::CraftSystem(ItemManager& item_manager) : System("CraftSystem"), m_I
 
 void CraftSystem::Initialize(void)
 {
-    m_Item_Manager.Get_Items(m_Items);
+    ItemManager::singleton.Get_Items(m_Items);
 }
 
 void CraftSystem::Fill_Pipeline(Character& pipeline)
@@ -26,7 +28,7 @@ void CraftSystem::Fill_Pipeline(Character& pipeline)
 
     for (std::size_t ii = 0; ii < m_Items.size(); ii++)
     {
-        const Recipe* r = m_Item_Manager.Get_Recipe(m_Items[ii].c_str());
+        const Recipe* r = ItemManager::singleton.Get_Recipe(m_Items[ii].c_str());
         if (r != nullptr)
         {
             if (pipeline.Get_Skill_Level(r->skill_name.c_str()) >= r->skill_level)
@@ -47,9 +49,11 @@ void CraftSystem::Fill_Pipeline(Character& pipeline)
     if (l_Available_Items.size() > 0)
     {
         std::size_t index = rand() % l_Available_Items.size();
-        const Recipe* r   = m_Item_Manager.Get_Recipe(m_Items[l_Available_Items[index]].c_str());
+        const Recipe* r   = ItemManager::singleton.Get_Recipe(m_Items[l_Available_Items[index]].c_str());
 
         pipeline.Add_Move(this, m_Workshop_Coords[r->skill_name]);
         pipeline.Add_Craft(this, { r->target_item, 1 });
     }
 }
+
+#endif

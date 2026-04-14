@@ -4,15 +4,17 @@
 #include "map_manager.hpp"
 #include "net/client.hpp"
 
-void ResourceManager::Initialize(Client& client, MapManager& map_manager)
+ResourceManager ResourceManager::singleton;
+
+void ResourceManager::Initialize(void)
 {
     std::vector<nlohmann::json> spots;
 
-    client.Get_Resource_Spots(spots);
+    Client::singleton.Get_Resource_Spots(spots);
     for (const auto& s: spots)
     {
         std::string spot_code          = s["code"];
-        const MapCoord* resource_coord = map_manager.Get_Spot_Coord(spot_code.c_str());
+        const MapCoord* resource_coord = MapManager::singleton.Get_Spot_Coord(spot_code.c_str());
         int level                      = s["level"];
         if (resource_coord != nullptr)
         {

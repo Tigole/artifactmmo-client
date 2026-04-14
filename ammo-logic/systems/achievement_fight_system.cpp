@@ -4,7 +4,9 @@
 
 #include "fight_system.hpp"
 
-AchievementFightSystem::AchievementFightSystem(FightSystem& fight_system) : System("AchievementFightSystem"), m_Fight_System(fight_system)
+AchievementFightSystem AchievementFightSystem::singleton;
+
+AchievementFightSystem::AchievementFightSystem() : System("AchievementFightSystem")
 {
     m_Target_Monsters.push_back("orc");
     // m_Target_Monsters.push_back("chicken");
@@ -39,14 +41,14 @@ void AchievementFightSystem::Fill_Pipeline(Character& pipeline)
     for (std::size_t ii = 0; ii < l_Indices.size(); ii++)
     {
         const char* l_Monster   = m_Target_Monsters[l_Indices[ii]].c_str();
-        const MapCoord* l_Coord = m_Fight_System.Get_Monster_Coord(l_Monster);
+        const MapCoord* l_Coord = FightSystem::singleton.Get_Monster_Coord(l_Monster);
         FightContext fight_context;
-        if ((l_Coord != nullptr) && (m_Fight_System.MayWin(pipeline, l_Monster, fight_context) == true))
+        if ((l_Coord != nullptr) && (FightSystem::singleton.MayWin(pipeline, l_Monster, fight_context) == true))
         {
             pipeline.Add_Move(this, *l_Coord);
             if (fight_context.should_heal == true)
             {
-                m_Fight_System.Add_Healing(this, pipeline);
+                FightSystem::singleton.Add_Healing(this, pipeline);
             }
             pipeline.Add_Fight(this);
             return;

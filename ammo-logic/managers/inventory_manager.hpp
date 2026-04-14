@@ -14,8 +14,12 @@ struct InventoryArmorPart;
 
 class InventoryManager
 {
+    InventoryManager() = default;
+
 public:
-    InventoryManager(Client& client, ItemManager& item_manager);
+    static InventoryManager singleton;
+
+    void Initialize(void);
 
     void Deposit_Resources(const System* sys, Character& character, const char* keep) const;
 
@@ -34,8 +38,6 @@ public:
     void Update_Cache(void);
 
 private:
-    Client& m_Client;
-    ItemManager& m_Item_Manager;
     MapCoord m_Bank_Coord_1 = { 4, 1 };
     MapCoord m_Bank_Coord_2 = { 7, 13 };
     std::map<std::string, int> m_Bank_Content;

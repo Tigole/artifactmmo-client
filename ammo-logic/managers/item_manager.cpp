@@ -3,17 +3,19 @@
 #include "managers/monster_manager.hpp"
 #include "net/client.hpp"
 
-void ItemManager::Initialize(Client& client, MonsterManager& monster_manager)
+ItemManager ItemManager::singleton;
+
+void ItemManager::Initialize()
 {
-    client.Get_Items(m_Items);
+    Client::singleton.Get_Items(m_Items);
     for (auto& i: m_Items)
     {
         printf("item '%s'\n", i.first.c_str());
     }
-    Initialize_Recipes(monster_manager);
+    Initialize_Recipes();
 }
 
-void ItemManager::Initialize_Recipes(MonsterManager& monster_manager)
+void ItemManager::Initialize_Recipes()
 {
     m_Recipes.clear();
     for (auto& i: m_Items)
@@ -56,12 +58,12 @@ void ItemManager::Initialize_Recipes(MonsterManager& monster_manager)
     /// Loot
     {
         std::vector<std::string> l_Monster_List;
-        monster_manager.Get_Monster_List(l_Monster_List);
+        MonsterManager::singleton.Get_Monster_List(l_Monster_List);
 
         std::vector<Loot> l_Loot;
         for (std::size_t ii = 0; ii < l_Monster_List.size(); ii++)
         {
-            monster_manager.Get_Monster_Loot(l_Monster_List[ii].c_str(), l_Loot);
+            MonsterManager::singleton.Get_Monster_Loot(l_Monster_List[ii].c_str(), l_Loot);
             for (std::size_t jj = 0; jj < l_Loot.size(); jj++)
             {
                 m_Looting[l_Loot[jj].code].push_back(l_Monster_List[ii]);
@@ -226,13 +228,9 @@ const char* ItemManager::Get_Loot_Monster_Name(const char* item_code) const
 #include "managers/resource_manager.hpp"
 #include "systems/fight_system.hpp"
 
-ItemCraftingManager::ItemCraftingManager(ResourceManager& resource_manager, ItemManager& item_manager, InventoryManager& inventory_manager,
-                                         NPCManager& npc_manager, FightSystem& fight_system) :
-    m_Resource_Manager(resource_manager),
-    m_Item_Manager(item_manager),
-    m_Inventory_Manager(inventory_manager),
-    m_NPC_Manager(npc_manager),
-    m_Fight_System(fight_system)
+ItemCraftingManager ItemCraftingManager::singleton;
+
+void ItemCraftingManager::Initialize(void)
 {
     m_Workshop_Coords["mining"]          = { 1, 5 };
     m_Workshop_Coords["woodcutting"]     = { -2, -3 };
@@ -251,7 +249,7 @@ void ItemCraftingManager::Make_Craft_Item(const System* sys, Character& characte
 
 void ItemCraftingManager::Make_Recycle_Item(const System* sys, Character& character, const ItemOrder& item)
 {
-    const Recipe* r = m_Item_Manager.Get_Recipe(item.code.c_str());
+    const Recipe* r = ItemManager::singleton.Get_Recipe(item.code.c_str());
     if (r != nullptr)
     {
         character.Add_Move(sys, m_Workshop_Coords[r->skill_name]);
@@ -261,9 +259,9 @@ void ItemCraftingManager::Make_Recycle_Item(const System* sys, Character& charac
 
 bool ItemCraftingManager::May_Craft(Character& character, const char* item_code) const
 {
-    const Recipe* r                = m_Item_Manager.Get_Recipe(item_code);
-    const GatheringRequirement* rg = m_Item_Manager.Get_Gathering_Skill(item_code);
-    const char* l_Monster_Name     = m_Item_Manager.Get_Loot_Monster_Name(item_code);
+    const Recipe* r                = ItemManager::singleton.Get_Recipe(item_code);
+    const GatheringRequirement* rg = ItemManager::singleton.Get_Gathering_Skill(item_code);
+    const char* l_Monster_Name     = ItemManager::singleton.Get_Loot_Monster_Name(item_code);
 
     if (r != nullptr)
     {
@@ -273,7 +271,7 @@ bool ItemCraftingManager::May_Craft(Character& character, const char* item_code)
             for (const ItemOrder& i: r->required_items)
             {
                 const int inventory_count = character.Get_Item_Count(i.code.c_str());
-                const int bank_count      = m_Inventory_Manager.Get_Bank_Item_Count(i.code.c_str());
+                const int bank_count      = InventoryManager::singleton.Get_Bank_Item_Count(i.code.c_str());
 
                 if (bank_count < i.quantity)
                 {
@@ -293,20 +291,20 @@ bool ItemCraftingManager::May_Craft(Character& character, const char* item_code)
     else if (l_Monster_Name != nullptr)
     {
         FightContext f;
-        return m_Fight_System.MayWin(character, l_Monster_Name, f);
+        return FightSystem::singleton.MayWin(character, l_Monster_Name, f);
     }
     return false;
 }
 
 void ItemCraftingManager::Get_Item(const System* sys, Character& character, const ItemOrder& item)
 {
-    const Recipe* r                  = m_Item_Manager.Get_Recipe(item.code.c_str());
-    const int l_Bank_Item_Count      = m_Inventory_Manager.Get_Bank_Item_Count(item.code.c_str());
+    const Recipe* r                  = ItemManager::singleton.Get_Recipe(item.code.c_str());
+    const int l_Bank_Item_Count      = InventoryManager::singleton.Get_Bank_Item_Count(item.code.c_str());
     const int l_Inventory_Item_Count = character.Get_Item_Count(item.code.c_str());
 
     if ((l_Inventory_Item_Count < item.quantity) && (l_Bank_Item_Count > 0))
     {
-        const MapCoord Bank_Coord = m_Inventory_Manager.Get_Bank_Nearest_Coord(character);
+        const MapCoord Bank_Coord = InventoryManager::singleton.Get_Bank_Nearest_Coord(character);
         if (character.Should_Move(Bank_Coord))
         {
             character.Add_Move(sys, Bank_Coord);
@@ -320,16 +318,16 @@ void ItemCraftingManager::Get_Item(const System* sys, Character& character, cons
     }
     else if (r == nullptr)
     {
-        const GatheringRequirement* rg = m_Item_Manager.Get_Gathering_Skill(item.code.c_str());
-        const char* l_Monster_Name     = m_Item_Manager.Get_Loot_Monster_Name(item.code.c_str());
-        const NPCItemTrade* t          = m_NPC_Manager.Get_Seller(item.code.c_str());
+        const GatheringRequirement* rg = ItemManager::singleton.Get_Gathering_Skill(item.code.c_str());
+        const char* l_Monster_Name     = ItemManager::singleton.Get_Loot_Monster_Name(item.code.c_str());
+        const NPCItemTrade* t          = NPCManager::singleton.Get_Seller(item.code.c_str());
 
         if (l_Monster_Name != nullptr)
         {
             FightContext fight_context;
-            if (m_Fight_System.MayWin(character, l_Monster_Name, fight_context) == true)
+            if (FightSystem::singleton.MayWin(character, l_Monster_Name, fight_context) == true)
             {
-                m_Fight_System.Fight_Against(sys, character, l_Monster_Name, fight_context);
+                FightSystem::singleton.Fight_Against(sys, character, l_Monster_Name, fight_context);
                 return;
             }
             else
@@ -342,7 +340,7 @@ void ItemCraftingManager::Get_Item(const System* sys, Character& character, cons
         {
             if (character.Get_Skill_Level(rg->skill_name.c_str()) >= rg->skill_level)
             {
-                const MapCoord* coord = m_Resource_Manager.Get_Resource_Coord(character, item.code.c_str());
+                const MapCoord* coord = ResourceManager::singleton.Get_Resource_Coord(character, item.code.c_str());
                 if (coord != nullptr)
                 {
                     const char* l_Weapon = nullptr;
@@ -372,9 +370,9 @@ void ItemCraftingManager::Get_Item(const System* sys, Character& character, cons
                             }
                             character.Add_Equip_Item(sys, "weapon", l_Weapon);
                         }
-                        else if (m_Inventory_Manager.Get_Bank_Item_Count(l_Weapon) > 0)
+                        else if (InventoryManager::singleton.Get_Bank_Item_Count(l_Weapon) > 0)
                         {
-                            const MapCoord bank_coord = m_Inventory_Manager.Get_Bank_Nearest_Coord(character);
+                            const MapCoord bank_coord = InventoryManager::singleton.Get_Bank_Nearest_Coord(character);
                             if (character.Should_Move(bank_coord) == true)
                             {
                                 character.Add_Move(sys, bank_coord);
@@ -402,7 +400,7 @@ void ItemCraftingManager::Get_Item(const System* sys, Character& character, cons
 
         if (t != nullptr)
         {
-            const MapCoord* npc_coord = m_NPC_Manager.Get_Coords(t->npc.c_str());
+            const MapCoord* npc_coord = NPCManager::singleton.Get_Coords(t->npc.c_str());
 
             if (npc_coord != nullptr)
             {
@@ -415,9 +413,9 @@ void ItemCraftingManager::Get_Item(const System* sys, Character& character, cons
                         character.Add_Move(sys, *npc_coord);
                         character.Add_Buy_Item(sys, { item.code, 1 });
                     }
-                    else if (l_Missing_Gold_Amount <= m_Inventory_Manager.Get_Gold_Amount())
+                    else if (l_Missing_Gold_Amount <= InventoryManager::singleton.Get_Gold_Amount())
                     {
-                        const MapCoord coord = m_Inventory_Manager.Get_Bank_Nearest_Coord(character);
+                        const MapCoord coord = InventoryManager::singleton.Get_Bank_Nearest_Coord(character);
                         if (character.Should_Move(coord) == true)
                         {
                             character.Add_Move(sys, coord);
@@ -437,9 +435,9 @@ void ItemCraftingManager::Get_Item(const System* sys, Character& character, cons
                         character.Add_Move(sys, *npc_coord);
                         character.Add_Buy_Item(sys, { item.code, 1 });
                     }
-                    else if (l_Missing_Task_Coin_Amount < m_Inventory_Manager.Get_Bank_Item_Count("tasks_coin"))
+                    else if (l_Missing_Task_Coin_Amount < InventoryManager::singleton.Get_Bank_Item_Count("tasks_coin"))
                     {
-                        const MapCoord coord = m_Inventory_Manager.Get_Bank_Nearest_Coord(character);
+                        const MapCoord coord = InventoryManager::singleton.Get_Bank_Nearest_Coord(character);
                         if (character.Should_Move(coord) == true)
                         {
                             character.Add_Move(sys, coord);
@@ -477,8 +475,8 @@ void ItemCraftingManager::Get_Item(const System* sys, Character& character, cons
 
 ItemRequiredSkill ItemCraftingManager::Get_Required_Skill(const char* item_code) const
 {
-    const Recipe* r                = m_Item_Manager.Get_Recipe(item_code);
-    const GatheringRequirement* rg = m_Item_Manager.Get_Gathering_Skill(item_code);
+    const Recipe* r                = ItemManager::singleton.Get_Recipe(item_code);
+    const GatheringRequirement* rg = ItemManager::singleton.Get_Gathering_Skill(item_code);
     ItemRequiredSkill requirements;
     if (r != nullptr)
     {

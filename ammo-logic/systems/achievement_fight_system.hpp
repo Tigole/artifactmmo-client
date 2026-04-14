@@ -7,13 +7,14 @@ class FightSystem;
 
 class AchievementFightSystem: public System
 {
+    AchievementFightSystem();
+
 public:
-    AchievementFightSystem(FightSystem& fight_system);
+    static AchievementFightSystem singleton;
 
     void Fill_Pipeline(Character& pipeline) override;
 
 private:
-    FightSystem& m_Fight_System;
     std::vector<std::string> m_Target_Monsters;
 };
 

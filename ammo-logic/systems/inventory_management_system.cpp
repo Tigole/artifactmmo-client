@@ -2,9 +2,9 @@
 
 #include "managers/inventory_manager.hpp"
 
-InventoryManagementSystem::InventoryManagementSystem(InventoryManager& inventory_manager) :
-    System("InventoryManagementSystem"), m_Inventory_Manager(inventory_manager)
-{}
+InventoryManagementSystem InventoryManagementSystem::singleton;
+
+InventoryManagementSystem::InventoryManagementSystem() : System("InventoryManagementSystem") {}
 
 void InventoryManagementSystem::Fill_Pipeline(Character& character)
 {
@@ -18,12 +18,12 @@ void InventoryManagementSystem::Fill_Pipeline(Character& character)
             const int task_item_count = character.Get_Item_Count(character.Get_Task().c_str());
             if (task_item_count != 0)
             {
-                m_Inventory_Manager.Deposit_Resources(this, character, character.Get_Task().c_str());
+                InventoryManager::singleton.Deposit_Resources(this, character, character.Get_Task().c_str());
             }
         }
         else
         {
-            m_Inventory_Manager.Deposit_Resources(this, character, character.Get_Task().c_str());
+            InventoryManager::singleton.Deposit_Resources(this, character, character.Get_Task().c_str());
         }
     }
 }

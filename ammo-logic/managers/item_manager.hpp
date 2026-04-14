@@ -19,8 +19,12 @@ struct ItemEffect
 
 class ItemManager
 {
+    ItemManager() = default;
+
 public:
-    void Initialize(Client& client, MonsterManager& monster_manager);
+    static ItemManager singleton;
+
+    void Initialize(void);
 
     void Get_Weapons(std::map<std::string, int>& weapons) const;
     void Get_Items(std::vector<std::string>& items) const;
@@ -49,7 +53,7 @@ private:
     std::map<std::string, int> m_Levels;
     std::map<std::string, int> m_Required_Levels;
 
-    void Initialize_Recipes(MonsterManager& monster_manager);
+    void Initialize_Recipes(void);
     int Get_Effect_Value(const char* item_code, const char* effect_code) const;
 };
 
@@ -67,9 +71,12 @@ struct ItemRequiredSkill
 
 class ItemCraftingManager
 {
+    ItemCraftingManager() = default;
+
 public:
-    ItemCraftingManager(ResourceManager& resource_manager, ItemManager& item_manager, InventoryManager& inventory_manager,
-                        NPCManager& npc_manager, FightSystem& fight_system);
+    static ItemCraftingManager singleton;
+
+    void Initialize(void);
 
     void Make_Craft_Item(const System* sys, Character& character, const ItemOrder& item);
     void Make_Recycle_Item(const System* sys, Character& character, const ItemOrder& item);
@@ -78,11 +85,6 @@ public:
     ItemRequiredSkill Get_Required_Skill(const char* item_code) const;
 
 private:
-    ResourceManager& m_Resource_Manager;
-    ItemManager& m_Item_Manager;
-    InventoryManager& m_Inventory_Manager;
-    NPCManager& m_NPC_Manager;
-    FightSystem& m_Fight_System;
     std::map<std::string, MapCoord> m_Workshop_Coords;
 
     void Get_Item(const System* sys, Character& character, const ItemOrder& item);

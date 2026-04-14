@@ -8,15 +8,14 @@ class Client;
 struct GatherOrder
 {
     const char* item_code;
-    int threshold_amount;
     int target_amount;
 };
 
 class GatherSystem: public System
 {
 public:
-    GatherSystem();
-    void Initialize(Client& client);
+    GatherSystem(const char* system_name);
+    void Initialize(void);
 
     void Fill_Pipeline(Character& character) override;
 
@@ -30,67 +29,69 @@ private:
     std::map<std::string, MapCoord> m_Resource_Coord;
 };
 
-#include "craft_order_system.hpp"
-
-class WoodcuttingGatheringSystem: public CraftOrderSystem
+class WoodcuttingGatheringSystem: public GatherSystem
 {
-public:
-    WoodcuttingGatheringSystem(ItemCraftingManager& item_crafting_manager, InventoryManager& bank) :
-        CraftOrderSystem("WoodcuttingGatheringSystem", item_crafting_manager, bank)
+    WoodcuttingGatheringSystem() : GatherSystem("WoodcuttingGatheringSystem")
     {
-        m_Items.push_back({ "ash_wood", 20, 500 });
-        m_Items.push_back({ "spruce_wood", 20, 500 });
-        m_Items.push_back({ "birch_wood", 20, 500 });
-        m_Items.push_back({ "hardwood_wood", 20, 500 });
-        m_Items.push_back({ "dead_wood", 20, 500 });
-        m_Items.push_back({ "magic_wood", 20, 500 });
-        m_Items.push_back({ "maple_wood", 20, 500 });
-        m_Items.push_back({ "palm_wood", 20, 500 });
+        m_Resources.push_back({ "ash_wood", 500 });
+        m_Resources.push_back({ "spruce_wood", 500 });
+        m_Resources.push_back({ "birch_wood", 500 });
+        m_Resources.push_back({ "hardwood_wood", 500 });
+        m_Resources.push_back({ "dead_wood", 500 });
+        m_Resources.push_back({ "magic_wood", 500 });
+        m_Resources.push_back({ "maple_wood", 500 });
+        m_Resources.push_back({ "palm_wood", 500 });
     }
+
+public:
+    static WoodcuttingGatheringSystem singleton;
 };
 
-class MiningGatheringSystem: public CraftOrderSystem
+class MiningGatheringSystem: public GatherSystem
 {
-public:
-    MiningGatheringSystem(ItemCraftingManager& item_crafting_manager, InventoryManager& bank) :
-        CraftOrderSystem("MiningGatheringSystem", item_crafting_manager, bank)
+    MiningGatheringSystem() : GatherSystem("MiningGatheringSystem")
     {
-        m_Items.push_back({ "copper_ore", 20, 500 });
-        m_Items.push_back({ "iron_ore", 20, 500 });
-        m_Items.push_back({ "coal", 20, 500 });
-        m_Items.push_back({ "gold_ore", 20, 500 });
-        m_Items.push_back({ "strange_ore", 20, 500 });
-        m_Items.push_back({ "mithril_ore", 20, 500 });
-        m_Items.push_back({ "adamantine_ore", 20, 500 });
+        m_Resources.push_back({ "copper_ore", 500 });
+        m_Resources.push_back({ "iron_ore", 500 });
+        m_Resources.push_back({ "coal", 500 });
+        m_Resources.push_back({ "gold_ore", 500 });
+        m_Resources.push_back({ "strange_ore", 500 });
+        m_Resources.push_back({ "mithril_ore", 500 });
+        m_Resources.push_back({ "adamantine_ore", 500 });
     }
+
+public:
+    static MiningGatheringSystem singleton;
 };
 
-class AlchemyGatheringSystem: public CraftOrderSystem
+class AlchemyGatheringSystem: public GatherSystem
 {
-public:
-    AlchemyGatheringSystem(ItemCraftingManager& item_crafting_manager, InventoryManager& bank) :
-        CraftOrderSystem("AlchemyGatheringSystem", item_crafting_manager, bank)
+    AlchemyGatheringSystem() : GatherSystem("AlchemyGatheringSystem")
     {
-        m_Items.push_back({ "sunflower", 20, 500 });
-        m_Items.push_back({ "nettle_leaf", 20, 500 });
-        m_Items.push_back({ "glowstem_leaf", 20, 500 });
-        m_Items.push_back({ "torch_cactus_flower", 20, 500 });
+        m_Resources.push_back({ "sunflower", 500 });
+        m_Resources.push_back({ "nettle_leaf", 500 });
+        m_Resources.push_back({ "glowstem_leaf", 500 });
+        m_Resources.push_back({ "torch_cactus_flower", 500 });
     }
+
+public:
+    static AlchemyGatheringSystem singleton;
 };
 
-class FishingGatherSystem: public CraftOrderSystem
+class FishingGatherSystem: public GatherSystem
 {
-public:
-    FishingGatherSystem(ItemCraftingManager& item_crafting_manager, InventoryManager& bank) :
-        CraftOrderSystem("FishingGatherSystem", item_crafting_manager, bank)
+    FishingGatherSystem() : GatherSystem("FishingGatherSystem")
     {
-        m_Items.push_back({ "gudgeon", 20, 500 });
-        m_Items.push_back({ "shrimp", 20, 500 });
-        m_Items.push_back({ "trout", 20, 500 });
-        m_Items.push_back({ "bass", 20, 500 });
-        m_Items.push_back({ "salmon", 20, 500 });
-        m_Items.push_back({ "swordfish", 20, 500 });
+        m_Resources.push_back({ "gudgeon", 500 });
+        m_Resources.push_back({ "shrimp", 500 });
+        m_Resources.push_back({ "trout", 500 });
+        m_Resources.push_back({ "bass", 500 });
+        m_Resources.push_back({ "salmon", 500 });
+        m_Resources.push_back({ "swordfish", 500 });
     }
+
+public:
+    static FishingGatherSystem singleton;
 };
 
 #endif  // _GATHER_SYSTEM_HPP

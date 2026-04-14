@@ -2,11 +2,11 @@
 
 #include "net/client.hpp"
 
-MonsterManager::MonsterManager(MapManager& map_manager) : m_Map_Manager(map_manager) {}
+MonsterManager MonsterManager::singleton;
 
-void MonsterManager::Initialize(Client& client)
+void MonsterManager::Initialize(void)
 {
-    client.Get_Monsters(m_Monsters);
+    Client::singleton.Get_Monsters(m_Monsters);
     for (auto m: m_Monsters)
     {
         for (auto l: m.second["drops"])
@@ -52,7 +52,7 @@ std::array<int, 4> MonsterManager::Get_Monster_Resistance(const char* monster)
 
 const MapCoord* MonsterManager::Get_Monster_Coord(const char* monster) const
 {
-    return m_Map_Manager.Get_Monster_Coord(monster);
+    return MapManager::singleton.Get_Monster_Coord(monster);
 }
 
 void MonsterManager::Get_Monster_Loot(const char* monster, std::vector<Loot>& loot) const

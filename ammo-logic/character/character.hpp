@@ -153,7 +153,7 @@ struct InventoryArmorPart
 class Character
 {
 public:
-    Character(Client& c, InventoryManager& bank);
+    Character();
 
     void Set_Character(const char* character_name);
     const char* Get_Character(void) const;
@@ -229,10 +229,8 @@ public:
 private:
     std::vector<CharacterOrder> m_Orders = {};
     const char* m_Character_Name         = nullptr;
-    Client& m_Client;
-    InventoryManager& m_Bank;
-    float m_Remaining_Timeout   = 0.0f;
-    std::size_t m_Current_Index = 0;
+    float m_Remaining_Timeout            = 0.0f;
+    std::size_t m_Current_Index          = 0;
     MapCoord m_Position;
 
     nlohmann::json m_Character_Cache;

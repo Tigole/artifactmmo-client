@@ -7,8 +7,10 @@ class System;
 
 class TrainingManager
 {
+    TrainingManager() = default;
+
 public:
-    TrainingManager(ItemCraftingManager& item_crafting_manager);
+    static TrainingManager singleton;
 
     void Train_Woodcutting(const System* sys, Character& character, int skill_level);
     void Train_Fishing(const System* sys, Character& character, int skill_level);
@@ -19,8 +21,6 @@ public:
     void Train_Alchemy(const System* sys, Character& character, int skill_level);
 
 private:
-    ItemCraftingManager& m_Item_Crafting_Manager;
-
     void Make_Craft_One_Of(const System* sys, Character& character, const char* item_code) const;
 };
 

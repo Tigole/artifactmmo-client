@@ -12,13 +12,9 @@ class Character;
 class TaskSystem: public System
 {
 public:
-    TaskSystem(const char* system_name, InventoryManager& inventory_management, ItemCraftingManager& item_crafting_manager,
-               FightSystem fight_system);
+    TaskSystem(const char* system_name);
 
 protected:
-    InventoryManager& m_Inventory_Manager;
-    ItemCraftingManager& m_Item_Crafting_Manager;
-    FightSystem& m_Fight_System;
     const MapCoord m_Item_Task_Master_Coord    = { 4, 13 };
     const MapCoord m_Monster_Task_Master_Coord = { 1, 2 };
 
@@ -27,16 +23,20 @@ protected:
 
 class TaskSystemMonster: public TaskSystem
 {
+    TaskSystemMonster();
+
 public:
-    TaskSystemMonster(InventoryManager& inventory_management, ItemCraftingManager& item_crafting_manager, FightSystem fight_system);
+    static TaskSystemMonster singleton;
 
     void Fill_Pipeline(Character& character) override;
 };
 
 class TaskSystemItem: public TaskSystem
 {
+    TaskSystemItem();
+
 public:
-    TaskSystemItem(InventoryManager& inventory_management, ItemCraftingManager& item_crafting_manager, FightSystem fight_system);
+    static TaskSystemItem singleton;
 
     void Fill_Pipeline(Character& character) override;
 };

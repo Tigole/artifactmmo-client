@@ -7,8 +7,10 @@
 
 class Client
 {
-public:
     Client();
+
+public:
+    static Client singleton;
 
     void Initialize(void);
 

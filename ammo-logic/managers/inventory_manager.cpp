@@ -4,7 +4,9 @@
 #include "item_manager.hpp"
 #include "net/client.hpp"
 
-InventoryManager::InventoryManager(Client& client, ItemManager& item_manager) : m_Client(client), m_Item_Manager(item_manager)
+InventoryManager InventoryManager::singleton;
+
+void InventoryManager::Initialize(void)
 {
     m_Resources_To_Deposit.push_back("sap");
     m_Resources_To_Deposit.push_back("apple");
@@ -97,22 +99,23 @@ void InventoryManager::Get_Fight_Items(int level, std::vector<InventoryWeapons>&
 {
     auto armor_handler = [this](int level, const char* armor_type, const char* item_code, std::vector<InventoryArmorPart>& armors)
     {
-        if (m_Item_Manager.Is_Type(item_code, armor_type) && (m_Item_Manager.Get_Item_Level(item_code) <= level))
+        if (ItemManager::singleton.Is_Type(item_code, armor_type) && (ItemManager::singleton.Get_Item_Level(item_code) <= level))
         {
-            armors.push_back({ item_code, m_Item_Manager.Get_Armor_Resistance(item_code), m_Item_Manager.Get_Armor_Damage(item_code),
-                               m_Item_Manager.Get_Armor_Hp(item_code), m_Item_Manager.Get_Item_Level(item_code) });
+            armors.push_back({ item_code, ItemManager::singleton.Get_Armor_Resistance(item_code),
+                               ItemManager::singleton.Get_Armor_Damage(item_code), ItemManager::singleton.Get_Armor_Hp(item_code),
+                               ItemManager::singleton.Get_Item_Level(item_code) });
         }
     };
     for (const auto& item: m_Bank_Content)
     {
         const char* item_code = item.first.c_str();
-        if (m_Item_Manager.Is_Type(item_code, "weapon") && (m_Item_Manager.Get_Item_Level(item_code) <= level))
+        if (ItemManager::singleton.Is_Type(item_code, "weapon") && (ItemManager::singleton.Get_Item_Level(item_code) <= level))
         {
-            weapons.emplace_back(item_code, m_Item_Manager.Get_Weapon_Attack(item_code),
+            weapons.emplace_back(item_code, ItemManager::singleton.Get_Weapon_Attack(item_code),
                                  std::array<int, 4> {
                                      { 0, 0, 0, 0 }
             },
-                                 m_Item_Manager.Get_Item_Level(item_code));
+                                 ItemManager::singleton.Get_Item_Level(item_code));
         }
         armor_handler(level, "helmet", item_code, helmets);
         armor_handler(level, "body_armor", item_code, body_armors);
@@ -128,7 +131,7 @@ void InventoryManager::Get_Fight_Items(int level, std::vector<InventoryWeapons>&
 void InventoryManager::Update_Cache(void)
 {
     nlohmann::json tmp;
-    m_Client.mt_Get_Bank_Items(tmp);
+    Client::singleton.mt_Get_Bank_Items(tmp);
 
     m_Bank_Content.clear();
     for (auto& d: tmp["data"])
@@ -136,7 +139,7 @@ void InventoryManager::Update_Cache(void)
         m_Bank_Content.emplace(d["code"], d["quantity"].get<int>());
     }
 
-    m_Client.Get_Bank_Detail(tmp);
+    Client::singleton.Get_Bank_Detail(tmp);
 
     m_Gold_Amount = tmp["data"]["gold"].get<int>();
 }

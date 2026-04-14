@@ -2,12 +2,12 @@
 
 #include "net/client.hpp"
 
-MapManager::MapManager(Client& client) : m_Client(client) {}
+MapManager MapManager::singleton;
 
 void MapManager::Initialize(void)
 {
     std::vector<nlohmann::json> maps;
-    m_Client.Get_Maps(maps);
+    Client::singleton.Get_Maps(maps);
     for (const auto m: maps)
     {
         if (m["interactions"]["content"].is_null() == false)

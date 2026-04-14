@@ -10,8 +10,10 @@ struct MapCoord;
 
 class MapManager
 {
+    MapManager() = default;
+
 public:
-    MapManager(Client& client);
+    static MapManager singleton;
 
     void Initialize(void);
 
@@ -19,7 +21,6 @@ public:
     const MapCoord* Get_Spot_Coord(const char* resource) const;
 
 private:
-    Client& m_Client;
     std::map<std::string, std::vector<MapCoord>> m_Monsters_Coords;
     std::map<std::string, std::vector<MapCoord>> m_Spots_Coords;
 

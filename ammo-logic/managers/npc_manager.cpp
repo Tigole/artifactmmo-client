@@ -2,11 +2,13 @@
 
 #include "net/client.hpp"
 
-void NPCManager::Initialize(Client& client)
+NPCManager NPCManager::singleton;
+
+void NPCManager::Initialize()
 {
     std::vector<nlohmann::json> data;
 
-    client.Get_NPC_Items(data);
+    Client::singleton.Get_NPC_Items(data);
 
     for (std::size_t ii = 0; ii < data.size(); ii++)
     {

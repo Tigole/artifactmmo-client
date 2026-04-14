@@ -3,7 +3,7 @@
 #include "character/character.hpp"
 #include "managers/item_manager.hpp"
 
-TrainingManager::TrainingManager(ItemCraftingManager& item_crafting_manager) : m_Item_Crafting_Manager(item_crafting_manager) {}
+TrainingManager TrainingManager::singleton;
 
 void TrainingManager::Train_Woodcutting(const System* sys, Character& character, int skill_level)
 {
@@ -85,5 +85,5 @@ void TrainingManager::Train_Alchemy(const System* sys, Character& character, int
 
 void TrainingManager::Make_Craft_One_Of(const System* sys, Character& character, const char* item_code) const
 {
-    m_Item_Crafting_Manager.Make_Craft_Item(sys, character, { item_code, character.Get_Item_Count(item_code) + 1 });
+    ItemCraftingManager::singleton.Make_Craft_Item(sys, character, { item_code, character.Get_Item_Count(item_code) + 1 });
 }

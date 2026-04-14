@@ -1,17 +1,19 @@
 #include "fight_system.hpp"
 
 #include "managers/inventory_manager.hpp"
+#include "managers/item_manager.hpp"
 #include "managers/monster_manager.hpp"
 
-FightSystem::FightSystem(MonsterManager& monsters, const ItemManager& items, const InventoryManager& bank) :
-    System("FightSystem"), m_Monster_Manager(monsters), m_Item_Manager(items), m_Bank(bank)
+FightSystem FightSystem::singleton;
+
+FightSystem::FightSystem() : System("FightSystem")
 {
     m_Monsters.push_back("");
 }
 
 void FightSystem::Initialize(void)
 {
-    m_Monster_Manager.Get_Monster_List(m_Monsters);
+    MonsterManager::singleton.Get_Monster_List(m_Monsters);
 }
 
 void FightSystem::Fill_Pipeline(Character& character)
@@ -21,7 +23,7 @@ void FightSystem::Fill_Pipeline(Character& character)
     for (std::size_t ii = 0; ii < m_Monsters.size(); ii++)
     {
         const char* l_Monster   = m_Monsters[ii].c_str();
-        const MapCoord* l_Coord = m_Monster_Manager.Get_Monster_Coord(l_Monster);
+        const MapCoord* l_Coord = MonsterManager::singleton.Get_Monster_Coord(l_Monster);
         if ((l_Coord != nullptr) && (MayWin(character, l_Monster, l_Context) == true))
         {
             Fight_Against(this, character, l_Monster, l_Context);
@@ -32,10 +34,10 @@ void FightSystem::Fill_Pipeline(Character& character)
 
 void FightSystem::Fight_Against(const System* sys, Character& character, const char* monster, const FightContext& context)
 {
-    const MapCoord* l_Coord = m_Monster_Manager.Get_Monster_Coord(monster);
+    const MapCoord* l_Coord = MonsterManager::singleton.Get_Monster_Coord(monster);
     if (l_Coord != nullptr)
     {
-        const MapCoord bank_pos = m_Bank.Get_Bank_Nearest_Coord(character);
+        const MapCoord bank_pos = InventoryManager::singleton.Get_Bank_Nearest_Coord(character);
         if (character.Get_Equiped_Weapon() != context.weapon)
         {
             Handle_Equipment(sys, character, bank_pos, context.weapon.c_str(), "weapon");
@@ -140,8 +142,8 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
         { "attack_fire", "attack_water", "attack_earth", "attack_air" }
     };
 
-    const std::array<int, 4> l_Monster_Attack     = m_Monster_Manager.Get_Monster_Attack(monster);
-    const std::array<int, 4> l_Monster_Resistance = m_Monster_Manager.Get_Monster_Resistance(monster);
+    const std::array<int, 4> l_Monster_Attack     = MonsterManager::singleton.Get_Monster_Attack(monster);
+    const std::array<int, 4> l_Monster_Resistance = MonsterManager::singleton.Get_Monster_Resistance(monster);
     const std::array<int, 4> l_Monster_Damages    = {
         { 0, 0, 0, 0 }
     };
@@ -160,7 +162,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     int l_Character_Dmg = Calculate_Effective_Damages(l_Character_Attack, l_Character_Damages, l_Monster_Resistance);
     int l_Monster_Dmg   = Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, l_Character_Resistance);
 
-    int l_Monster_Life        = m_Monster_Manager.Get_Monster_Hp(monster);
+    int l_Monster_Life        = MonsterManager::singleton.Get_Monster_Hp(monster);
     int l_Chararcter_Max_Life = character.Get_Life_Max();
 
     int l_Small_Potion_Count = 1;
@@ -190,10 +192,10 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     context.amulet     = character.Get_Equiped_Amulet();
     context.utility1   = character.Get_Equiped_Utility1();
 
-    m_Bank.Get_Fight_Items(character.Get_Skill_Level("combat"), l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor, l_Boots, l_Shields,
-                           l_Rings1, l_Rings2, l_Amulets);
-    character.Get_Fight_Items(m_Item_Manager, character.Get_Skill_Level("combat"), l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor, l_Boots,
-                              l_Shields, l_Rings1, l_Rings2, l_Amulets);
+    InventoryManager::singleton.Get_Fight_Items(character.Get_Skill_Level("combat"), l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor,
+                                                l_Boots, l_Shields, l_Rings1, l_Rings2, l_Amulets);
+    character.Get_Fight_Items(ItemManager::singleton, character.Get_Skill_Level("combat"), l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor,
+                              l_Boots, l_Shields, l_Rings1, l_Rings2, l_Amulets);
 
     printf("equipped weapon: '%s'\n", context.weapon.c_str());
     for (std::size_t ii = 0; ii < l_Weapons.size(); ii++)
@@ -286,7 +288,7 @@ int FightSystem::Calculate_Effective_Damages(const std::array<int, 4>& attack, c
 
 const MapCoord* FightSystem::Get_Monster_Coord(const char* monster)
 {
-    return m_Monster_Manager.Get_Monster_Coord(monster);
+    return MonsterManager::singleton.Get_Monster_Coord(monster);
 }
 
 void FightSystem::Handle_Equipment(const System* sys, Character& character, const MapCoord& bank_pos, const char* equipment_name,

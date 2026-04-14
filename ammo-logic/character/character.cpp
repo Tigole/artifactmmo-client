@@ -8,12 +8,12 @@
 #include "net/client.hpp"
 #include "systems/system.hpp"
 
-Character::Character(Client& c, InventoryManager& bank) : m_Client(c), m_Bank(bank) {}
+Character::Character() {}
 
 void Character::Set_Character(const char* character_name)
 {
     m_Character_Name = character_name;
-    m_Client.mt_Get_Character_Cache(m_Character_Name, m_Character_Cache);
+    Client::singleton.mt_Get_Character_Cache(m_Character_Name, m_Character_Cache);
     std::cout << "Set_Character: " << m_Character_Cache.dump(4) << '\n';
     m_Remaining_Timeout = m_Character_Cache["cooldown"].get<int>();
     m_Position.x        = m_Character_Cache["x"].get<int>();
@@ -141,64 +141,70 @@ void Character::Update(float elapsed_time)
                 case CharacterOrderType::Move:
                     if (Should_Move(l_Order.coord) == true)
                     {
-                        m_Remaining_Timeout = m_Client.mt_Character_Move(m_Character_Name, l_Order.coord, m_Character_Cache);
+                        m_Remaining_Timeout = Client::singleton.mt_Character_Move(m_Character_Name, l_Order.coord, m_Character_Cache);
                     }
                     break;
                 case CharacterOrderType::Fight:
-                    m_Remaining_Timeout = m_Client.mt_Character_Fight(m_Character_Name, m_Character_Cache);
+                    m_Remaining_Timeout = Client::singleton.mt_Character_Fight(m_Character_Name, m_Character_Cache);
                     printf("raw: '%s'\n", m_Character_Cache.dump().c_str());
                     m_Character_Cache = m_Character_Cache[0];
                     printf("filtered: '%s'\n", m_Character_Cache.dump().c_str());
                     break;
-                case CharacterOrderType::Rest: m_Remaining_Timeout = m_Client.mt_Character_Rest(m_Character_Name, m_Character_Cache); break;
+                case CharacterOrderType::Rest:
+                    m_Remaining_Timeout = Client::singleton.mt_Character_Rest(m_Character_Name, m_Character_Cache);
+                    break;
                 case CharacterOrderType::Craft:
-                    m_Remaining_Timeout = m_Client.mt_Character_Craft(m_Character_Name, l_Order.item_order, m_Character_Cache);
+                    m_Remaining_Timeout = Client::singleton.mt_Character_Craft(m_Character_Name, l_Order.item_order, m_Character_Cache);
                     break;
                 case CharacterOrderType::UseItem:
-                    m_Remaining_Timeout = m_Client.mt_Character_Use_Item(m_Character_Name, l_Order.item_order, m_Character_Cache);
+                    m_Remaining_Timeout = Client::singleton.mt_Character_Use_Item(m_Character_Name, l_Order.item_order, m_Character_Cache);
                     break;
                 case CharacterOrderType::UnequipItem:
-                    m_Remaining_Timeout = m_Client.mt_Character_Unequip_Item(m_Character_Name, l_Order.slot.c_str(), m_Character_Cache);
+                    m_Remaining_Timeout =
+                        Client::singleton.mt_Character_Unequip_Item(m_Character_Name, l_Order.slot.c_str(), m_Character_Cache);
                     break;
                 case CharacterOrderType::EquipItem:
-                    m_Remaining_Timeout = m_Client.mt_Character_Equip_Item(m_Character_Name, l_Order.slot.c_str(),
-                                                                           l_Order.item_order.code.c_str(), m_Character_Cache);
+                    m_Remaining_Timeout = Client::singleton.mt_Character_Equip_Item(m_Character_Name, l_Order.slot.c_str(),
+                                                                                    l_Order.item_order.code.c_str(), m_Character_Cache);
                     break;
                 case CharacterOrderType::Gathering:
-                    m_Remaining_Timeout = m_Client.mt_Character_Gather(m_Character_Name, m_Character_Cache);
+                    m_Remaining_Timeout = Client::singleton.mt_Character_Gather(m_Character_Name, m_Character_Cache);
                     break;
                 case CharacterOrderType::Recycling:
-                    m_Remaining_Timeout = m_Client.mt_Character_Recycle(m_Character_Name, l_Order.item_order, m_Character_Cache);
+                    m_Remaining_Timeout = Client::singleton.mt_Character_Recycle(m_Character_Name, l_Order.item_order, m_Character_Cache);
                     break;
                 case CharacterOrderType::TaskNew:
-                    m_Remaining_Timeout = m_Client.mt_Character_Task_New(m_Character_Name, m_Character_Cache);
+                    m_Remaining_Timeout = Client::singleton.mt_Character_Task_New(m_Character_Name, m_Character_Cache);
                     break;
                 case CharacterOrderType::TaskTrade:
-                    m_Remaining_Timeout = m_Client.mt_Character_Task_Trade(m_Character_Name, l_Order.item_order, m_Character_Cache);
+                    m_Remaining_Timeout =
+                        Client::singleton.mt_Character_Task_Trade(m_Character_Name, l_Order.item_order, m_Character_Cache);
                     break;
                 case CharacterOrderType::TaskComplete:
-                    m_Remaining_Timeout = m_Client.mt_Character_Task_Complete(m_Character_Name, m_Character_Cache);
+                    m_Remaining_Timeout = Client::singleton.mt_Character_Task_Complete(m_Character_Name, m_Character_Cache);
                     break;
                 case CharacterOrderType::DepositItem:
-                    m_Remaining_Timeout = m_Client.mt_Character_Deposit_Item(m_Character_Name, l_Order.item_order, m_Character_Cache);
-                    m_Bank.Update_Cache();
+                    m_Remaining_Timeout =
+                        Client::singleton.mt_Character_Deposit_Item(m_Character_Name, l_Order.item_order, m_Character_Cache);
+                    InventoryManager::singleton.Update_Cache();
                     break;
                 case CharacterOrderType::WithdrawItem:
-                    m_Remaining_Timeout = m_Client.mt_Character_Withdraw_Item(m_Character_Name, l_Order.item_order, m_Character_Cache);
-                    m_Bank.Update_Cache();
+                    m_Remaining_Timeout =
+                        Client::singleton.mt_Character_Withdraw_Item(m_Character_Name, l_Order.item_order, m_Character_Cache);
+                    InventoryManager::singleton.Update_Cache();
                     break;
                 case CharacterOrderType::DepositGold:
                     m_Remaining_Timeout =
-                        m_Client.mt_Character_Deposit_Gold(m_Character_Name, l_Order.item_order.quantity, m_Character_Cache);
-                    m_Bank.Update_Cache();
+                        Client::singleton.mt_Character_Deposit_Gold(m_Character_Name, l_Order.item_order.quantity, m_Character_Cache);
+                    InventoryManager::singleton.Update_Cache();
                     break;
                 case CharacterOrderType::WithdrawGold:
                     m_Remaining_Timeout =
-                        m_Client.mt_Character_Withdraw_Gold(m_Character_Name, l_Order.item_order.quantity, m_Character_Cache);
-                    m_Bank.Update_Cache();
+                        Client::singleton.mt_Character_Withdraw_Gold(m_Character_Name, l_Order.item_order.quantity, m_Character_Cache);
+                    InventoryManager::singleton.Update_Cache();
                     break;
                 case CharacterOrderType::BuyItem:
-                    m_Remaining_Timeout = m_Client.mt_Character_Buy_Item(m_Character_Name, l_Order.item_order, m_Character_Cache);
+                    m_Remaining_Timeout = Client::singleton.mt_Character_Buy_Item(m_Character_Name, l_Order.item_order, m_Character_Cache);
                     break;
                 default: break;
                 }

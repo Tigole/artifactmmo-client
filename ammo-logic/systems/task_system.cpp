@@ -5,13 +5,7 @@
 #include "managers/item_manager.hpp"
 #include "systems/fight_system.hpp"
 
-TaskSystem::TaskSystem(const char* system_name, InventoryManager& inventory_management, ItemCraftingManager& item_crafting_manager,
-                       FightSystem fight_system) :
-    System(system_name),
-    m_Inventory_Manager(inventory_management),
-    m_Item_Crafting_Manager(item_crafting_manager),
-    m_Fight_System(fight_system)
-{}
+TaskSystem::TaskSystem(const char* system_name) : System(system_name) {}
 
 void TaskSystem::Trade_Item(Character& character, int item_count) const
 {
@@ -24,15 +18,12 @@ void TaskSystem::Trade_Item(Character& character, int item_count) const
         {
             character.Add_Move(this, m_Item_Task_Master_Coord);
             character.Add_Task_Complete(this);
-            m_Inventory_Manager.Deposit_Resources(this, character, nullptr);
+            InventoryManager::singleton.Deposit_Resources(this, character, nullptr);
         }
     }
 }
 
-TaskSystemMonster::TaskSystemMonster(InventoryManager& inventory_management, ItemCraftingManager& item_crafting_manager,
-                                     FightSystem fight_system) :
-    TaskSystem("TaskSystemMonster", inventory_management, item_crafting_manager, fight_system)
-{}
+TaskSystemMonster::TaskSystemMonster() : TaskSystem("TaskSystemMonster") {}
 
 void TaskSystemMonster::Fill_Pipeline(Character& character)
 {
@@ -45,9 +36,9 @@ void TaskSystemMonster::Fill_Pipeline(Character& character)
         if (character.Get_Task_Remaining() > 0)
         {
             FightContext context;
-            if (m_Fight_System.MayWin(character, character.Get_Task().c_str(), context) == true)
+            if (FightSystem::singleton.MayWin(character, character.Get_Task().c_str(), context) == true)
             {
-                m_Fight_System.Fight_Against(this, character, character.Get_Task().c_str(), context);
+                FightSystem::singleton.Fight_Against(this, character, character.Get_Task().c_str(), context);
             }
         }
         else
@@ -58,8 +49,8 @@ void TaskSystemMonster::Fill_Pipeline(Character& character)
     }
     else
     {
-        const int l_Task_Coin_Count = m_Inventory_Manager.Get_Bank_Item_Count("tasks_coin");
-        m_Inventory_Manager.Deposit_Resources(this, character, character.Get_Task().c_str());
+        const int l_Task_Coin_Count = InventoryManager::singleton.Get_Bank_Item_Count("tasks_coin");
+        InventoryManager::singleton.Deposit_Resources(this, character, character.Get_Task().c_str());
 
         if (l_Task_Coin_Count < 50)
         {
@@ -69,17 +60,14 @@ void TaskSystemMonster::Fill_Pipeline(Character& character)
     }
 }
 
-TaskSystemItem::TaskSystemItem(InventoryManager& inventory_management, ItemCraftingManager& item_crafting_manager,
-                               FightSystem fight_system) :
-    TaskSystem("TaskSystemItem", inventory_management, item_crafting_manager, fight_system)
-{}
+TaskSystemItem::TaskSystemItem() : TaskSystem("TaskSystemItem") {}
 
 void TaskSystemItem::Fill_Pipeline(Character& character)
 {
     if (character.Is_Task_Item() == true)
     {
         const std::string l_Item              = character.Get_Task();
-        const int Bank_Item_Count             = m_Inventory_Manager.Get_Bank_Item_Count(l_Item.c_str());
+        const int Bank_Item_Count             = InventoryManager::singleton.Get_Bank_Item_Count(l_Item.c_str());
         const int l_Task_Remaining            = character.Get_Task_Remaining();
         const int l_Inventory_Item_Count      = character.Get_Item_Count(l_Item.c_str());
         const int l_Inventory_Remaining_Space = character.Get_Inventory_Remaining_Space();
@@ -87,7 +75,7 @@ void TaskSystemItem::Fill_Pipeline(Character& character)
         {
             if (Bank_Item_Count > 0)
             {
-                const MapCoord Bank_Coord = m_Inventory_Manager.Get_Bank_Nearest_Coord(character);
+                const MapCoord Bank_Coord = InventoryManager::singleton.Get_Bank_Nearest_Coord(character);
                 if (character.Should_Move(Bank_Coord))
                 {
                     character.Add_Move(this, Bank_Coord);
@@ -100,11 +88,11 @@ void TaskSystemItem::Fill_Pipeline(Character& character)
                     Trade_Item(character, l_Count);
                 }
             }
-            else if (m_Item_Crafting_Manager.May_Craft(character, l_Item.c_str()))
+            else if (ItemCraftingManager::singleton.May_Craft(character, l_Item.c_str()))
             {
                 if ((l_Inventory_Item_Count < l_Task_Remaining) && (l_Inventory_Remaining_Space > 5))
                 {
-                    m_Item_Crafting_Manager.Make_Craft_Item(this, character, { l_Item, l_Task_Remaining });
+                    ItemCraftingManager::singleton.Make_Craft_Item(this, character, { l_Item, l_Task_Remaining });
                 }
                 else if (l_Inventory_Item_Count > 0)
                 {
@@ -127,14 +115,17 @@ void TaskSystemItem::Fill_Pipeline(Character& character)
     }
     else
     {
-        const int l_Task_Coin_Count = m_Inventory_Manager.Get_Bank_Item_Count("tasks_coin");
+        const int l_Task_Coin_Count = InventoryManager::singleton.Get_Bank_Item_Count("tasks_coin");
 
         printf("tasks_coin count: %d\n", l_Task_Coin_Count);
         if (l_Task_Coin_Count < 50)
         {
-            // m_Inventory_Manager.Deposit_Resources(this, character, character.Get_Task().c_str());
+            // InventoryManager::singleton.Deposit_Resources(this, character, character.Get_Task().c_str());
             character.Add_Move(this, m_Item_Task_Master_Coord);
             character.Add_Task_New(this);
         }
     }
 }
+
+TaskSystemMonster TaskSystemMonster::singleton;
+TaskSystemItem TaskSystemItem::singleton;

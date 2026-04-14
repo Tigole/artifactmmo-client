@@ -20,8 +20,12 @@ struct NPCItemTrade
 
 class NPCManager
 {
+    NPCManager() = default;
+
 public:
-    void Initialize(Client& client);
+    static NPCManager singleton;
+
+    void Initialize(void);
 
     const NPCItemTrade* Get_Buyer(const char* item_code) const;
     const NPCItemTrade* Get_Seller(const char* item_code) const;

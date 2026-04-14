@@ -7,22 +7,23 @@
 
 #include "system.hpp"
 #include "types.hpp"
-
+#if 0
 class ItemManager;
 
 class CraftSystem: public System
 {
-public:
-    CraftSystem(ItemManager& item_manager);
+protected:
+    CraftSystem();
 
+public:
     void Initialize(void);
 
     void Fill_Pipeline(Character& pipeline) override;
 
 private:
-    ItemManager& m_Item_Manager;
     std::vector<std::string> m_Items;
     std::map<std::string, MapCoord> m_Workshop_Coords;
 };
+#endif
 
 #endif  // _CRAFT_SYSTEM_HPP

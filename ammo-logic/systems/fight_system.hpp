@@ -24,8 +24,10 @@ struct FightContext
 
 class FightSystem: public System
 {
+    FightSystem();
+
 public:
-    FightSystem(MonsterManager& monsters, const ItemManager& items, const InventoryManager& bank);
+    static FightSystem singleton;
 
     void Initialize(void);
 
@@ -43,9 +45,6 @@ public:
     const MapCoord* Get_Monster_Coord(const char* monster);
 
 private:
-    MonsterManager& m_Monster_Manager;
-    const ItemManager& m_Item_Manager;
-    const InventoryManager& m_Bank;
     std::vector<std::string> m_Monsters;
 
     void Handle_Equipment(const System* sys, Character& character, const MapCoord& bank_pos, const char* equipment_name,

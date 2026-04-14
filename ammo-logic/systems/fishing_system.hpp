@@ -1,4 +1,0 @@
-#ifndef _FISHING_SYSTEM_HPP
-#define _FISHING_SYSTEM_HPP 1
-
-#endif  // _FISHING_SYSTEM_HPP

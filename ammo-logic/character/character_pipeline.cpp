@@ -2,7 +2,7 @@
 
 #include "systems/system.hpp"
 
-CharacterPipeline::CharacterPipeline(Client& client, InventoryManager& bank) : m_Character(client, bank), m_Systems() {}
+CharacterPipeline::CharacterPipeline() : m_Character(), m_Systems() {}
 
 void CharacterPipeline::Set_Character(const char* character_name)
 {

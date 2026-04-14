@@ -2,11 +2,11 @@
 
 #include "net/client.hpp"
 
-GatherSystem::GatherSystem() : System("GatherSystem") {}
+GatherSystem::GatherSystem(const char* system_name) : System(system_name) {}
 
-void GatherSystem::Initialize(Client& client)
+void GatherSystem::Initialize()
 {
-    client.Get_Resource_Spots(m_Spots);
+    Client::singleton.Get_Resource_Spots(m_Spots);
     for (std::size_t ii = 0; ii < m_Spots.size(); ii++)
     {
         auto& drops = m_Spots[ii]["drops"];
@@ -26,3 +26,8 @@ void GatherSystem::Gather_Resource(Character& character, const char* resource_co
 {
     //
 }
+
+WoodcuttingGatheringSystem WoodcuttingGatheringSystem::singleton;
+MiningGatheringSystem MiningGatheringSystem::singleton;
+AlchemyGatheringSystem AlchemyGatheringSystem::singleton;
+FishingGatherSystem FishingGatherSystem::singleton;

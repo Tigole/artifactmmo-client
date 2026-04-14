@@ -11,10 +11,12 @@
 
 class MonsterManager
 {
-public:
-    MonsterManager(MapManager& map_manager);
+    MonsterManager() = default;
 
-    void Initialize(Client& client);
+public:
+    static MonsterManager singleton;
+
+    void Initialize(void);
 
     void Get_Monster_List(std::vector<std::string>& monsters);
 
@@ -28,7 +30,6 @@ public:
 private:
     std::map<std::string, nlohmann::json> m_Monsters;
     std::map<std::string, std::vector<Loot>> m_Monsters_Loot;
-    MapManager& m_Map_Manager;
 };
 
 #endif  // _MONSTER_MANAGER_HPP
