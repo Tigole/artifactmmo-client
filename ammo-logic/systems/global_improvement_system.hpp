@@ -16,6 +16,7 @@ public:
 
     void Fill_Pipeline(Character& pipeline) override
     {
+        return;
         if (rand() % 100 < 50)
         {
             m_Fight_System.Fill_Pipeline(pipeline);

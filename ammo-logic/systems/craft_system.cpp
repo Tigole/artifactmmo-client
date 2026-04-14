@@ -21,6 +21,7 @@ void CraftSystem::Initialize(void)
 
 void CraftSystem::Fill_Pipeline(Character& pipeline)
 {
+    return;
     std::vector<std::size_t> l_Available_Items;
 
     for (std::size_t ii = 0; ii < m_Items.size(); ii++)
