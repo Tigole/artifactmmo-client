@@ -41,7 +41,7 @@ InventoryManager::InventoryManager(Client& client, ItemManager& item_manager) : 
     Update_Cache();
 }
 
-void InventoryManager::Deposit_Resources(System* sys, Character& character, const char* keep) const
+void InventoryManager::Deposit_Resources(const System* sys, Character& character, const char* keep) const
 {
     const MapCoord coord = Get_Bank_Nearest_Coord(character);
     if (character.Should_Move(coord))

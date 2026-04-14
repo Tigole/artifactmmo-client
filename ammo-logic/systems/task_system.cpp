@@ -24,6 +24,7 @@ void TaskSystem::Trade_Item(Character& character, int item_count) const
         {
             character.Add_Move(this, m_Item_Task_Master_Coord);
             character.Add_Task_Complete(this);
+            m_Inventory_Manager.Deposit_Resources(this, character, nullptr);
         }
     }
 }
@@ -131,7 +132,7 @@ void TaskSystemItem::Fill_Pipeline(Character& character)
         printf("tasks_coin count: %d\n", l_Task_Coin_Count);
         if (l_Task_Coin_Count < 50)
         {
-            m_Inventory_Manager.Deposit_Resources(this, character, character.Get_Task().c_str());
+            // m_Inventory_Manager.Deposit_Resources(this, character, character.Get_Task().c_str());
             character.Add_Move(this, m_Item_Task_Master_Coord);
             character.Add_Task_New(this);
         }
