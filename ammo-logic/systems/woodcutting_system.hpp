@@ -1,23 +1,6 @@
 #ifndef _WOODCUTTING_SYSTEM_HPP
 #define _WOODCUTTING_SYSTEM_HPP 1
 
-class WoodcuttingGatheringSystem: public CraftOrderSystem
-{
-public:
-    WoodcuttingGatheringSystem(ItemCraftingManager& item_crafting_manager, InventoryManager& bank) :
-        CraftOrderSystem("WoodcuttingGatheringSystem", item_crafting_manager, bank)
-    {
-        m_Items.push_back({ "ash_wood", 20, 500 });
-        m_Items.push_back({ "spruce_wood", 20, 500 });
-        m_Items.push_back({ "birch_wood", 20, 500 });
-        m_Items.push_back({ "hardwood_wood", 20, 500 });
-        m_Items.push_back({ "dead_wood", 20, 500 });
-        m_Items.push_back({ "magic_wood", 20, 500 });
-        m_Items.push_back({ "maple_wood", 20, 500 });
-        m_Items.push_back({ "palm_wood", 20, 500 });
-    }
-};
-
 class WoodcuttingCraftingSystem: public CraftOrderSystem
 {
 public:

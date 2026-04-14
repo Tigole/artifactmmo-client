@@ -65,7 +65,7 @@ int main(int argc, char** argv)
     CookingSystem l_Cooking_System(l_Item_Crafting_Manager, l_Inventory_Manager);
     WoodcuttingGatheringSystem l_Woodcutting_Gather_System(l_Item_Crafting_Manager, l_Inventory_Manager);
     WoodcuttingCraftingSystem l_Woodcutting_Craft_System(l_Item_Crafting_Manager, l_Inventory_Manager);
-    FishingSystem l_Fishing_System(l_Item_Crafting_Manager, l_Inventory_Manager);
+    FishingGatherSystem l_Fishing_System(l_Item_Crafting_Manager, l_Inventory_Manager);
     ToolCraftSystem l_Tool_Craft_System(l_Item_Crafting_Manager, l_Inventory_Manager);
     MiningGatheringSystem l_Mining_Gather_System(l_Item_Crafting_Manager, l_Inventory_Manager);
     MiningCraftingSystem l_Mining_Craft_System(l_Item_Crafting_Manager, l_Inventory_Manager);

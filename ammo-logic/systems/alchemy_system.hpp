@@ -3,19 +3,6 @@
 
 #include "craft_order_system.hpp"
 
-class AlchemyGatheringSystem: public CraftOrderSystem
-{
-public:
-    AlchemyGatheringSystem(ItemCraftingManager& item_crafting_manager, InventoryManager& bank) :
-        CraftOrderSystem("AlchemyGatheringSystem", item_crafting_manager, bank)
-    {
-        m_Items.push_back({ "sunflower", 20, 500 });
-        m_Items.push_back({ "nettle_leaf", 20, 500 });
-        m_Items.push_back({ "glowstem_leaf", 20, 500 });
-        m_Items.push_back({ "torch_cactus_flower", 20, 500 });
-    }
-};
-
 class AlchemyCraftingSystem: public CraftOrderSystem
 {
 public:
