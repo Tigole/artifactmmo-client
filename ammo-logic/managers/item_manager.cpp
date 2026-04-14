@@ -244,18 +244,18 @@ ItemCraftingManager::ItemCraftingManager(ResourceManager& resource_manager, Item
     m_Workshop_Coords["cooking"]         = { 1, 1 };
 }
 
-void ItemCraftingManager::Make_Craft_Item(Character& character, const ItemOrder& item)
+void ItemCraftingManager::Make_Craft_Item(const System* sys, Character& character, const ItemOrder& item)
 {
-    Get_Item(character, item);
+    Get_Item(sys, character, item);
 }
 
-void ItemCraftingManager::Make_Recycle_Item(Character& character, const ItemOrder& item)
+void ItemCraftingManager::Make_Recycle_Item(const System* sys, Character& character, const ItemOrder& item)
 {
     const Recipe* r = m_Item_Manager.Get_Recipe(item.code.c_str());
     if (r != nullptr)
     {
-        character.Add_Move(m_Workshop_Coords[r->skill_name]);
-        character.Add_Recycle_Item(item);
+        character.Add_Move(sys, m_Workshop_Coords[r->skill_name]);
+        character.Add_Recycle_Item(sys, item);
     }
 }
 
@@ -269,14 +269,20 @@ bool ItemCraftingManager::May_Craft(Character& character, const char* item_code)
     {
         if (r->skill_level <= character.Get_Skill_Level(r->skill_name.c_str()))
         {
+            bool may_craft = true;
             for (const ItemOrder& i: r->required_items)
             {
-                if (May_Craft(character, i.code.c_str()) == false)
+                const int inventory_count = character.Get_Item_Count(i.code.c_str());
+                const int bank_count      = m_Inventory_Manager.Get_Bank_Item_Count(i.code.c_str());
+
+                if (bank_count < i.quantity)
                 {
-                    return false;
+                    may_craft = false;
+                    printf("'%s' not enough '%s' for crafting '%s' (have %d required %d)\n", character.Get_Character(), i.code.c_str(),
+                           item_code, bank_count, i.quantity);
                 }
             }
-            return true;
+            return may_craft;
         }
         return false;
     }
@@ -292,7 +298,7 @@ bool ItemCraftingManager::May_Craft(Character& character, const char* item_code)
     return false;
 }
 
-void ItemCraftingManager::Get_Item(Character& character, const ItemOrder& item)
+void ItemCraftingManager::Get_Item(const System* sys, Character& character, const ItemOrder& item)
 {
     const Recipe* r                  = m_Item_Manager.Get_Recipe(item.code.c_str());
     const int l_Bank_Item_Count      = m_Inventory_Manager.Get_Bank_Item_Count(item.code.c_str());
@@ -303,13 +309,13 @@ void ItemCraftingManager::Get_Item(Character& character, const ItemOrder& item)
         const MapCoord Bank_Coord = m_Inventory_Manager.Get_Bank_Nearest_Coord(character);
         if (character.Should_Move(Bank_Coord))
         {
-            character.Add_Move(Bank_Coord);
+            character.Add_Move(sys, Bank_Coord);
         }
         else
         {
             const int l_Item_Count = item.quantity - l_Inventory_Item_Count;
             character.Add_Withdraw_Item(
-                { item.code, std::min(std::min(l_Item_Count, character.Get_Inventory_Remaining_Space()), l_Bank_Item_Count) });
+                sys, { item.code, std::min(std::min(l_Item_Count, character.Get_Inventory_Remaining_Space()), l_Bank_Item_Count) });
         }
     }
     else if (r == nullptr)
@@ -323,7 +329,7 @@ void ItemCraftingManager::Get_Item(Character& character, const ItemOrder& item)
             FightContext fight_context;
             if (m_Fight_System.MayWin(character, l_Monster_Name, fight_context) == true)
             {
-                m_Fight_System.Fight_Against(character, l_Monster_Name, fight_context);
+                m_Fight_System.Fight_Against(sys, character, l_Monster_Name, fight_context);
                 return;
             }
             else
@@ -364,27 +370,27 @@ void ItemCraftingManager::Get_Item(Character& character, const ItemOrder& item)
                             {
                                 // character.Add_Unequip_Item("weapon");
                             }
-                            character.Add_Equip_Item("weapon", l_Weapon);
+                            character.Add_Equip_Item(sys, "weapon", l_Weapon);
                         }
                         else if (m_Inventory_Manager.Get_Bank_Item_Count(l_Weapon) > 0)
                         {
                             const MapCoord bank_coord = m_Inventory_Manager.Get_Bank_Nearest_Coord(character);
                             if (character.Should_Move(bank_coord) == true)
                             {
-                                character.Add_Move(bank_coord);
+                                character.Add_Move(sys, bank_coord);
                             }
                             else
                             {
-                                character.Add_Withdraw_Item({ l_Weapon, 1 });
-                                character.Add_Equip_Item("weapon", l_Weapon);
+                                character.Add_Withdraw_Item(sys, { l_Weapon, 1 });
+                                character.Add_Equip_Item(sys, "weapon", l_Weapon);
                             }
                         }
                     }
 
                     if (character.Is_Empty() == true)
                     {
-                        character.Add_Move(*coord);
-                        character.Add_Gathering();
+                        character.Add_Move(sys, *coord);
+                        character.Add_Gathering(sys);
                     }
                 }
             }
@@ -406,19 +412,19 @@ void ItemCraftingManager::Get_Item(Character& character, const ItemOrder& item)
 
                     if (t->amount <= character.Get_Gold_Amount())
                     {
-                        character.Add_Move(*npc_coord);
-                        character.Add_Buy_Item({ item.code, 1 });
+                        character.Add_Move(sys, *npc_coord);
+                        character.Add_Buy_Item(sys, { item.code, 1 });
                     }
                     else if (l_Missing_Gold_Amount <= m_Inventory_Manager.Get_Gold_Amount())
                     {
                         const MapCoord coord = m_Inventory_Manager.Get_Bank_Nearest_Coord(character);
                         if (character.Should_Move(coord) == true)
                         {
-                            character.Add_Move(coord);
+                            character.Add_Move(sys, coord);
                         }
                         else
                         {
-                            character.Add_Withdraw_Gold(l_Missing_Gold_Amount);
+                            character.Add_Withdraw_Gold(sys, l_Missing_Gold_Amount);
                         }
                     }
                 }
@@ -428,19 +434,19 @@ void ItemCraftingManager::Get_Item(Character& character, const ItemOrder& item)
 
                     if (l_Missing_Task_Coin_Amount <= 0)
                     {
-                        character.Add_Move(*npc_coord);
-                        character.Add_Buy_Item({ item.code, 1 });
+                        character.Add_Move(sys, *npc_coord);
+                        character.Add_Buy_Item(sys, { item.code, 1 });
                     }
                     else if (l_Missing_Task_Coin_Amount < m_Inventory_Manager.Get_Bank_Item_Count("tasks_coin"))
                     {
                         const MapCoord coord = m_Inventory_Manager.Get_Bank_Nearest_Coord(character);
                         if (character.Should_Move(coord) == true)
                         {
-                            character.Add_Move(coord);
+                            character.Add_Move(sys, coord);
                         }
                         else
                         {
-                            character.Add_Withdraw_Item({ "tasks_coin", l_Missing_Task_Coin_Amount });
+                            character.Add_Withdraw_Item(sys, { "tasks_coin", l_Missing_Task_Coin_Amount });
                         }
                     }
                 }
@@ -454,7 +460,7 @@ void ItemCraftingManager::Get_Item(Character& character, const ItemOrder& item)
             const int l_Item_Count = character.Get_Item_Count(i.code.c_str());
             if (l_Item_Count < i.quantity)
             {
-                Get_Item(character, { i.code, i.quantity });
+                Get_Item(sys, character, { i.code, i.quantity });
                 if (character.Is_Empty() == false)
                 {
                     return;
@@ -463,8 +469,8 @@ void ItemCraftingManager::Get_Item(Character& character, const ItemOrder& item)
         }
         if (character.Get_Item_Count(item.code.c_str()) < item.quantity)
         {
-            character.Add_Move(m_Workshop_Coords[r->skill_name]);
-            character.Add_Craft({ item.code, 1 });
+            character.Add_Move(sys, m_Workshop_Coords[r->skill_name]);
+            character.Add_Craft(sys, { item.code, 1 });
         }
     }
 }

@@ -43,12 +43,12 @@ void AchievementFightSystem::Fill_Pipeline(Character& pipeline)
         FightContext fight_context;
         if ((l_Coord != nullptr) && (m_Fight_System.MayWin(pipeline, l_Monster, fight_context) == true))
         {
-            pipeline.Add_Move(*l_Coord);
+            pipeline.Add_Move(this, *l_Coord);
             if (fight_context.should_heal == true)
             {
-                m_Fight_System.Add_Healing(pipeline);
+                m_Fight_System.Add_Healing(this, pipeline);
             }
-            pipeline.Add_Fight();
+            pipeline.Add_Fight(this);
             return;
         }
     }

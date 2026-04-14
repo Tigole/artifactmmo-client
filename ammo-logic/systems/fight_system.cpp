@@ -24,13 +24,13 @@ void FightSystem::Fill_Pipeline(Character& character)
         const MapCoord* l_Coord = m_Monster_Manager.Get_Monster_Coord(l_Monster);
         if ((l_Coord != nullptr) && (MayWin(character, l_Monster, l_Context) == true))
         {
-            Fight_Against(character, l_Monster, l_Context);
+            Fight_Against(this, character, l_Monster, l_Context);
             return;
         }
     }
 }
 
-void FightSystem::Fight_Against(Character& character, const char* monster, const FightContext& context)
+void FightSystem::Fight_Against(const System* sys, Character& character, const char* monster, const FightContext& context)
 {
     const MapCoord* l_Coord = m_Monster_Manager.Get_Monster_Coord(monster);
     if (l_Coord != nullptr)
@@ -38,7 +38,7 @@ void FightSystem::Fight_Against(Character& character, const char* monster, const
         const MapCoord bank_pos = m_Bank.Get_Bank_Nearest_Coord(character);
         if (character.Get_Equiped_Weapon() != context.weapon)
         {
-            Handle_Equipment(character, bank_pos, context.weapon.c_str(), "weapon");
+            Handle_Equipment(sys, character, bank_pos, context.weapon.c_str(), "weapon");
             return;
         }
         /*if (character.Get_Equiped_Helmet() != context.helmet)
@@ -88,14 +88,14 @@ void FightSystem::Fight_Against(Character& character, const char* monster, const
         }*/
         if (context.should_heal == true)
         {
-            Add_Healing(character);
+            Add_Healing(sys, character);
         }
-        character.Add_Move(*l_Coord);
-        character.Add_Fight();
+        character.Add_Move(sys, *l_Coord);
+        character.Add_Fight(sys);
     }
 }
 
-void FightSystem::Add_Healing(Character& character)
+void FightSystem::Add_Healing(const System* sys, Character& character)
 {
     struct HealItem
     {
@@ -115,14 +115,14 @@ void FightSystem::Add_Healing(Character& character)
         {
             if ((l_Chararcter_Max_Life - l_Current_Hp) > l_Items[ii].heal)
             {
-                character.Add_UseItem({ l_Items[ii].code, 1 });
+                character.Add_UseItem(sys, { l_Items[ii].code, 1 });
                 l_Current_Hp += l_Items[ii].heal;
             }
         }
     }
     if (l_Current_Hp < l_Chararcter_Max_Life)
     {
-        character.Add_Rest();
+        character.Add_Rest(sys);
     }
 }
 
@@ -289,7 +289,8 @@ const MapCoord* FightSystem::Get_Monster_Coord(const char* monster)
     return m_Monster_Manager.Get_Monster_Coord(monster);
 }
 
-void FightSystem::Handle_Equipment(Character& character, const MapCoord& bank_pos, const char* equipment_name, const char* equipmenet_type)
+void FightSystem::Handle_Equipment(const System* sys, Character& character, const MapCoord& bank_pos, const char* equipment_name,
+                                   const char* equipmenet_type)
 {
     if (character.Is_Empty() == true)
     {
@@ -297,22 +298,22 @@ void FightSystem::Handle_Equipment(Character& character, const MapCoord& bank_po
         {
             if (character.Should_Move(bank_pos) == true)
             {
-                character.Add_Move(bank_pos);
+                character.Add_Move(sys, bank_pos);
             }
             else
             {
                 if (character.Get_Equiped_Item(equipmenet_type).size())
                 {
                     const char* equiped_item = character.Get_Equiped_Item(equipmenet_type).c_str();
-                    character.Add_Unequip_Item(equipmenet_type);
-                    character.Add_Deposit_Item({ equiped_item, character.Get_Item_Count(equiped_item) + 1 });
+                    character.Add_Unequip_Item(sys, equipmenet_type);
+                    character.Add_Deposit_Item(sys, { equiped_item, character.Get_Item_Count(equiped_item) + 1 });
                 }
-                character.Add_Withdraw_Item({ equipment_name, 1 });
+                character.Add_Withdraw_Item(sys, { equipment_name, 1 });
             }
         }
         else
         {
-            character.Add_Equip_Item(equipmenet_type, equipment_name);
+            character.Add_Equip_Item(sys, equipmenet_type, equipment_name);
         }
     }
 }

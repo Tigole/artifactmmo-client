@@ -27,12 +27,12 @@ public:
                 const MapCoord l_Bank_Coord = m_Bank.Get_Bank_Nearest_Coord(character);
                 if (character.Should_Move(l_Bank_Coord) == true)
                 {
-                    character.Add_Move(l_Bank_Coord);
-                    m_Bank.Deposit_Resources(character, nullptr);
+                    character.Add_Move(this, l_Bank_Coord);
+                    m_Bank.Deposit_Resources(this, character, nullptr);
                 }
                 else
                 {
-                    character.Add_Withdraw_Item({ l_Item, std::min(10, character.Get_Inventory_Remaining_Space() - 5) });
+                    character.Add_Withdraw_Item(this, { l_Item, std::min(10, character.Get_Inventory_Remaining_Space() - 5) });
                 }
                 return;
             }

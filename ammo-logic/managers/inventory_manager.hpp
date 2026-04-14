@@ -8,6 +8,7 @@
 class Client;
 class ItemManager;
 class Character;
+class System;
 struct InventoryWeapons;
 struct InventoryArmorPart;
 
@@ -16,7 +17,7 @@ class InventoryManager
 public:
     InventoryManager(Client& client, ItemManager& item_manager);
 
-    void Deposit_Resources(Character& character, const char* keep) const;
+    void Deposit_Resources(const System* sys, Character& character, const char* keep) const;
 
     int Get_Bank_Item_Count(const char* item_code);
 

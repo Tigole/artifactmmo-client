@@ -29,6 +29,7 @@
 #include "systems/task_system.hpp"
 #include "systems/tool_craft_system.hpp"
 #include "systems/woodcutting_system.hpp"
+#include "ui/ui.hpp"
 
 int main(int argc, char** argv)
 {
@@ -50,7 +51,8 @@ int main(int argc, char** argv)
     GlobalImprovementSystem l_Global_Improvement_System(l_Fight_System);
     GearcraftingSystem l_Gearcrafting_System(l_Item_Crafting_Manager, l_Inventory_Manager);
     StuffSystem l_Stuff_System(l_Items_Manager, l_Item_Crafting_Manager);
-    TaskSystem l_Task_System(l_Inventory_Manager, l_Item_Crafting_Manager, l_Fight_System);
+    TaskSystemMonster l_Task_System_Monster(l_Inventory_Manager, l_Item_Crafting_Manager, l_Fight_System);
+    TaskSystemItem l_Task_System_Item(l_Inventory_Manager, l_Item_Crafting_Manager, l_Fight_System);
     GearcraftingLevelSystem l_Gearcrafting_Level_System(l_Training_Manager, l_Item_Crafting_Manager);
     WeaponcraftingLevelSystem l_Weaponcrafting_Level_System(l_Training_Manager, l_Item_Crafting_Manager);
     JewelrycraftingLevelSystem l_Jewelrycrafting_Level_System(l_Training_Manager, l_Item_Crafting_Manager);
@@ -58,12 +60,15 @@ int main(int argc, char** argv)
     AlchemyLevelSystem l_Alchemy_Level_System(l_Training_Manager, l_Item_Crafting_Manager);
     InventoryManagementSystem l_Inventory_Management_System(l_Inventory_Manager);
     FightEquipementSystem l_Fight_Equipement_System(l_Inventory_Manager);
-    AlchemySystem l_Alchemy_System(l_Item_Crafting_Manager, l_Inventory_Manager);
+    AlchemyGatheringSystem l_Alchemy_Gather_System(l_Item_Crafting_Manager, l_Inventory_Manager);
+    AlchemyCraftingSystem l_Alchemy_Craft_System(l_Item_Crafting_Manager, l_Inventory_Manager);
     CookingSystem l_Cooking_System(l_Item_Crafting_Manager, l_Inventory_Manager);
-    WoodcuttingSystem l_Woodcutting_System(l_Item_Crafting_Manager, l_Inventory_Manager);
+    WoodcuttingGatheringSystem l_Woodcutting_Gather_System(l_Item_Crafting_Manager, l_Inventory_Manager);
+    WoodcuttingCraftingSystem l_Woodcutting_Craft_System(l_Item_Crafting_Manager, l_Inventory_Manager);
     FishingSystem l_Fishing_System(l_Item_Crafting_Manager, l_Inventory_Manager);
     ToolCraftSystem l_Tool_Craft_System(l_Item_Crafting_Manager, l_Inventory_Manager);
-    MiningSystem l_Mining_System(l_Item_Crafting_Manager, l_Inventory_Manager);
+    MiningGatheringSystem l_Mining_Gather_System(l_Item_Crafting_Manager, l_Inventory_Manager);
+    MiningCraftingSystem l_Mining_Craft_System(l_Item_Crafting_Manager, l_Inventory_Manager);
     std::array<CharacterPipeline, 5> l_Pipeline = {
         { CharacterPipeline(l_Client, l_Inventory_Manager), CharacterPipeline(l_Client, l_Inventory_Manager),
          CharacterPipeline(l_Client, l_Inventory_Manager), CharacterPipeline(l_Client, l_Inventory_Manager),
@@ -71,6 +76,7 @@ int main(int argc, char** argv)
     };
     CharacterPipeline& l_Gear_Crafting_Pipeling = l_Pipeline[0];
     auto clk                                    = std::chrono::high_resolution_clock::now();
+    ArtifactUI l_UI(l_Pipeline);
 
     l_Pipeline[0].Set_Character("Niva");
     l_Pipeline[1].Set_Character("Jackie");
@@ -82,47 +88,61 @@ int main(int argc, char** argv)
 
     l_Pipeline[0].Add_System(&l_Inventory_Management_System);
     l_Pipeline[0].Add_System(&l_Tool_Craft_System);
-    l_Pipeline[0].Add_System(&l_Woodcutting_System);
     l_Pipeline[0].Add_System(&l_Fight_Equipement_System);
-    // l_Pipeline[0].Add_System(&l_Stuff_System);
-    l_Pipeline[0].Add_System(&l_Task_System);
+    l_Pipeline[0].Add_System(&l_Woodcutting_Craft_System);
+    l_Pipeline[0].Add_System(&l_Woodcutting_Gather_System);
+    l_Pipeline[0].Add_System(&l_Mining_Gather_System);
+    l_Pipeline[0].Add_System(&l_Alchemy_Craft_System);
+    l_Pipeline[0].Add_System(&l_Stuff_System);
+    // l_Pipeline[0].Add_System(&l_Task_System_Monster);
     l_Pipeline[0].Add_System(&l_Weaponcrafting_Level_System);
     l_Pipeline[0].Add_System(&l_Global_Improvement_System);
     l_Pipeline[0].Add_System(&l_Achievement_Fight_System);
 
     l_Pipeline[1].Add_System(&l_Inventory_Management_System);
-    l_Pipeline[1].Add_System(&l_Alchemy_System);
-    l_Pipeline[1].Add_System(&l_Fight_Equipement_System);
-    // l_Pipeline[1].Add_System(&l_Stuff_System);
-    l_Pipeline[1].Add_System(&l_Task_System);
+    l_Pipeline[1].Add_System(&l_Task_System_Item);
+    l_Pipeline[1].Add_System(&l_Alchemy_Craft_System);
+    l_Pipeline[1].Add_System(&l_Alchemy_Gather_System);
+    l_Pipeline[1].Add_System(&l_Mining_Gather_System);
+    l_Pipeline[1].Add_System(&l_Woodcutting_Gather_System);
+    // l_Pipeline[1].Add_System(&l_Fight_Equipement_System);
+    l_Pipeline[1].Add_System(&l_Stuff_System);
     l_Pipeline[1].Add_System(&l_Alchemy_Level_System);
     l_Pipeline[1].Add_System(&l_Global_Improvement_System);
     l_Pipeline[1].Add_System(&l_Achievement_Fight_System);
 
     l_Pipeline[2].Add_System(&l_Inventory_Management_System);
-    l_Pipeline[2].Add_System(&l_Mining_System);
+    l_Pipeline[2].Add_System(&l_Task_System_Item);
     l_Pipeline[2].Add_System(&l_Gearcrafting_System);
-    l_Pipeline[2].Add_System(&l_Fight_Equipement_System);
-    // l_Pipeline[2].Add_System(&l_Stuff_System);
-    l_Pipeline[2].Add_System(&l_Task_System);
+    l_Pipeline[2].Add_System(&l_Mining_Craft_System);
+    l_Pipeline[2].Add_System(&l_Mining_Gather_System);
+    l_Pipeline[2].Add_System(&l_Woodcutting_Gather_System);
+    // l_Pipeline[2].Add_System(&l_Fight_Equipement_System);
+    l_Pipeline[2].Add_System(&l_Stuff_System);
     l_Pipeline[2].Add_System(&l_Gearcrafting_Level_System);
     l_Pipeline[2].Add_System(&l_Global_Improvement_System);
     l_Pipeline[2].Add_System(&l_Achievement_Fight_System);
 
     l_Pipeline[3].Add_System(&l_Inventory_Management_System);
+    l_Pipeline[3].Add_System(&l_Task_System_Item);
     l_Pipeline[3].Add_System(&l_Cooking_System);
-    l_Pipeline[3].Add_System(&l_Fight_Equipement_System);
-    // l_Pipeline[3].Add_System(&l_Stuff_System);
-    l_Pipeline[3].Add_System(&l_Task_System);
+    l_Pipeline[3].Add_System(&l_Alchemy_Gather_System);
+    l_Pipeline[3].Add_System(&l_Woodcutting_Gather_System);
+    l_Pipeline[3].Add_System(&l_Mining_Gather_System);
+    // l_Pipeline[3].Add_System(&l_Fight_Equipement_System);
+    l_Pipeline[3].Add_System(&l_Stuff_System);
     l_Pipeline[3].Add_System(&l_Cooking_Level_System);
     l_Pipeline[3].Add_System(&l_Global_Improvement_System);
     l_Pipeline[3].Add_System(&l_Achievement_Fight_System);
 
     l_Pipeline[4].Add_System(&l_Inventory_Management_System);
+    l_Pipeline[4].Add_System(&l_Task_System_Item);
     l_Pipeline[4].Add_System(&l_Fishing_System);
-    l_Pipeline[4].Add_System(&l_Fight_Equipement_System);
-    // l_Pipeline[4].Add_System(&l_Stuff_System);
-    l_Pipeline[4].Add_System(&l_Task_System);
+    l_Pipeline[4].Add_System(&l_Alchemy_Gather_System);
+    l_Pipeline[4].Add_System(&l_Mining_Gather_System);
+    l_Pipeline[4].Add_System(&l_Woodcutting_Gather_System);
+    // l_Pipeline[4].Add_System(&l_Fight_Equipement_System);
+    l_Pipeline[4].Add_System(&l_Stuff_System);
     l_Pipeline[4].Add_System(&l_Jewelrycrafting_Level_System);
     l_Pipeline[4].Add_System(&l_Global_Improvement_System);
     l_Pipeline[4].Add_System(&l_Achievement_Fight_System);
@@ -153,17 +173,20 @@ int main(int argc, char** argv)
         }
     }
 
+    l_UI.Initialize();
     for (;;)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         const float elapsed_time =
             std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - clk).count() * 0.001f;
+        clk = std::chrono::high_resolution_clock::now();
         for (std::size_t ii = 0; ii < l_Characters_To_Update.size(); ii++)
         {
             CharacterPipeline& p = l_Pipeline[l_Characters_To_Update[ii]];
             p.Update(elapsed_time);
         }
-        clk = std::chrono::high_resolution_clock::now();
+        l_UI.Update(elapsed_time);
+        l_UI.Render();
     }
 
     return 0;

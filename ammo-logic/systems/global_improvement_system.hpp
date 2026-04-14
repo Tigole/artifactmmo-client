@@ -16,6 +16,7 @@ public:
 
     void Fill_Pipeline(Character& pipeline) override
     {
+        return;
         if (rand() % 100 < 50)
         {
             m_Fight_System.Fill_Pipeline(pipeline);
@@ -24,13 +25,13 @@ public:
         {
             if (rand() % 100 < 50)
             {
-                pipeline.Add_Move(m_Positions[2 + rand() % 2]);
+                pipeline.Add_Move(this, m_Positions[2 + rand() % 2]);
             }
             else
             {
-                pipeline.Add_Move(m_Positions[rand() % 2]);
+                pipeline.Add_Move(this, m_Positions[rand() % 2]);
             }
-            pipeline.Add_Gathering();
+            pipeline.Add_Gathering(this);
         }
     }
 

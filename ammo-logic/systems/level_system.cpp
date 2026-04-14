@@ -36,30 +36,30 @@ void LevelSystem::Make_Train(Character& character, const char* skill_name, int s
 {
     if (strcmp(skill_name, "alchemy") == 0)
     {
-        m_Training_Manager.Train_Alchemy(character, skill_level);
+        m_Training_Manager.Train_Alchemy(this, character, skill_level);
     }
     else if (strcmp(skill_name, "fishing") == 0)
     {
-        m_Training_Manager.Train_Fishing(character, skill_level);
+        m_Training_Manager.Train_Fishing(this, character, skill_level);
     }
     else if (strcmp(skill_name, "woodcutting") == 0)
     {
-        m_Training_Manager.Train_Woodcutting(character, skill_level);
+        m_Training_Manager.Train_Woodcutting(this, character, skill_level);
     }
     else if (strcmp(skill_name, "weaponcrafting") == 0)
     {
-        m_Training_Manager.Train_Weaponcrafting(character, skill_level);
+        m_Training_Manager.Train_Weaponcrafting(this, character, skill_level);
     }
     else if (strcmp(skill_name, "gearcrafting") == 0)
     {
-        m_Training_Manager.Train_Gearcrafting(character, skill_level);
+        m_Training_Manager.Train_Gearcrafting(this, character, skill_level);
     }
     else if (strcmp(skill_name, "jewelrycrafting") == 0)
     {
-        m_Training_Manager.Train_Jewelrycrafting(character, skill_level);
+        m_Training_Manager.Train_Jewelrycrafting(this, character, skill_level);
     }
     else if (strcmp(skill_name, "cooking") == 0)
     {
-        m_Training_Manager.Train_Cooking(character, skill_level);
+        m_Training_Manager.Train_Cooking(this, character, skill_level);
     }
 }

@@ -129,8 +129,11 @@ void Client::mt_Get_Bank_Items(nlohmann::json& items)
 {
     std::vector<nlohmann::json> data;
     Get_All_Data("/my/bank/items", data);
-    /// Todo: fix-me
-    // for ()
+    for (auto d: data)
+    {
+        items["data"].push_back(d);
+    }
+    printf("items.dump: %s\n", items.dump(4).c_str());
 }
 
 void Client::Get_Bank_Detail(nlohmann::json& detail)
@@ -407,42 +410,67 @@ nlohmann::json Client::mt_Get_JSON(const char* path, const httplib::Params& para
 
 nlohmann::json Client::mt_Post(const char* path)
 {
-    printf("POST - path: '%s'\n", path);
-    auto res = m_Client.Post(path);
+    nlohmann::json json;
 
-    if (res == nullptr)
+    for (int ii = 0; ii < 10; ii++)
     {
-        throw std::runtime_error(httplib::to_string(res.error()));
-    }
-    if (res->status != 200)
-    {
-        throw std::runtime_error(fmt::format("{} {}", path, res->status));
-    }
+        printf("POST[try %d] - path: '%s'\n", ii, path);
+        auto res = m_Client.Post(path);
 
-    auto json = nlohmann::json::parse(res->body);
+        if (res == nullptr)
+        {
+            printf("???\n");
+            throw std::runtime_error(httplib::to_string(res.error()));
+        }
+        if (res->status != 200)
+        {
+            if (res->status == 499)
+            {
+                printf("499 : %s\n", res->body.c_str());
+                std::this_thread::sleep_for(std::chrono::milliseconds(500));
+                continue;
+            }
+            throw std::runtime_error(fmt::format("{} {}", path, res->status));
+        }
 
-    // printf("%s\n", json.dump().c_str());
+        json = nlohmann::json::parse(res->body);
+        break;
+
+        // printf("%s\n", json.dump().c_str());
+        //
+    }
 
     return json;
 }
 
 nlohmann::json Client::mt_Post(const char* path, const nlohmann::json& body)
 {
-    printf("POST - path: '%s'\n", path);
-    auto res = m_Client.Post(path, httplib::Headers(), to_string(body), "application/json");
+    nlohmann::json json;
 
-    if (res == nullptr)
+    for (int ii = 0; ii < 10; ii++)
     {
-        throw std::runtime_error(httplib::to_string(res.error()));
-    }
-    if (res->status != 200)
-    {
-        std::cout << body.dump(4) << '\n';
-        throw std::runtime_error(fmt::format("{} {}", path, res->status));
-    }
+        printf("POST[try %d] - path: '%s'\n", ii, path);
+        auto res = m_Client.Post(path, httplib::Headers(), to_string(body), "application/json");
 
-    auto json = nlohmann::json::parse(res->body);
+        if (res == nullptr)
+        {
+            throw std::runtime_error(httplib::to_string(res.error()));
+        }
+        if (res->status != 200)
+        {
+            if (res->status == 499)
+            {
+                printf("499 : %s\n", res->body.c_str());
+                std::this_thread::sleep_for(std::chrono::milliseconds(500));
+                continue;
+            }
+            std::cout << body.dump(4) << '\n';
+            throw std::runtime_error(fmt::format("{} {}", path, res->status));
+        }
 
+        json = nlohmann::json::parse(res->body);
+        break;
+    }
     // printf("%s\n", json.dump().c_str());
 
     return json;
