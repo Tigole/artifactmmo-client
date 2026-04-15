@@ -114,8 +114,7 @@ void Character::Add_Withdraw_Item(const System* sys, const ItemOrder& withdraw)
 
 void Character::Add_Deposit_Gold(const System* sys, int gold_amount)
 {
-    // #error "422 ???"
-    //   m_Orders.push_back(CharacterOrder::CreateDepositGold(gold_amount));
+    m_Orders.push_back(CharacterOrder::CreateDepositGold(sys->Name(), gold_amount));
 }
 
 void Character::Add_Withdraw_Gold(const System* sys, int gold_amount)
@@ -463,6 +462,11 @@ void Character::Get_Inventory_Armor(const ItemManager& item_manager, int level, 
 bool Character::Is_Inventory_Slot_Resource(const ItemManager& item_manager, int slot) const
 {
     return item_manager.Is_Type(m_Character_Cache["inventory"][slot]["code"].get<std::string>().c_str(), "resource");
+}
+
+bool Character::Is_Inventory_Empty(void) const
+{
+    return Get_Inventory_Remaining_Slot_Count() == Get_Inventory_Slot_Count();
 }
 
 int Character::Get_Gold_Amount(void) const

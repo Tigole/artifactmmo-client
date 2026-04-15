@@ -212,6 +212,7 @@ public:
                          std::vector<InventoryArmorPart>& shields, std::vector<InventoryArmorPart>& rings1,
                          std::vector<InventoryArmorPart>& rings2, std::vector<InventoryArmorPart>& amulets) const;
     bool Is_Inventory_Slot_Resource(const ItemManager& item_manager, int slot) const;
+    bool Is_Inventory_Empty(void) const;
 
     int Get_Gold_Amount(void) const;
 

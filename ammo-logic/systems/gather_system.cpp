@@ -84,8 +84,7 @@ void GatherSystem::Fill_Pipeline(Character& character)
                 }
             }
 
-            if ((character.Get_Item_Count(order.item_code) == 0) &&
-                (character.Get_Inventory_Remaining_Slot_Count() != character.Get_Inventory_Slot_Count()))
+            if ((character.Get_Item_Count(order.item_code) == 0) && (character.Is_Inventory_Empty() == false))
             {
                 InventoryManager::singleton.Deposit_Resources(this, character, nullptr);
                 return;

@@ -95,7 +95,10 @@ void CraftOrderSystem::Fill_Pipeline(Character& character)
                     }
                 }
 
-                character.Add_Deposit_Gold(this, character.Get_Gold_Amount());
+                if (character.Get_Gold_Amount() > 0)
+                {
+                    character.Add_Deposit_Gold(this, character.Get_Gold_Amount());
+                }
             }
             return;
         }

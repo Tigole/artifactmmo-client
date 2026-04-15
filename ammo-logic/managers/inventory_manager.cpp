@@ -62,7 +62,10 @@ void InventoryManager::Deposit_Resources(const System* sys, Character& character
         }
     }
 
-    character.Add_Deposit_Gold(sys, character.Get_Gold_Amount());
+    if (character.Get_Gold_Amount() > 0)
+    {
+        character.Add_Deposit_Gold(sys, character.Get_Gold_Amount());
+    }
 }
 
 int InventoryManager::Get_Bank_Item_Count(const char* item_code)
