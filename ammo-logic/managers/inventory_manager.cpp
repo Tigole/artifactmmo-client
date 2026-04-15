@@ -62,15 +62,6 @@ void InventoryManager::Deposit_Resources(const System* sys, Character& character
         }
     }
 
-    /*for (const char* item_code: m_Resources_To_Deposit)
-    {
-        const int item_quatity = character.Get_Item_Count(item_code);
-        if ((item_quatity > 0) && (strcmp(item_code, keep) != 0))
-        {
-            character.Add_Deposit_Item(sys, { item_code, item_quatity });
-        }
-    }*/
-
     character.Add_Deposit_Gold(sys, character.Get_Gold_Amount());
 }
 
