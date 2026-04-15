@@ -68,7 +68,7 @@ void Client::Get_All_Data(const char* path, std::vector<nlohmann::json>& all_dat
             { "size", std::to_string(l_Size) },
         };
         auto json = mt_Get_JSON(path, l_Params);
-        if (true)
+        if (false)
         {
             std::cout << json.dump(4) << '\n';
             std::cout << json["page"] << " / " << json["pages"] << '\n';
@@ -135,7 +135,10 @@ void Client::mt_Get_Bank_Items(nlohmann::json& items)
     {
         items["data"].push_back(d);
     }
-    printf("items.dump: %s\n", items.dump(4).c_str());
+    if (false)
+    {
+        printf("items.dump: %s\n", items.dump(4).c_str());
+    }
 }
 
 void Client::Get_Bank_Detail(nlohmann::json& detail)
@@ -438,8 +441,10 @@ nlohmann::json Client::mt_Post(const char* path)
         json = nlohmann::json::parse(res->body);
         break;
 
-        // printf("%s\n", json.dump().c_str());
-        //
+        if (false)
+        {
+            printf("%s\n", json.dump().c_str());
+        }
     }
 
     return json;

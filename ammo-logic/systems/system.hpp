@@ -1,7 +1,11 @@
 #ifndef _SYSTEM_HPP
 #define _SYSTEM_HPP 1
 
+#include <cstdio>
+
 #include "character/character.hpp"
+
+#define SYSTEM_PRINT(fmt, ...) printf("%s (%s): " fmt "\n", character.Get_Character(), Name(), ##__VA_ARGS__)
 
 class System
 {

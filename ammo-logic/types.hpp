@@ -3,6 +3,7 @@
 
 #include <fmt/format.h>
 
+#include <cmath>
 #include <map>
 #include <nlohmann/json.hpp>
 #include <string>
@@ -18,6 +19,11 @@ struct MapCoord
 {
     int x, y;
     NLOHMANN_DEFINE_TYPE_INTRUSIVE(MapCoord, x, y);
+
+    int Get_Distance(MapCoord other) const
+    {
+        return abs(other.x - x) + abs(other.y - y);
+    }
 };
 
 /*struct Map

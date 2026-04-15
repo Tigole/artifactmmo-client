@@ -223,7 +223,6 @@ public:
     std::string Get_Task(void) const;
 
     bool Should_Move(const MapCoord& target) const;
-    int Get_Distance(const MapCoord& target) const;
     MapCoord Get_Map_Coord(void) const;
 
 private:

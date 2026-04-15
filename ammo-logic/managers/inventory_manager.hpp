@@ -28,6 +28,7 @@ public:
     int Get_Gold_Amount(void);
 
     MapCoord Get_Bank_Nearest_Coord(Character& character) const;
+    MapCoord Get_Bank_Nearest_Coord(MapCoord coord) const;
 
     void Get_Fight_Items(int level, std::vector<InventoryWeapons>& weapons, std::vector<InventoryArmorPart>& helmets,
                          std::vector<InventoryArmorPart>& body_armors, std::vector<InventoryArmorPart>& leg_armors,

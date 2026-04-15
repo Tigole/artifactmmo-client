@@ -91,8 +91,13 @@ int InventoryManager::Get_Gold_Amount(void)
 
 MapCoord InventoryManager::Get_Bank_Nearest_Coord(Character& character) const
 {
-    const int dist_bank_1 = character.Get_Distance(m_Bank_Coord_1);
-    const int dist_bank_2 = character.Get_Distance(m_Bank_Coord_2);
+    return Get_Bank_Nearest_Coord(character.Get_Map_Coord());
+}
+
+MapCoord InventoryManager::Get_Bank_Nearest_Coord(MapCoord coord) const
+{
+    const int dist_bank_1 = coord.Get_Distance(m_Bank_Coord_1);
+    const int dist_bank_2 = coord.Get_Distance(m_Bank_Coord_2);
     if (dist_bank_1 < dist_bank_2)
     {
         return m_Bank_Coord_1;

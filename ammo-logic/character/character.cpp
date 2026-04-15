@@ -14,7 +14,10 @@ void Character::Set_Character(const char* character_name)
 {
     m_Character_Name = character_name;
     Client::singleton.mt_Get_Character_Cache(m_Character_Name, m_Character_Cache);
-    std::cout << "Set_Character: " << m_Character_Cache.dump(4) << '\n';
+    if (false)
+    {
+        std::cout << "Set_Character: " << m_Character_Cache.dump(4) << '\n';
+    }
     m_Remaining_Timeout = m_Character_Cache["cooldown"].get<int>();
     m_Position.x        = m_Character_Cache["x"].get<int>();
     m_Position.y        = m_Character_Cache["y"].get<int>();
@@ -531,11 +534,6 @@ std::string Character::Get_Task(void) const
 bool Character::Should_Move(const MapCoord& target) const
 {
     return (m_Position.x != target.x) || (m_Position.y != target.y);
-}
-
-int Character::Get_Distance(const MapCoord& target) const
-{
-    return abs(target.x - m_Position.x) + abs(target.y - m_Position.y);
 }
 
 MapCoord Character::Get_Map_Coord(void) const

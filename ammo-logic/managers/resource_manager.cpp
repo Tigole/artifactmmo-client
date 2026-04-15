@@ -36,9 +36,9 @@ const MapCoord* ResourceManager::Get_Resource_Coord(const Character& character, 
         int distance      = std::numeric_limits<int>::max();
         for (std::size_t ii = 0; ii < it->second.size(); ii++)
         {
-            if (character.Get_Distance(it->second[ii].coord) < distance)
+            if (character.Get_Map_Coord().Get_Distance(it->second[ii].coord) < distance)
             {
-                distance = character.Get_Distance(it->second[ii].coord);
+                distance = character.Get_Map_Coord().Get_Distance(it->second[ii].coord);
                 index    = ii;
             }
         }
