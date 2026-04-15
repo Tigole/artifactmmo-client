@@ -83,7 +83,20 @@ void CraftOrderSystem::Fill_Pipeline(Character& character)
             character.Add_Move(this, m_Workshop_Coord);
             character.Add_Craft(this, craft_order);
             character.Add_Move(this, InventoryManager::singleton.Get_Bank_Nearest_Coord(m_Workshop_Coord));
-            character.Add_Deposit_Item(this, craft_order);
+            {
+                const int slot_count = character.Get_Inventory_Slot_Count();
+                for (int ii = 0; ii < slot_count; ii++)
+                {
+                    const ItemOrder item = character.Get_Inventory_Item(ii);
+
+                    if (item.quantity != 0)
+                    {
+                        character.Add_Deposit_Item(this, item);
+                    }
+                }
+
+                character.Add_Deposit_Gold(this, character.Get_Gold_Amount());
+            }
             return;
         }
     }
