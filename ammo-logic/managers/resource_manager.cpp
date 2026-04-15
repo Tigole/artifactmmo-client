@@ -47,3 +47,13 @@ const MapCoord* ResourceManager::Get_Resource_Coord(const Character& character, 
     }
     return nullptr;
 }
+
+const char* ResourceManager::Get_Spot_Name(MapCoord coord) const
+{
+    return "";
+}
+
+int ResourceManager::Get_Required_Inventory_Space(MapCoord coord) const
+{
+    return 10;
+}

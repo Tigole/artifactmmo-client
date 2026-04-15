@@ -51,21 +51,31 @@ void InventoryManager::Deposit_Resources(const System* sys, Character& character
         character.Add_Move(sys, coord);
     }
 
-    for (const char* item_code: m_Resources_To_Deposit)
+    const int slot_count = character.Get_Inventory_Slot_Count();
+    for (int ii = 0; ii < slot_count; ii++)
+    {
+        const ItemOrder item = character.Get_Inventory_Item(ii);
+
+        if (item.quantity != 0)
+        {
+            character.Add_Deposit_Item(sys, item);
+        }
+    }
+
+    /*for (const char* item_code: m_Resources_To_Deposit)
     {
         const int item_quatity = character.Get_Item_Count(item_code);
         if ((item_quatity > 0) && (strcmp(item_code, keep) != 0))
         {
             character.Add_Deposit_Item(sys, { item_code, item_quatity });
         }
-    }
+    }*/
 
     character.Add_Deposit_Gold(sys, character.Get_Gold_Amount());
 }
 
 int InventoryManager::Get_Bank_Item_Count(const char* item_code)
 {
-    // Update_Cache();
     auto it = m_Bank_Content.find(item_code);
     if (it != m_Bank_Content.end())
     {
@@ -76,7 +86,6 @@ int InventoryManager::Get_Bank_Item_Count(const char* item_code)
 
 int InventoryManager::Get_Gold_Amount(void)
 {
-    // Update_Cache();
     return m_Gold_Amount;
 }
 

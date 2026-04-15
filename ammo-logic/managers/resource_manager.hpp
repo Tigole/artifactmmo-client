@@ -17,6 +17,8 @@ public:
     void Initialize(void);
 
     const MapCoord* Get_Resource_Coord(const Character& character, const char* resource) const;
+    const char* Get_Spot_Name(MapCoord coord) const;
+    int Get_Required_Inventory_Space(MapCoord coord) const;
 
 private:
     struct Data
