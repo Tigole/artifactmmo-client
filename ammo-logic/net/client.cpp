@@ -347,8 +347,11 @@ int Client::mt_Character_Deposit_Gold(const char* character_name, int gold_amoun
     std::string l_Path = "/my/";
     l_Path += character_name;
     l_Path += "/action/bank/deposit/gold";
+    nlohmann::json body;
 
-    nlohmann::json body = mt_Post(l_Path.c_str(), { "quantity", gold_amount });
+    body["quantity"] = gold_amount;
+
+    body = mt_Post(l_Path.c_str(), body);
 
     character_cache = body["data"]["character"];
 
@@ -405,7 +408,7 @@ nlohmann::json Client::mt_Get_JSON(const char* path, const httplib::Params& para
     }
     if (res->status != 200)
     {
-        throw std::runtime_error(fmt::format("path: '{}' status: '{}'", path, res->status));
+        throw std::runtime_error(fmt::format("path: '{}' status: '{}' message: '{}'", path, res->status, res->body));
     }
 
     auto body = nlohmann::json::parse(res->body);
@@ -435,7 +438,7 @@ nlohmann::json Client::mt_Post(const char* path)
                 std::this_thread::sleep_for(std::chrono::milliseconds(500));
                 continue;
             }
-            throw std::runtime_error(fmt::format("{} {}", path, res->status));
+            throw std::runtime_error(fmt::format("path: '{}' status: '{}' message: '{}'", path, res->status, res->body));
         }
 
         json = nlohmann::json::parse(res->body);
@@ -472,7 +475,7 @@ nlohmann::json Client::mt_Post(const char* path, const nlohmann::json& body)
                 continue;
             }
             std::cout << body.dump(4) << '\n';
-            throw std::runtime_error(fmt::format("{} {}", path, res->status));
+            throw std::runtime_error(fmt::format("path: '{}' status: '{}' message: '{}'", path, res->status, res->body));
         }
 
         json = nlohmann::json::parse(res->body);
