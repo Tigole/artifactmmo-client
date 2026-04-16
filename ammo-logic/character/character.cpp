@@ -129,7 +129,7 @@ void Character::Add_Buy_Item(const System* sys, const ItemOrder& buy)
 
 void Character::Make_Clear_Inventory(const System* sys, const char* keep)
 {
-    m_Orders.push_back(CharacterOrder::CreateClearInventory(sys, keep));
+    m_Orders.push_back(CharacterOrder::CreateClearInventory(sys, keep == nullptr ? "" : keep));
 }
 
 void Character::Update(float elapsed_time)
@@ -142,7 +142,7 @@ void Character::Update(float elapsed_time)
             const CharacterOrder l_Order = m_Orders[m_Current_Index];
             try
             {
-                printf("'%s' order type %d from system '%s'\n", m_Character_Name, static_cast<int>(l_Order.type), l_Order.system);
+                printf("'%s' order type %d from system '%s'\n", m_Character_Name, static_cast<int>(l_Order.type), l_Order.system->Name());
                 switch (l_Order.type)
                 {
                 case CharacterOrderType::Move:
