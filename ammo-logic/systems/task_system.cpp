@@ -15,10 +15,24 @@ void TaskSystem::Trade_Item(Character& character, int item_count) const
     character.Add_Task_Trade(this, { l_Item, std::min(l_Task_Remaining, item_count) });
     if (l_Task_Remaining <= item_count)
     {
+        character.Add_Task_Complete(this);
+        character.Add_Move(this, InventoryManager::singleton.Get_Bank_Nearest_Coord(m_Item_Task_Master_Coord));
         {
-            character.Add_Move(this, m_Item_Task_Master_Coord);
-            character.Add_Task_Complete(this);
-            InventoryManager::singleton.Deposit_Resources(this, character, nullptr);
+            const int slot_count = character.Get_Inventory_Slot_Count();
+            for (int ii = 0; ii < slot_count; ii++)
+            {
+                const ItemOrder item = character.Get_Inventory_Item(ii);
+
+                if (item.quantity != 0)
+                {
+                    character.Add_Deposit_Item(this, item);
+                }
+            }
+
+            if (character.Get_Gold_Amount() > 0)
+            {
+                character.Add_Deposit_Gold(this, character.Get_Gold_Amount());
+            }
         }
     }
 }
@@ -84,23 +98,9 @@ void TaskSystemItem::Fill_Pipeline(Character& character)
                 {
                     const int l_Item_Count = l_Task_Remaining - l_Inventory_Item_Count;
                     const int l_Count      = std::min(std::min(l_Item_Count, l_Inventory_Remaining_Space), Bank_Item_Count);
+                    SYSTEM_PRINT("Bank_Item_Count: %d l_Count: %d", Bank_Item_Count, l_Count);
                     character.Add_Withdraw_Item(this, { l_Item, l_Count });
                     Trade_Item(character, l_Count);
-                }
-            }
-            else if (ItemCraftingManager::singleton.May_Craft(character, l_Item.c_str()))
-            {
-                if ((l_Inventory_Item_Count < l_Task_Remaining) && (l_Inventory_Remaining_Space > 5))
-                {
-                    ItemCraftingManager::singleton.Make_Craft_Item(this, character, { l_Item, l_Task_Remaining });
-                }
-                else if (l_Inventory_Item_Count > 0)
-                {
-                    Trade_Item(character, l_Inventory_Item_Count);
-                }
-                else
-                {
-                    //
                 }
             }
         }
@@ -120,7 +120,6 @@ void TaskSystemItem::Fill_Pipeline(Character& character)
         printf("tasks_coin count: %d\n", l_Task_Coin_Count);
         if (l_Task_Coin_Count < 50)
         {
-            // InventoryManager::singleton.Deposit_Resources(this, character, character.Get_Task().c_str());
             character.Add_Move(this, m_Item_Task_Master_Coord);
             character.Add_Task_New(this);
         }
