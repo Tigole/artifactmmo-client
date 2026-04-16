@@ -19,18 +19,18 @@ void GatherSystem::Fill_Pipeline(Character& character)
 
         if (req == nullptr)
         {
-            SYSTEM_PRINT("no requirement for '%s'\n", order.item_code);
+            SYSTEM_PRINT("no requirement for '%s'", order.item_code);
             continue;
         }
 
         const int character_skill_level = character.Get_Skill_Level(req->skill_name.c_str());
         if ((bank_item_count < order.target_amount) && (req->skill_level <= character_skill_level))
         {
-            SYSTEM_PRINT("will gather '%s' x%d\n", character.Get_Character(), order.item_code, order.target_amount - bank_item_count);
+            SYSTEM_PRINT("will gather '%s' x%d", order.item_code, order.target_amount - bank_item_count);
             const MapCoord* coord = ResourceManager::singleton.Get_Resource_Coord(character, order.item_code);
             if (coord == nullptr)
             {
-                SYSTEM_PRINT("doesn't know where to gather '%s'\n", order.item_code);
+                SYSTEM_PRINT("doesn't know where to gather '%s'", order.item_code);
                 continue;
             }
 
@@ -48,18 +48,18 @@ void GatherSystem::Fill_Pipeline(Character& character)
 
                 if (character_skill_level < required_level)
                 {
-                    SYSTEM_PRINT("skill '%s' is too low to equip '%s' (current: %d required: %d)\n", character.Get_Character(),
-                                 req->skill_name.c_str(), weapon, character_skill_level, required_level);
+                    SYSTEM_PRINT("skill '%s' is too low to equip '%s' (current: %d required: %d)", req->skill_name.c_str(), weapon,
+                                 character_skill_level, required_level);
                     continue;
                 }
                 if (character.Get_Equiped_Weapon() == weapon)
                 {
-                    SYSTEM_PRINT("is already equiped with '%s'\n", character.Get_Character(), weapon);
+                    SYSTEM_PRINT("is already equiped with '%s'", weapon);
                     break;
                 }
                 else
                 {
-                    SYSTEM_PRINT("try to equip weapon '%s'\n", character.Get_Character(), weapon);
+                    SYSTEM_PRINT("try to equip weapon '%s'", weapon);
 
                     /// if is in inventory
                     if (character.Get_Item_Count(weapon) > 0)
