@@ -24,7 +24,7 @@ void TaskSystem::Trade_Item(Character& character, int item_count) const
             {
                 const ItemOrder item = character.Get_Inventory_Item(ii);
 
-                if (item.quantity != 0)
+                if (item.quantity != 0 && item.code != l_Item)
                 {
                     character.Add_Deposit_Item(this, item);
                 }
