@@ -3,6 +3,7 @@
 #include <fstream>
 
 std::string Token::token;
+std::string Token::account;
 
 void Token::LoadFromFile(const char* file)
 {
