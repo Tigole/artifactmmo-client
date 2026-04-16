@@ -22,7 +22,6 @@ void CharacterPipeline::Add_System(System* system)
 
 void CharacterPipeline::Update(float elapsed_time)
 {
-    m_Character.Update(elapsed_time);
     for (std::size_t jj = 0; jj < m_Systems.size() && (m_Character.Is_Empty() == true); jj++)
     {
         m_Systems[jj]->Fill_Pipeline(m_Character);
@@ -31,6 +30,7 @@ void CharacterPipeline::Update(float elapsed_time)
             printf("\t'%s' commanded by '%s'\n", m_Character.Get_Character(), m_Systems[jj]->Name());
         }
     }
+    m_Character.Update(elapsed_time);
 }
 
 std::string CharacterPipeline::Get_Current_Order(void) const
