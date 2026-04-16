@@ -139,4 +139,14 @@ public:
     static GearcraftingSystem singleton;
 };
 
+class BuyingSystem: public System
+{
+    BuyingSystem();
+
+public:
+    static BuyingSystem singleton;
+
+    void Fill_Pipeline(Character& character) override;
+};
+
 #endif  // _CRAFT_ORDER_SYSTEM_HPP

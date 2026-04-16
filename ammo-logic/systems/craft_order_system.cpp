@@ -1,5 +1,6 @@
 #include "craft_order_system.hpp"
 
+#include "managers/achievement_manager.hpp"
 #include "managers/inventory_manager.hpp"
 #include "managers/item_manager.hpp"
 
@@ -159,3 +160,79 @@ MiningCraftingSystem MiningCraftingSystem::singleton;
 WoodcuttingCraftingSystem WoodcuttingCraftingSystem::singleton;
 ToolCraftSystem ToolCraftSystem::singleton;
 GearcraftingSystem GearcraftingSystem::singleton;
+
+BuyingSystem BuyingSystem::singleton;
+
+BuyingSystem::BuyingSystem() : System("BuyingSystem") {}
+
+void BuyingSystem::Fill_Pipeline(Character& character)
+{
+    const char* item_to_buy           = "jasper_crystal";
+    const char* task_coin             = "tasks_coin";
+    const int bank_item_count         = InventoryManager::singleton.Get_Bank_Item_Count(item_to_buy);
+    const MapCoord trader_coord       = { 5, 11 };
+    const MapCoord nearest_bank_coord = InventoryManager::singleton.Get_Bank_Nearest_Coord(character);
+
+    if (AchivementManager::singleton.Is_Completed("tasks_farmer") == false)
+    {
+        return;
+    }
+
+    if (bank_item_count < 5)
+    {
+        if (InventoryManager::singleton.Get_Bank_Item_Count(task_coin) < 8)
+        {
+            SYSTEM_PRINT("Not enough '%s'", task_coin);
+            return;
+        }
+
+        /// Move to bank
+        if (character.Should_Move(nearest_bank_coord))
+        {
+            character.Add_Move(this, nearest_bank_coord);
+            return;
+        }
+        /// Deposit
+        if (character.Is_Inventory_Empty() == false)
+        {
+            const int slot_count = character.Get_Inventory_Slot_Count();
+            for (int ii = 0; ii < slot_count; ii++)
+            {
+                const ItemOrder item = character.Get_Inventory_Item(ii);
+
+                if (item.quantity != 0)
+                {
+                    character.Add_Deposit_Item(this, item);
+                }
+            }
+
+            if (character.Get_Gold_Amount() > 0)
+            {
+                character.Add_Deposit_Gold(this, character.Get_Gold_Amount());
+            }
+            return;
+        }
+
+        character.Add_Withdraw_Item(this, { task_coin, 8 });
+        character.Add_Move(this, trader_coord);
+        character.Add_Buy_Item(this, { item_to_buy, 1 });
+        character.Add_Move(this, InventoryManager::singleton.Get_Bank_Nearest_Coord(trader_coord));
+        {
+            const int slot_count = character.Get_Inventory_Slot_Count();
+            for (int ii = 0; ii < slot_count; ii++)
+            {
+                const ItemOrder item = character.Get_Inventory_Item(ii);
+
+                if (item.quantity != 0)
+                {
+                    character.Add_Deposit_Item(this, item);
+                }
+            }
+
+            if (character.Get_Gold_Amount() > 0)
+            {
+                character.Add_Deposit_Gold(this, character.Get_Gold_Amount());
+            }
+        }
+    }
+}
