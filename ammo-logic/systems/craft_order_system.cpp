@@ -17,7 +17,7 @@ void CraftOrderSystem::Fill_Pipeline(Character& character)
 
         if (r == nullptr)
         {
-            SYSTEM_PRINT("no recipe for '%s'\n", order.item_code);
+            SYSTEM_PRINT("no recipe for '%s'", order.item_code);
             continue;
         }
 
@@ -66,8 +66,15 @@ void CraftOrderSystem::Fill_Pipeline(Character& character)
                 craft_count = character.Get_Inventory_Remaining_Space() / r->required_items[0].quantity;
                 craft_count = std::min(craft_count, InventoryManager::singleton.Get_Bank_Item_Count(r->required_items[0].code.c_str()) /
                                                         r->required_items[0].quantity);
+                SYSTEM_PRINT(
+                    "1 required item (character.Get_Inventory_Remaining_Space(): %d r->required_items[0].quantity: %d "
+                    "InventoryManager::singleton.Get_Bank_Item_Count(r->required_items[0].code.c_str()): %d craft_count: %d)",
+                    character.Get_Inventory_Remaining_Space(), r->required_items[0].quantity,
+                    InventoryManager::singleton.Get_Bank_Item_Count(r->required_items[0].code.c_str()), craft_count);
             }
 
+            SYSTEM_PRINT("craft_count: %d order.target_amount: %d bank_item_count: %d order.target_amount - bank_item_count: %d",
+                         craft_count, order.target_amount, bank_item_count, order.target_amount - bank_item_count);
             craft_count = std::min(craft_count, order.target_amount - bank_item_count);
 
             SYSTEM_PRINT("will craft '%s' x%d", order.item_code, craft_count);
