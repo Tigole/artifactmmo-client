@@ -77,6 +77,7 @@ void TaskSystemItem::Fill_Pipeline(Character& character)
                 if (character.Should_Move(Bank_Coord))
                 {
                     character.Add_Move(this, Bank_Coord);
+                    character.Make_Clear_Inventory(this, l_Item.c_str());
                 }
                 else
                 {
