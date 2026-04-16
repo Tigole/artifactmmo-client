@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "character/character_pipeline.hpp"
+#include "managers/achievement_manager.hpp"
 #include "managers/fight_manager.hpp"
 #include "managers/inventory_manager.hpp"
 #include "managers/item_manager.hpp"
@@ -39,6 +40,7 @@ int main(int argc, char** argv)
     MonsterManager::singleton.Initialize();
     ItemManager::singleton.Initialize();
     NPCManager::singleton.Initialize();
+    AchivementManager::singleton.Initialize();
 
     FightSystem::singleton.Initialize();
     // CraftSystem::sin l_Craft_System.Initialize();
@@ -137,12 +139,20 @@ int main(int argc, char** argv)
     }
 
     l_UI.Initialize();
+    float achievement_update_timeout = 0.0f;
     for (;;)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         const float elapsed_time =
             std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - clk).count() * 0.001f;
         clk = std::chrono::high_resolution_clock::now();
+
+        achievement_update_timeout -= elapsed_time;
+        if (achievement_update_timeout <= 0.0f)
+        {
+            achievement_update_timeout = 60.0f * 5.0f;
+            AchivementManager::singleton.Update_Cache();
+        }
         for (std::size_t ii = 0; ii < l_Characters_To_Update.size(); ii++)
         {
             CharacterPipeline& p = l_Pipeline[l_Characters_To_Update[ii]];

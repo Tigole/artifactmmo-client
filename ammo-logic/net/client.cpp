@@ -158,6 +158,12 @@ void Client::Get_NPC_Items(std::vector<nlohmann::json>& items)
     Get_All_Data("/npcs/items", items);
 }
 
+void Client::Get_Account_Achievements(std::vector<nlohmann::json>& achievements)
+{
+    std::string path = fmt::format("/accounts/{}/achievements", Token::account);
+    Get_All_Data(path.c_str(), achievements);
+}
+
 MapCoord Client::mt_Get_Map_With_Content_Code(const char* content_code)
 {
     auto json = mt_Get_JSON("/maps", {

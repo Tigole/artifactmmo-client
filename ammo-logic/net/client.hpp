@@ -22,6 +22,7 @@ public:
     void mt_Get_Bank_Items(nlohmann::json& items);
     void Get_Bank_Detail(nlohmann::json& detail);
     void Get_NPC_Items(std::vector<nlohmann::json>& items);
+    void Get_Account_Achievements(std::vector<nlohmann::json>& achievements);
 
     MapCoord mt_Get_Map_With_Content_Code(const char* content_code);
 
