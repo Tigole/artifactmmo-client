@@ -8,6 +8,7 @@
 struct Token
 {
     static std::string token;
+    static std::string account;
 
     static void LoadFromFile(const char* file);
 };

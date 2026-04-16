@@ -18,6 +18,13 @@ void Client::Initialize(void)
     m_Client.set_default_headers(l_Headers);
     m_Client.enable_server_certificate_verification(false);
     m_Client.enable_server_hostname_verification(false);
+
+    {
+        nlohmann::json details = mt_Get_JSON("/my/details");
+        Token::account         = details["data"]["username"];
+        printf("Account: '%s'\n", Token::account.c_str());
+        exit(0);
+    }
 }
 
 void Client::Get_Items(std::map<std::string, nlohmann::json>& items)
