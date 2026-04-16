@@ -34,9 +34,10 @@ Clay_Color GetColor(Color c)
 void CharactersList(std::array<CharacterPipeline, 5>& pipelines)
 {
     static const std::array<Color, 5> colors = {
-        { RED, VIOLET, BLUE, GREEN, ORANGE }
+        { VIOLET, BLUE, GREEN, ORANGE, RED }
     };
     static std::array<std::string, 5> strings;
+    constexpr const int font_size = 30;
 
     int x = 10;
     int y = 10;
@@ -45,10 +46,9 @@ void CharactersList(std::array<CharacterPipeline, 5>& pipelines)
         const CharacterPipeline& p = pipelines[ii];
         strings[ii]                = fmt::format("{} - {:.2}s - {}", p.Get_Character(), p.Get_Remaining_Timeout(), p.Get_Current_Order());
 
-        DrawText(strings[ii].c_str(), x, y, 30, colors[ii]);
-        y += 30;
+        DrawText(strings[ii].c_str(), x, y, font_size, colors[ii]);
+        y += font_size;
     }
-    //}
 }
 
 void ArtifactUI::Render(void)
