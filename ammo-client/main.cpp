@@ -98,6 +98,7 @@ int main(int argc, char** argv)
     l_Pipeline[2].Add_System(&AchievementFightSystem::singleton);
 
     l_Pipeline[3].Add_System(&InventoryManagementSystem::singleton);
+    l_Pipeline[3].Add_System(&BuyingSystem::singleton);
     l_Pipeline[3].Add_System(&TaskSystemItem::singleton);
     l_Pipeline[3].Add_System(&CookingSystem::singleton);
     l_Pipeline[3].Add_System(&AlchemyGatheringSystem::singleton);
