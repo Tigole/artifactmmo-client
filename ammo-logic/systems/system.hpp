@@ -5,7 +5,7 @@
 
 #include "character/character.hpp"
 
-#define SYSTEM_PRINT(fmt, ...) printf("%s (%s): " fmt "\n", character.Get_Character(), Name(), ##__VA_ARGS__)
+#define SYSTEM_PRINT(fmt, ...) printf("[%s - %s]: " fmt "\n", character.Get_Character(), Name(), ##__VA_ARGS__)
 
 class System
 {
