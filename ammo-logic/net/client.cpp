@@ -23,7 +23,6 @@ void Client::Initialize(void)
         nlohmann::json details = mt_Get_JSON("/my/details");
         Token::account         = details["data"]["username"];
         printf("Account: '%s'\n", Token::account.c_str());
-        exit(0);
     }
 }
 
