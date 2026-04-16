@@ -1,6 +1,7 @@
 #include "task_system.hpp"
 
 #include "character/character.hpp"
+#include "managers/achievement_manager.hpp"
 #include "managers/inventory_manager.hpp"
 #include "managers/item_manager.hpp"
 #include "systems/fight_system.hpp"
@@ -64,9 +65,8 @@ void TaskSystemMonster::Fill_Pipeline(Character& character)
     else
     {
         const int l_Task_Coin_Count = InventoryManager::singleton.Get_Bank_Item_Count("tasks_coin");
-        InventoryManager::singleton.Deposit_Resources(this, character, character.Get_Task().c_str());
 
-        if (l_Task_Coin_Count < 50)
+        if ((l_Task_Coin_Count < 50) || (AchivementManager::singleton.Is_Completed("tasks_farmer") == false))
         {
             character.Add_Move(this, m_Monster_Task_Master_Coord);
             character.Add_Task_New(this);
@@ -118,7 +118,7 @@ void TaskSystemItem::Fill_Pipeline(Character& character)
         const int l_Task_Coin_Count = InventoryManager::singleton.Get_Bank_Item_Count("tasks_coin");
 
         printf("tasks_coin count: %d\n", l_Task_Coin_Count);
-        if (l_Task_Coin_Count < 50)
+        if ((l_Task_Coin_Count < 50) || (AchivementManager::singleton.Is_Completed("tasks_farmer") == false))
         {
             character.Add_Move(this, m_Item_Task_Master_Coord);
             character.Add_Task_New(this);
