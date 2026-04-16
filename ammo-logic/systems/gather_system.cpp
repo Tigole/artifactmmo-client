@@ -37,7 +37,7 @@ void GatherSystem::Fill_Pipeline(Character& character)
             if (character.Get_Inventory_Remaining_Space() < ResourceManager::singleton.Get_Required_Inventory_Space(*coord))
             {
                 SYSTEM_PRINT("has to make space", character.Get_Character());
-                InventoryManager::singleton.Deposit_Resources(this, character, nullptr);
+                character.Make_Clear_Inventory(this, nullptr);
                 return;
             }
 
@@ -86,7 +86,7 @@ void GatherSystem::Fill_Pipeline(Character& character)
 
             if ((character.Get_Item_Count(order.item_code) == 0) && (character.Is_Inventory_Empty() == false))
             {
-                InventoryManager::singleton.Deposit_Resources(this, character, nullptr);
+                character.Make_Clear_Inventory(this, nullptr);
                 return;
             }
 

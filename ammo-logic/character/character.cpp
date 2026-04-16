@@ -44,87 +44,92 @@ const CharacterOrder* Character::Get_Current_Order(void) const
 
 void Character::Add_Move(const System* sys, const MapCoord& coords)
 {
-    m_Orders.push_back(CharacterOrder::CreateMove(sys->Name(), coords));
+    m_Orders.push_back(CharacterOrder::CreateMove(sys, coords));
 }
 
 void Character::Add_Fight(const System* sys)
 {
-    m_Orders.push_back(CharacterOrder::CreateFight(sys->Name()));
+    m_Orders.push_back(CharacterOrder::CreateFight(sys));
 }
 
 void Character::Add_Rest(const System* sys)
 {
-    m_Orders.push_back(CharacterOrder::CreateRest(sys->Name()));
+    m_Orders.push_back(CharacterOrder::CreateRest(sys));
 }
 
 void Character::Add_Craft(const System* sys, const ItemOrder& craft)
 {
-    m_Orders.push_back(CharacterOrder::CreateCraft(sys->Name(), craft));
+    m_Orders.push_back(CharacterOrder::CreateCraft(sys, craft));
 }
 
 void Character::Add_UseItem(const System* sys, const ItemOrder& use)
 {
-    m_Orders.push_back(CharacterOrder::CreateUseItem(sys->Name(), use));
+    m_Orders.push_back(CharacterOrder::CreateUseItem(sys, use));
 }
 
 void Character::Add_Unequip_Item(const System* sys, const char* slot)
 {
-    m_Orders.push_back(CharacterOrder::CreateUnequipItem(sys->Name(), slot));
+    m_Orders.push_back(CharacterOrder::CreateUnequipItem(sys, slot));
 }
 
 void Character::Add_Equip_Item(const System* sys, const char* slot, const char* item_code)
 {
-    m_Orders.push_back(CharacterOrder::CreateEquipItem(sys->Name(), slot, item_code));
+    m_Orders.push_back(CharacterOrder::CreateEquipItem(sys, slot, item_code));
 }
 
 void Character::Add_Gathering(const System* sys)
 {
-    m_Orders.push_back(CharacterOrder::CreateGathering(sys->Name()));
+    m_Orders.push_back(CharacterOrder::CreateGathering(sys));
 }
 
 void Character::Add_Recycle_Item(const System* sys, const ItemOrder& recycle)
 {
-    m_Orders.push_back(CharacterOrder::CreateRecycling(sys->Name(), recycle));
+    m_Orders.push_back(CharacterOrder::CreateRecycling(sys, recycle));
 }
 
 void Character::Add_Task_New(const System* sys)
 {
-    m_Orders.push_back(CharacterOrder::CreateTaskNew(sys->Name()));
+    m_Orders.push_back(CharacterOrder::CreateTaskNew(sys));
 }
 
 void Character::Add_Task_Trade(const System* sys, const ItemOrder& trade)
 {
-    m_Orders.push_back(CharacterOrder::CreateTaskTrade(sys->Name(), trade));
+    m_Orders.push_back(CharacterOrder::CreateTaskTrade(sys, trade));
 }
 
 void Character::Add_Task_Complete(const System* sys)
 {
-    m_Orders.push_back(CharacterOrder::CreateTaskComplete(sys->Name()));
+    m_Orders.push_back(CharacterOrder::CreateTaskComplete(sys));
 }
 
 void Character::Add_Deposit_Item(const System* sys, const ItemOrder& deposit)
 {
-    m_Orders.push_back(CharacterOrder::CreateDepositItem(sys->Name(), deposit));
+    m_Orders.push_back(CharacterOrder::CreateDepositItem(sys, deposit));
 }
 
 void Character::Add_Withdraw_Item(const System* sys, const ItemOrder& withdraw)
 {
-    m_Orders.push_back(CharacterOrder::CreateWithdrawItem(sys->Name(), withdraw));
+    m_Orders.push_back(CharacterOrder::CreateWithdrawItem(sys, withdraw));
 }
 
 void Character::Add_Deposit_Gold(const System* sys, int gold_amount)
 {
-    m_Orders.push_back(CharacterOrder::CreateDepositGold(sys->Name(), gold_amount));
+    m_Orders.push_back(CharacterOrder::CreateDepositGold(sys, gold_amount));
 }
 
 void Character::Add_Withdraw_Gold(const System* sys, int gold_amount)
 {
-    m_Orders.push_back(CharacterOrder::CreateWithdrawGold(sys->Name(), gold_amount));
+    m_Orders.push_back(CharacterOrder::CreateWithdrawGold(sys, gold_amount));
 }
 
 void Character::Add_Buy_Item(const System* sys, const ItemOrder& buy)
 {
-    m_Orders.push_back(CharacterOrder::CreateBuyItem(sys->Name(), buy));
+    m_Orders.push_back(CharacterOrder::CreateBuyItem(sys, buy));
+}
+
+void Character::Make_Clear_Inventory(const System* sys, const char* keep)
+{
+    m_Orders.push_back(CharacterOrder::CreateClearInventory(sys, keep));
 }
 
 void Character::Update(float elapsed_time)
@@ -134,7 +139,7 @@ void Character::Update(float elapsed_time)
     {
         if (m_Current_Index < m_Orders.size())
         {
-            const CharacterOrder& l_Order = m_Orders[m_Current_Index];
+            const CharacterOrder l_Order = m_Orders[m_Current_Index];
             try
             {
                 printf("'%s' order type %d from system '%s'\n", m_Character_Name, static_cast<int>(l_Order.type), l_Order.system);
@@ -207,6 +212,33 @@ void Character::Update(float elapsed_time)
                     break;
                 case CharacterOrderType::BuyItem:
                     m_Remaining_Timeout = Client::singleton.mt_Character_Buy_Item(m_Character_Name, l_Order.item_order, m_Character_Cache);
+                    break;
+                case CharacterOrderType::ClearInventory:
+                    {
+                        const MapCoord bank_coord = InventoryManager::singleton.Get_Bank_Nearest_Coord(Get_Map_Coord());
+                        if (Should_Move(bank_coord))
+                        {
+                            Add_Move(l_Order.system, bank_coord);
+                        }
+
+                        {
+                            const int slot_count = Get_Inventory_Slot_Count();
+                            for (int ii = 0; ii < slot_count; ii++)
+                            {
+                                const ItemOrder item = Get_Inventory_Item(ii);
+
+                                if ((item.quantity != 0) && (item.code != l_Order.slot))
+                                {
+                                    Add_Deposit_Item(l_Order.system, item);
+                                }
+                            }
+
+                            if (Get_Gold_Amount() > 0)
+                            {
+                                Add_Deposit_Gold(l_Order.system, Get_Gold_Amount());
+                            }
+                        }
+                    }
                     break;
                 default: break;
                 }

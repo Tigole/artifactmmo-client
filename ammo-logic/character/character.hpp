@@ -30,35 +30,37 @@ enum class CharacterOrderType
     DepositGold,
     WithdrawGold,
     BuyItem,
+
+    ClearInventory,
 };
 
 struct CharacterOrder
 {
-    static CharacterOrder CreateMove(const char* sys, const MapCoord& coord)
+    static CharacterOrder CreateMove(const System* sys, const MapCoord& coord)
     {
         return { sys, CharacterOrderType::Move, coord, ItemOrder {}, "" };
     }
-    static CharacterOrder CreateFight(const char* sys)
+    static CharacterOrder CreateFight(const System* sys)
     {
         return { sys, CharacterOrderType::Fight, MapCoord {}, ItemOrder {}, "" };
     }
-    static CharacterOrder CreateRest(const char* sys)
+    static CharacterOrder CreateRest(const System* sys)
     {
         return { sys, CharacterOrderType::Rest, MapCoord {}, ItemOrder {}, "" };
     }
-    static CharacterOrder CreateCraft(const char* sys, const ItemOrder& craft)
+    static CharacterOrder CreateCraft(const System* sys, const ItemOrder& craft)
     {
         return { sys, CharacterOrderType::Craft, MapCoord {}, craft, "" };
     }
-    static CharacterOrder CreateUseItem(const char* sys, const ItemOrder& item)
+    static CharacterOrder CreateUseItem(const System* sys, const ItemOrder& item)
     {
         return { sys, CharacterOrderType::UseItem, MapCoord {}, item, "" };
     }
-    static CharacterOrder CreateUnequipItem(const char* sys, const char* slot)
+    static CharacterOrder CreateUnequipItem(const System* sys, const char* slot)
     {
         return { sys, CharacterOrderType::UnequipItem, MapCoord {}, ItemOrder {}, slot };
     }
-    static CharacterOrder CreateEquipItem(const char* sys, const char* slot, const char* item_code)
+    static CharacterOrder CreateEquipItem(const System* sys, const char* slot, const char* item_code)
     {
         return {
             sys, CharacterOrderType::EquipItem, MapCoord {},
@@ -66,47 +68,51 @@ struct CharacterOrder
                slot
         };
     }
-    static CharacterOrder CreateGathering(const char* sys)
+    static CharacterOrder CreateGathering(const System* sys)
     {
         return CharacterOrder(sys, CharacterOrderType::Gathering, {}, {}, "");
     }
-    static CharacterOrder CreateRecycling(const char* sys, const ItemOrder& recycle)
+    static CharacterOrder CreateRecycling(const System* sys, const ItemOrder& recycle)
     {
         return CharacterOrder(sys, CharacterOrderType::Recycling, {}, recycle, "");
     }
-    static CharacterOrder CreateTaskNew(const char* sys)
+    static CharacterOrder CreateTaskNew(const System* sys)
     {
         return CharacterOrder(sys, CharacterOrderType::TaskNew, {}, {}, "");
     }
-    static CharacterOrder CreateTaskTrade(const char* sys, const ItemOrder& trade)
+    static CharacterOrder CreateTaskTrade(const System* sys, const ItemOrder& trade)
     {
         return CharacterOrder(sys, CharacterOrderType::TaskTrade, {}, trade, "");
     }
-    static CharacterOrder CreateTaskComplete(const char* sys)
+    static CharacterOrder CreateTaskComplete(const System* sys)
     {
         return CharacterOrder(sys, CharacterOrderType::TaskComplete, {}, {}, "");
     }
-    static CharacterOrder CreateDepositItem(const char* sys, const ItemOrder& deposit)
+    static CharacterOrder CreateDepositItem(const System* sys, const ItemOrder& deposit)
     {
         return CharacterOrder(sys, CharacterOrderType::DepositItem, {}, deposit, "");
     }
-    static CharacterOrder CreateWithdrawItem(const char* sys, const ItemOrder& withdraw)
+    static CharacterOrder CreateWithdrawItem(const System* sys, const ItemOrder& withdraw)
     {
         return CharacterOrder(sys, CharacterOrderType::WithdrawItem, {}, withdraw, "");
     }
-    static CharacterOrder CreateDepositGold(const char* sys, int gold_amount)
+    static CharacterOrder CreateDepositGold(const System* sys, int gold_amount)
     {
         return CharacterOrder(sys, CharacterOrderType::DepositGold, {}, { "", gold_amount }, "");
     }
-    static CharacterOrder CreateWithdrawGold(const char* sys, int gold_amount)
+    static CharacterOrder CreateWithdrawGold(const System* sys, int gold_amount)
     {
         return CharacterOrder(sys, CharacterOrderType::WithdrawGold, {}, { "", gold_amount }, "");
     }
-    static CharacterOrder CreateBuyItem(const char* sys, const ItemOrder& buy)
+    static CharacterOrder CreateBuyItem(const System* sys, const ItemOrder& buy)
     {
         return CharacterOrder(sys, CharacterOrderType::BuyItem, {}, buy, "");
     }
-    const char* system;
+    static CharacterOrder CreateClearInventory(const System* sys, const char* keep)
+    {
+        return CharacterOrder(sys, CharacterOrderType::ClearInventory, {}, {}, keep);
+    }
+    const System* system;
     CharacterOrderType type;
     MapCoord coord;
     ItemOrder item_order;
@@ -176,6 +182,7 @@ public:
     void Add_Deposit_Gold(const System* sys, int gold_amount);
     void Add_Withdraw_Gold(const System* sys, int gold_amount);
     void Add_Buy_Item(const System* sys, const ItemOrder& buy);
+    void Make_Clear_Inventory(const System* sys, const char* keep);
 
     void Update(float elapsed_time);
     float Get_Remaining_Timeout(void) const;

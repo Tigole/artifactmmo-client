@@ -43,31 +43,6 @@ void InventoryManager::Initialize(void)
     Update_Cache();
 }
 
-void InventoryManager::Deposit_Resources(const System* sys, Character& character, const char* keep) const
-{
-    const MapCoord coord = Get_Bank_Nearest_Coord(character);
-    if (character.Should_Move(coord))
-    {
-        character.Add_Move(sys, coord);
-    }
-
-    const int slot_count = character.Get_Inventory_Slot_Count();
-    for (int ii = 0; ii < slot_count; ii++)
-    {
-        const ItemOrder item = character.Get_Inventory_Item(ii);
-
-        if (item.quantity != 0)
-        {
-            character.Add_Deposit_Item(sys, item);
-        }
-    }
-
-    if (character.Get_Gold_Amount() > 0)
-    {
-        character.Add_Deposit_Gold(sys, character.Get_Gold_Amount());
-    }
-}
-
 int InventoryManager::Get_Bank_Item_Count(const char* item_code)
 {
     auto it = m_Bank_Content.find(item_code);

@@ -21,8 +21,6 @@ public:
 
     void Initialize(void);
 
-    void Deposit_Resources(const System* sys, Character& character, const char* keep) const;
-
     int Get_Bank_Item_Count(const char* item_code);
 
     int Get_Gold_Amount(void);

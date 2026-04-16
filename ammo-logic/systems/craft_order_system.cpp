@@ -52,7 +52,7 @@ void CraftOrderSystem::Fill_Pipeline(Character& character)
             if (character.Get_Inventory_Remaining_Space() < character_inventory_space_required)
             {
                 SYSTEM_PRINT("has to make space");
-                InventoryManager::singleton.Deposit_Resources(this, character, nullptr);
+                character.Make_Clear_Inventory(this, nullptr);
                 return;
             }
 
@@ -91,23 +91,7 @@ void CraftOrderSystem::Fill_Pipeline(Character& character)
             character.Add_Move(this, m_Workshop_Coord);
             character.Add_Craft(this, craft_order);
             character.Add_Move(this, InventoryManager::singleton.Get_Bank_Nearest_Coord(m_Workshop_Coord));
-            {
-                const int slot_count = character.Get_Inventory_Slot_Count();
-                for (int ii = 0; ii < slot_count; ii++)
-                {
-                    const ItemOrder item = character.Get_Inventory_Item(ii);
-
-                    if (item.quantity != 0)
-                    {
-                        character.Add_Deposit_Item(this, item);
-                    }
-                }
-
-                if (character.Get_Gold_Amount() > 0)
-                {
-                    character.Add_Deposit_Gold(this, character.Get_Gold_Amount());
-                }
-            }
+            character.Make_Clear_Inventory(this, nullptr);
             return;
         }
     }
@@ -192,47 +176,11 @@ void BuyingSystem::Fill_Pipeline(Character& character)
             character.Add_Move(this, nearest_bank_coord);
             return;
         }
-        /// Deposit
-        if (character.Is_Inventory_Empty() == false)
-        {
-            const int slot_count = character.Get_Inventory_Slot_Count();
-            for (int ii = 0; ii < slot_count; ii++)
-            {
-                const ItemOrder item = character.Get_Inventory_Item(ii);
-
-                if (item.quantity != 0)
-                {
-                    character.Add_Deposit_Item(this, item);
-                }
-            }
-
-            if (character.Get_Gold_Amount() > 0)
-            {
-                character.Add_Deposit_Gold(this, character.Get_Gold_Amount());
-            }
-            return;
-        }
 
         character.Add_Withdraw_Item(this, { task_coin, 8 });
         character.Add_Move(this, trader_coord);
         character.Add_Buy_Item(this, { item_to_buy, 1 });
         character.Add_Move(this, InventoryManager::singleton.Get_Bank_Nearest_Coord(trader_coord));
-        {
-            const int slot_count = character.Get_Inventory_Slot_Count();
-            for (int ii = 0; ii < slot_count; ii++)
-            {
-                const ItemOrder item = character.Get_Inventory_Item(ii);
-
-                if (item.quantity != 0)
-                {
-                    character.Add_Deposit_Item(this, item);
-                }
-            }
-
-            if (character.Get_Gold_Amount() > 0)
-            {
-                character.Add_Deposit_Gold(this, character.Get_Gold_Amount());
-            }
-        }
+        character.Make_Clear_Inventory(this, nullptr);
     }
 }

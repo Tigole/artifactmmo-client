@@ -18,12 +18,12 @@ void InventoryManagementSystem::Fill_Pipeline(Character& character)
             const int task_item_count = character.Get_Item_Count(character.Get_Task().c_str());
             if (task_item_count != 0)
             {
-                InventoryManager::singleton.Deposit_Resources(this, character, character.Get_Task().c_str());
+                character.Make_Clear_Inventory(this, character.Get_Task().c_str());
             }
         }
         else
         {
-            InventoryManager::singleton.Deposit_Resources(this, character, character.Get_Task().c_str());
+            character.Make_Clear_Inventory(this, nullptr);
         }
     }
 }
