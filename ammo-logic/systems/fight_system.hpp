@@ -49,6 +49,17 @@ private:
 
     void Handle_Equipment(const System* sys, Character& character, const MapCoord& bank_pos, const char* equipment_name,
                           const char* equipmenet_type);
+
+    bool Equip_Healing_Stuff(const System* sys, Character& character, const MapCoord& bank_pos) const;
+
+    struct HealItem
+    {
+        const char* code;
+        int heal;
+        int required_level;
+        int inventory_target_count;
+    };
+    std::vector<HealItem> m_Healing_Items;
 };
 
 #endif  // _FIGHT_SYSTEM_HPP
