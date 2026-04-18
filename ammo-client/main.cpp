@@ -24,7 +24,7 @@
 #include "systems/level_system.hpp"
 #include "systems/stuff_system.hpp"
 #include "systems/task_system.hpp"
-#include "ui/ui.hpp"
+#include "ui.hpp"
 
 int main(int argc, char** argv)
 {
