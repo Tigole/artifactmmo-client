@@ -24,6 +24,11 @@ struct MapCoord
     {
         return abs(other.x - x) + abs(other.y - y);
     }
+
+    bool operator==(const MapCoord& rhs)
+    {
+        return x == rhs.x && y == rhs.y;
+    }
 };
 
 /*struct Map

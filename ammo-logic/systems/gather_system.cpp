@@ -105,6 +105,90 @@ void GatherSystem::Fill_Pipeline(Character& character)
 }
 
 WoodcuttingGatheringSystem WoodcuttingGatheringSystem::singleton;
+
+WoodcuttingGatheringSystem::WoodcuttingGatheringSystem() : GatherSystem("WoodcuttingGatheringSystem")
+{
+    static constexpr int item_amount = 200;
+
+    m_Resources.push_back({ "palm_wood", item_amount });
+    m_Resources.push_back({ "maple_wood", item_amount });
+    m_Resources.push_back({ "magic_wood", item_amount });
+    m_Resources.push_back({ "dead_wood", item_amount });
+    m_Resources.push_back({ "hardwood_wood", item_amount });
+    m_Resources.push_back({ "birch_wood", item_amount });
+    m_Resources.push_back({ "spruce_wood", item_amount });
+    m_Resources.push_back({ "ash_wood", item_amount });
+
+    m_Equipements.push_back("voidstone_axe");
+    m_Equipements.push_back("adamantite_axe");
+    m_Equipements.push_back("mithril_axe");
+    m_Equipements.push_back("gold_axe");
+    m_Equipements.push_back("steel_axe");
+    m_Equipements.push_back("iron_axe");
+    m_Equipements.push_back("copper_axe");
+}
+
 MiningGatheringSystem MiningGatheringSystem::singleton;
+
+MiningGatheringSystem::MiningGatheringSystem() : GatherSystem("MiningGatheringSystem")
+{
+    static constexpr int item_amount = 200;
+
+    m_Resources.push_back({ "adamantine_ore", item_amount });
+    m_Resources.push_back({ "mithril_ore", item_amount });
+    m_Resources.push_back({ "strange_ore", item_amount });
+    m_Resources.push_back({ "gold_ore", item_amount });
+    m_Resources.push_back({ "coal", item_amount });
+    m_Resources.push_back({ "iron_ore", item_amount });
+    m_Resources.push_back({ "copper_ore", item_amount });
+
+    m_Equipements.push_back("voidstone_pickaxe");
+    m_Equipements.push_back("adamantite_pickaxe");
+    m_Equipements.push_back("mithril_pickaxe");
+    m_Equipements.push_back("gold_pickaxe");
+    m_Equipements.push_back("steel_pickaxe");
+    m_Equipements.push_back("iron_pickaxe");
+    m_Equipements.push_back("copper_pickaxe");
+}
+
 AlchemyGatheringSystem AlchemyGatheringSystem::singleton;
+
+AlchemyGatheringSystem::AlchemyGatheringSystem() : GatherSystem("AlchemyGatheringSystem")
+{
+    static constexpr int item_amount = 200;
+
+    m_Resources.push_back({ "torch_cactus_flower", item_amount });
+    m_Resources.push_back({ "glowstem_leaf", item_amount });
+    m_Resources.push_back({ "nettle_leaf", item_amount });
+    m_Resources.push_back({ "sunflower", item_amount });
+
+    m_Equipements.push_back("voidstone_gloves");
+    m_Equipements.push_back("adamantite_gloves");
+    m_Equipements.push_back("mithril_gloves");
+    m_Equipements.push_back("golden_gloves");
+    m_Equipements.push_back("steel_gloves");
+    m_Equipements.push_back("leather_gloves");
+    m_Equipements.push_back("apprentice_gloves");
+}
+
 FishingGatherSystem FishingGatherSystem::singleton;
+
+FishingGatherSystem::FishingGatherSystem() : GatherSystem("FishingGatherSystem")
+{
+    static constexpr int item_amount = 200;
+
+    m_Resources.push_back({ "swordfish", item_amount });
+    m_Resources.push_back({ "salmon", item_amount });
+    m_Resources.push_back({ "bass", item_amount });
+    m_Resources.push_back({ "trout", item_amount });
+    m_Resources.push_back({ "shrimp", item_amount });
+    m_Resources.push_back({ "gudgeon", item_amount });
+
+    m_Equipements.push_back("voidstone_fishing_rod");
+    m_Equipements.push_back("adamantite_fishing_rod");
+    m_Equipements.push_back("mithril_fishing_rod");
+    m_Equipements.push_back("gold_fishing_rod");
+    m_Equipements.push_back("steel_fishing_rod");
+    m_Equipements.push_back("spruce_fishing_rod");
+    m_Equipements.push_back("fishing_net");
+}
