@@ -30,20 +30,6 @@ int main(int argc, char** argv)
 {
     Token::LoadFromFile("token.txt");
     Client::singleton.Initialize();
-    InventoryManager::singleton.Initialize();
-
-    MonsterManager::singleton.Initialize();
-    NPCManager::singleton.Initialize();
-    ItemCraftingManager::singleton.Initialize();
-    MapManager::singleton.Initialize();
-    ResourceManager::singleton.Initialize();
-    MonsterManager::singleton.Initialize();
-    ItemManager::singleton.Initialize();
-    NPCManager::singleton.Initialize();
-    AchivementManager::singleton.Initialize();
-
-    FightSystem::singleton.Initialize();
-    // CraftSystem::sin l_Craft_System.Initialize();
 
     std::array<CharacterPipeline, 5> l_Pipeline = {
         { CharacterPipeline(), CharacterPipeline(), CharacterPipeline(), CharacterPipeline(), CharacterPipeline() }
@@ -52,18 +38,29 @@ int main(int argc, char** argv)
     auto clk                                    = std::chrono::high_resolution_clock::now();
     ArtifactUI l_UI(l_Pipeline);
 
-    l_Pipeline[0].Set_Character("Niva");
-    l_Pipeline[1].Set_Character("Jackie");
-    l_Pipeline[2].Set_Character("Eldra");
-    l_Pipeline[3].Set_Character("Randy");
-    l_Pipeline[4].Set_Character("Helen");
+    {
+        InventoryManager::singleton.Initialize();
 
-    // l_Gear_Crafting_Pipeling.Add_System(&GearcraftingSystem::singleton);
+        MonsterManager::singleton.Initialize();
+        NPCManager::singleton.Initialize();
+        ItemCraftingManager::singleton.Initialize();
+        MapManager::singleton.Initialize();
+        ResourceManager::singleton.Initialize();
+        MonsterManager::singleton.Initialize();
+        ItemManager::singleton.Initialize();
+        NPCManager::singleton.Initialize();
+        AchivementManager::singleton.Initialize();
+
+        FightSystem::singleton.Initialize();
+        // CraftSystem::sin l_Craft_System.Initialize();
+    }
 
     {
         static constexpr int idx = 0;
+        l_Pipeline[idx].Set_Character("Niva");
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
         l_Pipeline[idx].Add_System(&ToolCraftSystem::singleton);
+        l_Pipeline[idx].Add_System(&WeaponCraftSystem::singleton);
         l_Pipeline[idx].Add_System(&TaskSystemMonster::singleton);
         // l_Pipeline[idx].Add_System(&FightEquipementSystem::singleton);
         l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
@@ -79,6 +76,7 @@ int main(int argc, char** argv)
 
     {
         static constexpr int idx = 1;
+        l_Pipeline[idx].Set_Character("Jackie");
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
         l_Pipeline[idx].Add_System(&TaskSystemItem::singleton);
         l_Pipeline[idx].Add_System(&AlchemyCraftingSystem::singleton);
@@ -97,7 +95,9 @@ int main(int argc, char** argv)
 
     {
         static constexpr int idx = 2;
+        l_Pipeline[idx].Set_Character("Eldra");
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
+        l_Pipeline[idx].Add_System(&BuyingSystem::singleton);
         l_Pipeline[idx].Add_System(&TaskSystemItem::singleton);
         l_Pipeline[idx].Add_System(&GearcraftingSystem::singleton);
         l_Pipeline[idx].Add_System(&MiningCraftingSystem::singleton);
@@ -113,10 +113,11 @@ int main(int argc, char** argv)
 
     {
         static constexpr int idx = 3;
+        l_Pipeline[idx].Set_Character("Randy");
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
-        l_Pipeline[idx].Add_System(&BuyingSystem::singleton);
-        l_Pipeline[idx].Add_System(&TaskSystemMonster::singleton);
         l_Pipeline[idx].Add_System(&CookingSystem::singleton);
+        l_Pipeline[idx].Add_System(&WeaponCraftSystem::singleton);
+        l_Pipeline[idx].Add_System(&TaskSystemMonster::singleton);
         l_Pipeline[idx].Add_System(&FishingGatherSystem::singleton);
         l_Pipeline[idx].Add_System(&AlchemyGatheringSystem::singleton);
         l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
@@ -131,6 +132,7 @@ int main(int argc, char** argv)
 
     {
         static constexpr int idx = 4;
+        l_Pipeline[idx].Set_Character("Helen");
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
         l_Pipeline[idx].Add_System(&TaskSystemItem::singleton);
         l_Pipeline[idx].Add_System(&FishingGatherSystem::singleton);
