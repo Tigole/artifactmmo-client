@@ -67,6 +67,14 @@ public:
     static ToolCraftSystem singleton;
 };
 
+class WeaponCraftSystem: public CraftOrderSystem
+{
+    WeaponCraftSystem();
+
+public:
+    static WeaponCraftSystem singleton;
+};
+
 class GearcraftingSystem: public CraftOrderSystem
 {
     GearcraftingSystem();

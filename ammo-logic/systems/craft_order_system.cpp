@@ -23,6 +23,7 @@ void CraftOrderSystem::Fill_Pipeline(Character& character)
         }
 
         const int character_skill_level = character.Get_Skill_Level(r->skill_name.c_str());
+        SYSTEM_PRINT("item '%s' required level: %d current level: %d", order.item_code, r->skill_level, character_skill_level);
         /// Do we have enough in bank ?
         if ((bank_item_count < order.target_amount) && (r->skill_level <= character_skill_level))
         {
@@ -136,6 +137,21 @@ ToolCraftSystem::ToolCraftSystem() : CraftOrderSystem("ToolCraftSystem")
     m_Items.push_back({ "copper_pickaxe", target_amount });
     m_Items.push_back({ "apprentice_gloves", target_amount });
     m_Items.push_back({ "fishing_net", target_amount });
+
+    m_Workshop_Coord = { 2, 1 };
+}
+
+WeaponCraftSystem WeaponCraftSystem::singleton;
+
+WeaponCraftSystem::WeaponCraftSystem() : CraftOrderSystem("WeaponCraftSystem")
+{
+    m_Items.push_back({ "iron_sword", 1 });
+    m_Items.push_back({ "fire_staff", 1 });
+    m_Items.push_back({ "water_bow", 1 });
+    m_Items.push_back({ "sticky_sword", 1 });
+    m_Items.push_back({ "wooden_staff", 1 });
+    m_Items.push_back({ "sticky_dagger", 1 });
+    m_Items.push_back({ "copper_dagger", 1 });
 
     m_Workshop_Coord = { 2, 1 };
 }
