@@ -16,7 +16,7 @@ void InventoryManagementSystem::Fill_Pipeline(Character& character)
         if (character.Is_Task_Item() == true)
         {
             const int task_item_count = character.Get_Item_Count(character.Get_Task().c_str());
-            if (task_item_count != 0)
+            if (task_item_count == 0)
             {
                 character.Make_Clear_Inventory(this, character.Get_Task().c_str());
             }

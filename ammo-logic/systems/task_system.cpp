@@ -91,7 +91,10 @@ void TaskSystemItem::Fill_Pipeline(Character& character)
         }
         else
         {
-            Trade_Item(character, std::min(l_Inventory_Item_Count, l_Task_Remaining));
+            if (l_Inventory_Item_Count > 0)
+            {
+                Trade_Item(character, std::min(l_Inventory_Item_Count, l_Task_Remaining));
+            }
         }
     }
     else if (character.Is_Task_Monster() == true)
