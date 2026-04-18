@@ -254,6 +254,7 @@ void BuyingSystem::Fill_Pipeline(Character& character)
 
     if (AchivementManager::singleton.Is_Completed("tasks_farmer") == false)
     {
+        SYSTEM_PRINT("achievement not completed");
         return;
     }
 
@@ -261,7 +262,7 @@ void BuyingSystem::Fill_Pipeline(Character& character)
     {
         if (InventoryManager::singleton.Get_Bank_Item_Count(task_coin) < 8)
         {
-            SYSTEM_PRINT("Not enough '%s'", task_coin);
+            SYSTEM_PRINT("not enough '%s'", task_coin);
             return;
         }
 

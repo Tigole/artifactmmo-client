@@ -23,11 +23,14 @@ void AchivementManager::Update_Cache(void)
 
     Client::singleton.Get_Account_Achievements(achivements);
 
+    printf("achivements.size: %d\n", achivements.size());
     for (std::size_t ii = 0; ii < achivements.size(); ii++)
     {
-        if (achivements[ii]["achieved_at"].is_null() == false)
+        // printf("achivement[%d]: '%s'\n", ii, achivements[ii].dump().c_str());
+        if (achivements[ii]["completed_at"].is_null() == false)
         {
             m_Achived.push_back(achivements[ii]["code"]);
+            printf("completed: '%s'\n", achivements[ii]["code"].get<std::string>().c_str());
         }
     }
 }
