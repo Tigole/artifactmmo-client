@@ -34,8 +34,7 @@ int main(int argc, char** argv)
     std::array<CharacterPipeline, 5> l_Pipeline = {
         { CharacterPipeline(), CharacterPipeline(), CharacterPipeline(), CharacterPipeline(), CharacterPipeline() }
     };
-    CharacterPipeline& l_Gear_Crafting_Pipeling = l_Pipeline[0];
-    auto clk                                    = std::chrono::high_resolution_clock::now();
+    auto clk = std::chrono::high_resolution_clock::now();
     ArtifactUI l_UI(l_Pipeline);
 
     {
@@ -78,6 +77,7 @@ int main(int argc, char** argv)
         static constexpr int idx = 1;
         l_Pipeline[idx].Set_Character("Jackie");
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
+        l_Pipeline[idx].Add_System(&CookingSystem::singleton);
         l_Pipeline[idx].Add_System(&TaskSystemItem::singleton);
         l_Pipeline[idx].Add_System(&AlchemyCraftingSystem::singleton);
         l_Pipeline[idx].Add_System(&AlchemyGatheringSystem::singleton);
@@ -104,6 +104,7 @@ int main(int argc, char** argv)
         l_Pipeline[idx].Add_System(&MiningGatheringSystem::singleton);
         l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
         l_Pipeline[idx].Add_System(&FishingGatherSystem::singleton);
+        l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
         // l_Pipeline[idx].Add_System(&FightEquipementSystem::singleton);
         // l_Pipeline[idx].Add_System(&StuffSystem::singleton);
         l_Pipeline[idx].Add_System(&GearcraftingLevelSystem::singleton);
@@ -123,6 +124,8 @@ int main(int argc, char** argv)
         l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
         l_Pipeline[idx].Add_System(&MiningGatheringSystem::singleton);
         l_Pipeline[idx].Add_System(&FishingGatherSystem::singleton);
+        l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
+        l_Pipeline[idx].Add_System(&MiningCraftingSystem::singleton);
         // l_Pipeline[idx].Add_System(&FightEquipementSystem::singleton);
         // l_Pipeline[idx].Add_System(&StuffSystem::singleton);
         l_Pipeline[idx].Add_System(&CookingLevelSystem::singleton);
@@ -139,6 +142,8 @@ int main(int argc, char** argv)
         l_Pipeline[idx].Add_System(&AlchemyGatheringSystem::singleton);
         l_Pipeline[idx].Add_System(&MiningGatheringSystem::singleton);
         l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
+        l_Pipeline[idx].Add_System(&MiningCraftingSystem::singleton);
+        l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
         // l_Pipeline[idx].Add_System(&FightEquipementSystem::singleton);
         // l_Pipeline[idx].Add_System(&StuffSystem::singleton);
         l_Pipeline[idx].Add_System(&JewelrycraftingLevelSystem::singleton);
