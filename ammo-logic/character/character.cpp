@@ -374,6 +374,21 @@ std::string Character::Get_Equiped_Utility1(void) const
     return m_Character_Cache["utility1_slot"];
 }
 
+std::string Character::Get_Equiped_Artifact1(void) const
+{
+    return m_Character_Cache["artifact1_slot"];
+}
+
+std::string Character::Get_Equiped_Artifact2(void) const
+{
+    return m_Character_Cache["artifact2_slot"];
+}
+
+std::string Character::Get_Equiped_Artifact3(void) const
+{
+    return m_Character_Cache["artifact3_slot"];
+}
+
 bool Character::Is_Item_Equiped(const char* item_code) const
 {
     constexpr const std::array<const char*, 10> l_Slots = {

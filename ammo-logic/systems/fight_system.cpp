@@ -95,6 +95,21 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             Handle_Equipment(sys, character, bank_pos, context.utility1.c_str(), "utility1");
             return;
         }
+        if (character.Get_Equiped_Artifact1() != context.artifact1)
+        {
+            Handle_Equipment(sys, character, bank_pos, context.artifact1.c_str(), "artifact1");
+            return;
+        }
+        if (character.Get_Equiped_Artifact2() != context.artifact2)
+        {
+            Handle_Equipment(sys, character, bank_pos, context.artifact1.c_str(), "artifact2");
+            return;
+        }
+        if (character.Get_Equiped_Artifact3() != context.artifact3)
+        {
+            Handle_Equipment(sys, character, bank_pos, context.artifact1.c_str(), "artifact3");
+            return;
+        }
         if (Equip_Healing_Stuff(sys, character, bank_pos) == true)
         {
             return;
@@ -149,6 +164,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
         { "attack_fire", "attack_water", "attack_earth", "attack_air" }
     };
 
+    const int l_Character_Combat_Level            = character.Get_Skill_Level("combat");
     const std::array<int, 4> l_Monster_Attack     = MonsterManager::singleton.Get_Monster_Attack(monster);
     const std::array<int, 4> l_Monster_Resistance = MonsterManager::singleton.Get_Monster_Resistance(monster);
     const std::array<int, 4> l_Monster_Damages    = {
@@ -198,19 +214,23 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     context.shield     = character.Get_Equiped_Shield();
     context.amulet     = character.Get_Equiped_Amulet();
     context.utility1   = character.Get_Equiped_Utility1();
+    if (l_Character_Combat_Level > 9)
+    {
+        context.artifact1 = "novice_guide";
+    }
 
-    InventoryManager::singleton.Get_Fight_Items(character.Get_Skill_Level("combat"), l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor,
-                                                l_Boots, l_Shields, l_Rings1, l_Rings2, l_Amulets);
-    character.Get_Fight_Items(ItemManager::singleton, character.Get_Skill_Level("combat"), l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor,
-                              l_Boots, l_Shields, l_Rings1, l_Rings2, l_Amulets);
+    InventoryManager::singleton.Get_Fight_Items(l_Character_Combat_Level, l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor, l_Boots,
+                                                l_Shields, l_Rings1, l_Rings2, l_Amulets);
+    character.Get_Fight_Items(ItemManager::singleton, l_Character_Combat_Level, l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor, l_Boots,
+                              l_Shields, l_Rings1, l_Rings2, l_Amulets);
 
     SYSTEM_PRINT("equipped weapon: '%s'", context.weapon.c_str());
     for (std::size_t ii = 0; ii < l_Weapons.size(); ii++)
     {
         const InventoryWeapons& l_Weapon = l_Weapons[ii];
-        SYSTEM_PRINT("weapon: '%s' [%d %d %d %d]", l_Weapon.code.c_str(), l_Weapon.attacks[0], l_Weapon.attacks[1], l_Weapon.attacks[2],
-                     l_Weapon.attacks[3]);
-        const int l_Weapon_Dmg = Calculate_Effective_Damages(l_Weapon.attacks, l_Weapon.damages, l_Monster_Resistance);
+        const int l_Weapon_Dmg           = Calculate_Effective_Damages(l_Weapon.attacks, l_Weapon.damages, l_Monster_Resistance);
+        SYSTEM_PRINT("weapon: '%s' [%d %d %d %d] dmg: %d", l_Weapon.code.c_str(), l_Weapon.attacks[0], l_Weapon.attacks[1],
+                     l_Weapon.attacks[2], l_Weapon.attacks[3], l_Weapon_Dmg);
         if (l_Weapon_Dmg > l_Character_Dmg)
         {
             SYSTEM_PRINT("try using weapon '%s' (%d better than %d)", l_Weapon.code.c_str(), l_Character_Dmg, l_Weapon_Dmg);
@@ -275,11 +295,11 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
 
     SYSTEM_PRINT(
         "vs '%s': %s (hp diff: %d - turn count: %d - heal: %d - weapon: '%s' - helmet: '%s' body_armor: '%s' leg_armor: '%s' boots: "
-        "'%s' shield: '%s' ring1: '%s' ring2: '%s' amulet: '%s' utility1: '%s'\n",
+        "'%s' shield: '%s' ring1: '%s' ring2: '%s' amulet: '%s' utility1: '%s' artifact1: '%s' artifact2: '%s' artifact3: '%s'",
         monster, (l_Chararcter_Max_Life > 0) ? "win" : "loose", l_Chararcter_Max_Life - l_Monster_Life, context.turn_count,
         context.should_heal, context.weapon.c_str(), context.helmet.c_str(), context.body_armor.c_str(), context.leg_armor.c_str(),
         context.boots.c_str(), context.shield.c_str(), context.ring1.c_str(), context.ring2.c_str(), context.amulet.c_str(),
-        context.utility1.c_str());
+        context.utility1.c_str(), context.artifact1.c_str(), context.artifact2.c_str(), context.artifact3.c_str());
 
     return l_Chararcter_Max_Life > 0;
 }
