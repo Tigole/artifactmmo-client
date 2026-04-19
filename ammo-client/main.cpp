@@ -15,7 +15,6 @@
 #include "net/token.hpp"
 #include "systems/achievement_fight_system.hpp"
 #include "systems/craft_order_system.hpp"
-#include "systems/craft_system.hpp"
 #include "systems/fight_equipement_system.hpp"
 #include "systems/fight_system.hpp"
 #include "systems/gather_system.hpp"
