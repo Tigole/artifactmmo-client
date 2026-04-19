@@ -192,9 +192,17 @@ void Character::Update(float elapsed_time)
                     m_Remaining_Timeout = Client::singleton.mt_Character_Task_Complete(m_Character_Name, m_Character_Cache);
                     break;
                 case CharacterOrderType::DepositItem:
-                    m_Remaining_Timeout =
-                        Client::singleton.mt_Character_Deposit_Item(m_Character_Name, l_Order.item_order, m_Character_Cache);
-                    InventoryManager::singleton.Update_Cache();
+                    if (Get_Item_Count(l_Order.item_order.code.c_str()) < l_Order.item_order.quantity)
+                    {
+                        printf("{%s} asked deposit '%s' x%d whereas %d in inventory\n", Get_Character(), l_Order.item_order.code.c_str(),
+                               l_Order.item_order.quantity, Get_Item_Count(l_Order.item_order.code.c_str()));
+                    }
+                    else
+                    {
+                        m_Remaining_Timeout =
+                            Client::singleton.mt_Character_Deposit_Item(m_Character_Name, l_Order.item_order, m_Character_Cache);
+                        InventoryManager::singleton.Update_Cache();
+                    }
                     break;
                 case CharacterOrderType::WithdrawItem:
                     m_Remaining_Timeout =
