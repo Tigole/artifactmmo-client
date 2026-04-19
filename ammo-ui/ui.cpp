@@ -5,7 +5,7 @@
 #define CLAY_IMPLEMENTATION
 #include <clay.h>
 
-ArtifactUI::ArtifactUI(std::array<CharacterPipeline, 5>& p) : pipelines(p) {}
+ArtifactUI::ArtifactUI(const std::array<CharacterPipeline, 5>& p) : pipelines(p) {}
 
 void ArtifactUI::Initialize(void)
 {
@@ -31,7 +31,7 @@ Clay_Color GetColor(Color c)
     return { (float)c.r, (float)c.g, (float)c.b, (float)c.a };
 }
 
-void CharactersList(std::array<CharacterPipeline, 5>& pipelines)
+void CharactersList(const std::array<CharacterPipeline, 5>& pipelines)
 {
     static const std::array<Color, 5> colors = {
         { VIOLET, BLUE, GREEN, ORANGE, RED }

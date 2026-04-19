@@ -8,7 +8,7 @@
 class ArtifactUI
 {
 public:
-    ArtifactUI(std::array<CharacterPipeline, 5>&);
+    ArtifactUI(const std::array<CharacterPipeline, 5>&);
     ~ArtifactUI();
 
     void Initialize(void);
@@ -16,7 +16,7 @@ public:
     void Render(void);
 
 private:
-    std::array<CharacterPipeline, 5>& pipelines;
+    const std::array<CharacterPipeline, 5>& pipelines;
 };
 
 #endif  // _UI_HPP

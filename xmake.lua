@@ -30,3 +30,10 @@ target("client")
     add_deps("ui")
 
     set_rundir("$(projectdir)")
+
+target("client-no-ui")
+    set_kind("binary")
+    add_files("ammo-client-no-ui/**.cpp")
+    add_deps("logic")
+
+    set_rundir("$(projectdir)")
