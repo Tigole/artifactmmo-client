@@ -1,5 +1,6 @@
 #include "craft_order_system.hpp"
 
+#include "keywords.hpp"
 #include "managers/achievement_manager.hpp"
 #include "managers/inventory_manager.hpp"
 #include "managers/item_manager.hpp"
@@ -26,40 +27,40 @@ ToolCraftSystem ToolCraftSystem::singleton;
 ToolCraftSystem::ToolCraftSystem() : CraftOrderSystem("ToolCraftSystem")
 {
     constexpr const int target_amount = 1;
-    m_Items.push_back({ "voidstone_axe", target_amount });
-    m_Items.push_back({ "voidstone_pickaxe", target_amount });
-    m_Items.push_back({ "voidstone_gloves", target_amount });
-    m_Items.push_back({ "voidstone_fishing_rod", target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Axes::voidstone_axe, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Pickaxes::voidstone_pickaxe, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Gloves::voidstone_gloves, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::FishingRods::voidstone_fishing_rod, target_amount });
 
-    m_Items.push_back({ "adamantite_axe", target_amount });
-    m_Items.push_back({ "adamantite_pickaxe", target_amount });
-    m_Items.push_back({ "adamantite_gloves", target_amount });
-    m_Items.push_back({ "adamantite_fishing_rod", target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Axes::adamantite_axe, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Pickaxes::adamantite_pickaxe, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Gloves::adamantite_gloves, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::FishingRods::adamantite_fishing_rod, target_amount });
 
-    m_Items.push_back({ "mithril_axe", target_amount });
-    m_Items.push_back({ "mithril_pickaxe", target_amount });
-    m_Items.push_back({ "mithril_gloves", target_amount });
-    m_Items.push_back({ "mithril_fishing_rod", target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Axes::mithril_axe, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Pickaxes::mithril_pickaxe, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Gloves::mithril_gloves, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::FishingRods::mithril_fishing_rod, target_amount });
 
-    m_Items.push_back({ "gold_axe", target_amount });
-    m_Items.push_back({ "gold_pickaxe", target_amount });
-    m_Items.push_back({ "golden_gloves", target_amount });
-    m_Items.push_back({ "gold_fishing_rod", target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Axes::gold_axe, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Pickaxes::gold_pickaxe, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Gloves::golden_gloves, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::FishingRods::gold_fishing_rod, target_amount });
 
-    m_Items.push_back({ "steel_axe", target_amount });
-    m_Items.push_back({ "steel_pickaxe", target_amount });
-    m_Items.push_back({ "steel_gloves", target_amount });
-    m_Items.push_back({ "steel_fishing_rod", target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Axes::steel_axe, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Pickaxes::steel_pickaxe, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Gloves::steel_gloves, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::FishingRods::steel_fishing_rod, target_amount });
 
-    m_Items.push_back({ "iron_axe", target_amount });
-    m_Items.push_back({ "iron_pickaxe", target_amount });
-    m_Items.push_back({ "leather_gloves", target_amount });
-    m_Items.push_back({ "spruce_fishing_rod", target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Axes::iron_axe, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Pickaxes::iron_pickaxe, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Gloves::leather_gloves, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::FishingRods::spruce_fishing_rod, target_amount });
 
-    m_Items.push_back({ "copper_axe", target_amount });
-    m_Items.push_back({ "copper_pickaxe", target_amount });
-    m_Items.push_back({ "apprentice_gloves", target_amount });
-    m_Items.push_back({ "fishing_net", target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Axes::copper_axe, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Pickaxes::copper_pickaxe, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Gloves::apprentice_gloves, target_amount });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::FishingRods::fishing_net, target_amount });
 
     m_Workshop_Coord = { 2, 1 };
 }
@@ -68,13 +69,13 @@ WeaponCraftSystem WeaponCraftSystem::singleton;
 
 WeaponCraftSystem::WeaponCraftSystem() : CraftOrderSystem("WeaponCraftSystem")
 {
-    m_Items.push_back({ "iron_sword", 1 });
-    m_Items.push_back({ "fire_staff", 1 });
-    m_Items.push_back({ "water_bow", 1 });
-    m_Items.push_back({ "sticky_sword", 1 });
-    m_Items.push_back({ "wooden_staff", 1 });
-    m_Items.push_back({ "sticky_dagger", 1 });
-    m_Items.push_back({ "copper_dagger", 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::iron_sword, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::fire_staff, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::water_bow, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::sticky_sword, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::wooden_staff, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::sticky_dagger, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::copper_dagger, 1 });
 
     m_Workshop_Coord = { 2, 1 };
 }
@@ -83,13 +84,13 @@ AlchemyCraftingSystem AlchemyCraftingSystem::singleton;
 
 AlchemyCraftingSystem::AlchemyCraftingSystem() : CraftOrderSystem("AlchemyCraftingSystem")
 {
-    m_Items.push_back({ "enchanted_health_potion", 50 });
-    m_Items.push_back({ "greater_health_potion", 50 });
-    m_Items.push_back({ "health_boost_potion", 50 });
-    m_Items.push_back({ "health_splash_potion", 50 });
-    m_Items.push_back({ "health_potion", 50 });
-    m_Items.push_back({ "minor_health_potion", 50 });
-    m_Items.push_back({ "small_health_potion", 50 });
+    m_Items.push_back({ Keywords::Items::Utilities::enchanted_health_potion, 50 });
+    m_Items.push_back({ Keywords::Items::Utilities::greater_health_potion, 50 });
+    m_Items.push_back({ Keywords::Items::Utilities::health_boost_potion, 50 });
+    m_Items.push_back({ Keywords::Items::Utilities::health_splash_potion, 50 });
+    m_Items.push_back({ Keywords::Items::Utilities::health_potion, 50 });
+    m_Items.push_back({ Keywords::Items::Utilities::minor_health_potion, 50 });
+    m_Items.push_back({ Keywords::Items::Utilities::small_health_potion, 50 });
 
     m_Workshop_Coord = { 2, 3 };
 }
@@ -98,11 +99,11 @@ CookingSystem CookingSystem::singleton;
 
 CookingSystem::CookingSystem() : CraftOrderSystem("CookingSystem")
 {
-    m_Items.push_back({ "cooked_shrimp", 50 });
-    m_Items.push_back({ "cooked_beef", 50 });
-    m_Items.push_back({ "cooked_gudgeon", 300 });
-    m_Items.push_back({ "fried_eggs", 10 });
-    m_Items.push_back({ "cooked_chicken", 50 });
+    m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_shrimp, 50 });
+    m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_beef, 50 });
+    m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_gudgeon, 300 });
+    m_Items.push_back({ Keywords::Items::Consumables::Food::fried_eggs, 10 });
+    m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_chicken, 50 });
 
     m_Workshop_Coord = { 1, 1 };
 }
@@ -112,13 +113,13 @@ MiningCraftingSystem MiningCraftingSystem::singleton;
 MiningCraftingSystem::MiningCraftingSystem() : CraftOrderSystem("MiningCraftingSystem")
 {
     constexpr const int target_amout = 50;
-    m_Items.push_back({ "adamantine_bar", target_amout });
-    m_Items.push_back({ "mithril_bar", target_amout });
-    m_Items.push_back({ "strangold_bar", target_amout });
-    m_Items.push_back({ "gold_bar", target_amout });
-    m_Items.push_back({ "steal_bar", target_amout });
-    m_Items.push_back({ "iron_bar", target_amout });
-    m_Items.push_back({ "copper_bar", target_amout });
+    m_Items.push_back({ Keywords::Items::Resources::Bar::adamantite_bar, target_amout });
+    m_Items.push_back({ Keywords::Items::Resources::Bar::mithril_bar, target_amout });
+    m_Items.push_back({ Keywords::Items::Resources::Bar::strangold_bar, target_amout });
+    m_Items.push_back({ Keywords::Items::Resources::Bar::gold_bar, target_amout });
+    m_Items.push_back({ Keywords::Items::Resources::Bar::steel_bar, target_amout });
+    m_Items.push_back({ Keywords::Items::Resources::Bar::iron_bar, target_amout });
+    m_Items.push_back({ Keywords::Items::Resources::Bar::copper_bar, target_amout });
 
     m_Workshop_Coord = { 1, 5 };
 }
@@ -128,14 +129,13 @@ WoodcuttingCraftingSystem WoodcuttingCraftingSystem::singleton;
 WoodcuttingCraftingSystem::WoodcuttingCraftingSystem() : CraftOrderSystem("WoodcuttingCraftingSystem")
 {
     constexpr const int target_amout = 50;
-    m_Items.push_back({ "maple_plank", target_amout });
-    m_Items.push_back({ "magical_plank", target_amout });
-    m_Items.push_back({ "dead_wood_plank", target_amout });
-    m_Items.push_back({ "palm_plank", target_amout });
-    m_Items.push_back({ "hardwood_plank", target_amout });
-    m_Items.push_back({ "birch_plank", target_amout });
-    m_Items.push_back({ "spruce_plank", target_amout });
-    m_Items.push_back({ "ash_plank", target_amout });
+    m_Items.push_back({ Keywords::Items::Resources::Plank::maple_plank, target_amout });
+    m_Items.push_back({ Keywords::Items::Resources::Plank::magical_plank, target_amout });
+    m_Items.push_back({ Keywords::Items::Resources::Plank::dead_wood_plank, target_amout });
+    m_Items.push_back({ Keywords::Items::Resources::Plank::palm_plank, target_amout });
+    m_Items.push_back({ Keywords::Items::Resources::Plank::hardwood_plank, target_amout });
+    m_Items.push_back({ Keywords::Items::Resources::Plank::spruce_plank, target_amout });
+    m_Items.push_back({ Keywords::Items::Resources::Plank::ash_plank, target_amout });
 
     m_Workshop_Coord = { -2, -3 };
 }
@@ -145,20 +145,20 @@ GearcraftingSystem GearcraftingSystem::singleton;
 GearcraftingSystem::GearcraftingSystem() : CraftOrderSystem("GearcraftingSystem")
 {
     constexpr const int target_amout = 1;
-    m_Items.push_back({ "copper_helmet", target_amout });
-    m_Items.push_back({ "copper_boots", target_amout });
-    m_Items.push_back({ "copper_legs_armor", target_amout });
-    m_Items.push_back({ "wooden_shield", target_amout });
-    m_Items.push_back({ "feather_coat", target_amout });
-    m_Items.push_back({ "life_amulet", target_amout });
-    m_Items.push_back({ "leather_boots", target_amout });
-    m_Items.push_back({ "leather_armor", target_amout });
-    m_Items.push_back({ "adventurer_helmet", target_amout });
-    m_Items.push_back({ "iron_legs_armor", target_amout });
-    m_Items.push_back({ "iron_armor", target_amout });
-    m_Items.push_back({ "adventurer_vest", target_amout });
-    m_Items.push_back({ "leather_hat", target_amout });
-    m_Items.push_back({ "leather_legs_armor", target_amout });
+    m_Items.push_back({ Keywords::Items::Helmets::copper_helmet, target_amout });
+    m_Items.push_back({ Keywords::Items::Boots::copper_boots, target_amout });
+    m_Items.push_back({ Keywords::Items::LegArmors::copper_legs_armor, target_amout });
+    m_Items.push_back({ Keywords::Items::Shields::wooden_shield, target_amout });
+    m_Items.push_back({ Keywords::Items::BodyArmors::feather_coat, target_amout });
+    m_Items.push_back({ Keywords::Items::Amulets::life_amulet, target_amout });
+    m_Items.push_back({ Keywords::Items::Boots::leather_boots, target_amout });
+    m_Items.push_back({ Keywords::Items::BodyArmors::leather_armor, target_amout });
+    m_Items.push_back({ Keywords::Items::Helmets::adventurer_helmet, target_amout });
+    m_Items.push_back({ Keywords::Items::LegArmors::iron_legs_armor, target_amout });
+    m_Items.push_back({ Keywords::Items::BodyArmors::iron_armor, target_amout });
+    m_Items.push_back({ Keywords::Items::BodyArmors::adventurer_vest, target_amout });
+    m_Items.push_back({ Keywords::Items::Helmets::leather_hat, target_amout });
+    m_Items.push_back({ Keywords::Items::LegArmors::leather_legs_armor, target_amout });
 
     m_Workshop_Coord = { 3, 1 };
 }
@@ -169,8 +169,8 @@ BuyingSystem::BuyingSystem() : System("BuyingSystem") {}
 
 void BuyingSystem::Fill_Pipeline(Character& character)
 {
-    const char* item_to_buy           = "jasper_crystal";
-    const char* task_coin             = "tasks_coin";
+    const char* item_to_buy           = Keywords::Items::Resources::Task::jasper_crystal;
+    const char* task_coin             = Keywords::Items::Currency::tasks_coin;
     const int bank_item_count         = InventoryManager::singleton.Get_Bank_Item_Count(item_to_buy);
     const MapCoord trader_coord       = { 5, 11 };
     const MapCoord nearest_bank_coord = InventoryManager::singleton.Get_Bank_Nearest_Coord(character);

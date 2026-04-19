@@ -40,7 +40,6 @@ private:
     MapCoord m_Bank_Coord_1 = { 4, 1 };
     MapCoord m_Bank_Coord_2 = { 7, 13 };
     std::map<std::string, int> m_Bank_Content;
-    std::vector<const char*> m_Resources_To_Deposit;
     int m_Gold_Amount = 0;
 };
 

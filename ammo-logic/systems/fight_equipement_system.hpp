@@ -9,12 +9,12 @@ class FightEquipementSystem: public System
 {
     FightEquipementSystem() : System("FightEquipementSystem")
     {
-        m_Items.push_back("small_health_potion");
-        m_Items.push_back("apple");
-        m_Items.push_back("cooked_chicken");
-        m_Items.push_back("fried_eggs");
-        m_Items.push_back("cooked_gudgeon");
-        m_Items.push_back("cooked_beef");
+        m_Items.push_back(Keywords::Items::Utilities::small_health_potion);
+        m_Items.push_back(Keywords::Items::Consumables::Food::apple);
+        m_Items.push_back(Keywords::Items::Consumables::Food::cooked_chicken);
+        m_Items.push_back(Keywords::Items::Consumables::Food::fried_eggs);
+        m_Items.push_back(Keywords::Items::Consumables::Food::cooked_gudgeon);
+        m_Items.push_back(Keywords::Items::Consumables::Food::cooked_beef);
     }
 
 public:

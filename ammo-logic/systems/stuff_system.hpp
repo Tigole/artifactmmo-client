@@ -17,27 +17,27 @@ class StuffSystem: public System
         m_Orders.push_back({
             1,
             EquipementType::Weapon,
-            "copper_pickaxe",
+            Keywords::Items::Weapons::Tools::Pickaxes::copper_pickaxe,
         });
         m_Orders.push_back({
             1,
             EquipementType::Weapon,
-            "copper_axe",
+            Keywords::Items::Weapons::Tools::Axes::copper_axe,
         });
         m_Orders.push_back({
             1,
             EquipementType::Weapon,
-            "fishing_net",
+            Keywords::Items::Weapons::Tools::FishingRods::fishing_net,
         });
         m_Orders.push_back({
             1,
             EquipementType::Helmet,
-            "copper_helmet",
+            Keywords::Items::Helmets::copper_helmet,
         });
         m_Orders.push_back({
             1,
             EquipementType::Boots,
-            "copper_boots",
+            Keywords::Items::Boots::copper_boots,
         });
         m_Orders.push_back({
             1,
@@ -52,18 +52,18 @@ class StuffSystem: public System
         m_Orders.push_back({
             1,
             EquipementType::Shield,
-            "wooden_shield",
+            Keywords::Items::Shields::wooden_shield,
         });
         m_Orders.push_back({
             1,
             EquipementType::Weapon,
-            "apprentice_gloves",
+            Keywords::Items::Weapons::Tools::Gloves::apprentice_gloves,
         });
 
         m_Orders.push_back({
             5,
             EquipementType::BodyArmor,
-            "feather_coat",
+            Keywords::Items::BodyArmors::feather_coat,
         });
         m_Orders.push_back({
             5,
@@ -88,43 +88,43 @@ class StuffSystem: public System
         m_Orders.push_back({
             5,
             EquipementType::Amulet,
-            "life_amulet",
+            Keywords::Items::Amulets::life_amulet,
         });
 
         m_Orders.push_back({
             10,
             EquipementType::Weapon,
-            "iron_pickaxe",
+            Keywords::Items::Weapons::Tools::Pickaxes::iron_pickaxe,
         });
         m_Orders.push_back({
             10,
             EquipementType::Weapon,
-            "iron_axe",
+            Keywords::Items::Weapons::Tools::Axes::iron_axe,
         });
         m_Orders.push_back({
             10,
             EquipementType::Weapon,
-            "spruce_fishing_rod",
+            Keywords::Items::Weapons::Tools::FishingRods::spruce_fishing_rod,
         });
         m_Orders.push_back({
             10,
             EquipementType::Boots,
-            "leather_boots",
+            Keywords::Items::Boots::leather_boots,
         });
         m_Orders.push_back({
             10,
             EquipementType::BodyArmor,
-            "leather_armor",
+            Keywords::Items::BodyArmors::leather_armor,
         });
         m_Orders.push_back({
             10,
             EquipementType::BodyArmor,
-            "iron_armor",
+            Keywords::Items::BodyArmors::iron_armor,
         });
         m_Orders.push_back({
             10,
             EquipementType::LegArmor,
-            "iron_legs_armor",
+            Keywords::Items::LegArmors::iron_legs_armor,
         });
     }
 
@@ -137,7 +137,7 @@ public:
         {
             const StuffOrder& l_Order          = m_Orders[ii];
             const bool l_May_Object_Be_Crafted = ItemCraftingManager::singleton.May_Craft(character, l_Order.target_item_code.c_str());
-            const bool l_Is_Combat_Level_Ok    = character.Get_Skill_Level("combat") >= l_Order.required_combat_level;
+            const bool l_Is_Combat_Level_Ok    = character.Get_Skill_Level(Keywords::Skills::combat) >= l_Order.required_combat_level;
             const bool l_Is_Object_Crafted     = character.Is_Item_Equiped(l_Order.target_item_code.c_str()) ||
                                                  character.Get_Item_Count(l_Order.target_item_code.c_str()) > 0;
             const int l_Target_Object_Level    = ItemManager::singleton.Get_Item_Level(l_Order.target_item_code.c_str());

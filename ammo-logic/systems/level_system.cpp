@@ -1,5 +1,6 @@
 #include "level_system.hpp"
 
+#include "keywords.hpp"
 #include "managers/item_manager.hpp"
 #include "managers/training_manager.hpp"
 
@@ -32,34 +33,34 @@ void LevelSystem::Fill_Pipeline(Character& character)
 
 void LevelSystem::Make_Train(Character& character, const char* skill_name, int skill_level) const
 {
-    if (strcmp(skill_name, "alchemy") == 0)
+    /*if (strcmp(skill_name, Keywords::Skills::alchemy) == 0)
     {
         TrainingManager::singleton.Train_Alchemy(this, character, skill_level);
     }
-    else if (strcmp(skill_name, "fishing") == 0)
+    else if (strcmp(skill_name, Keywords::Skills::fishing) == 0)
     {
         TrainingManager::singleton.Train_Fishing(this, character, skill_level);
     }
-    else if (strcmp(skill_name, "woodcutting") == 0)
+    else if (strcmp(skill_name, Keywords::Skills::woodcutting) == 0)
     {
         TrainingManager::singleton.Train_Woodcutting(this, character, skill_level);
     }
-    else if (strcmp(skill_name, "weaponcrafting") == 0)
+    else if (strcmp(skill_name, Keywords::Skills::weaponcrafting) == 0)
     {
         TrainingManager::singleton.Train_Weaponcrafting(this, character, skill_level);
     }
-    else if (strcmp(skill_name, "gearcrafting") == 0)
+    else if (strcmp(skill_name, Keywords::Skills::gearcrafting) == 0)
     {
         TrainingManager::singleton.Train_Gearcrafting(this, character, skill_level);
     }
-    else if (strcmp(skill_name, "jewelrycrafting") == 0)
+    else if (strcmp(skill_name, Keywords::Skills::jewelrycrafting) == 0)
     {
         TrainingManager::singleton.Train_Jewelrycrafting(this, character, skill_level);
     }
-    else if (strcmp(skill_name, "cooking") == 0)
+    else if (strcmp(skill_name, Keywords::Skills::cooking) == 0)
     {
         TrainingManager::singleton.Train_Cooking(this, character, skill_level);
-    }
+    }*/
 }
 
 GearcraftingLevelSystem GearcraftingLevelSystem::singleton;
@@ -67,3 +68,8 @@ WeaponcraftingLevelSystem WeaponcraftingLevelSystem::singleton;
 JewelrycraftingLevelSystem JewelrycraftingLevelSystem::singleton;
 CookingLevelSystem CookingLevelSystem::singleton;
 AlchemyLevelSystem AlchemyLevelSystem::singleton;
+
+void WeaponcraftingLevelSystem::Fill_Pipeline(Character& character)
+{
+    const int character_level = character.Get_Skill_Level(Keywords::Skills::weaponcrafting);
+}

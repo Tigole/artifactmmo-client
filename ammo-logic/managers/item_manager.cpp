@@ -1,5 +1,6 @@
 #include "item_manager.hpp"
 
+#include "keywords.hpp"
 #include "managers/monster_manager.hpp"
 #include "net/client.hpp"
 
@@ -35,7 +36,8 @@ void ItemManager::Initialize_Recipes()
         if (i.second["type"] == "resource")
         {
             const std::string subtype = i.second["subtype"];
-            if (subtype == "mining" || subtype == "woodcutting" || subtype == "fishing" || subtype == "alchemy")
+            if (subtype == Keywords::Skills::mining || subtype == Keywords::Skills::woodcutting || subtype == Keywords::Skills::fishing ||
+                subtype == Keywords::Skills::alchemy)
             {
                 GatheringRequirement gr;
                 gr.skill_name  = subtype;
@@ -232,14 +234,14 @@ ItemCraftingManager ItemCraftingManager::singleton;
 
 void ItemCraftingManager::Initialize(void)
 {
-    m_Workshop_Coords["mining"]          = { 1, 5 };
-    m_Workshop_Coords["woodcutting"]     = { -2, -3 };
-    m_Workshop_Coords["fishing"]         = { 0, 0 };
-    m_Workshop_Coords["alchemy"]         = { 2, 3 };
-    m_Workshop_Coords["weaponcrafting"]  = { 2, 1 };
-    m_Workshop_Coords["gearcrafting"]    = { 3, 1 };
-    m_Workshop_Coords["jewelrycrafting"] = { 1, 3 };
-    m_Workshop_Coords["cooking"]         = { 1, 1 };
+    m_Workshop_Coords[Keywords::Skills::mining]          = { 1, 5 };
+    m_Workshop_Coords[Keywords::Skills::woodcutting]     = { -2, -3 };
+    m_Workshop_Coords[Keywords::Skills::fishing]         = { 0, 0 };
+    m_Workshop_Coords[Keywords::Skills::alchemy]         = { 2, 3 };
+    m_Workshop_Coords[Keywords::Skills::weaponcrafting]  = { 2, 1 };
+    m_Workshop_Coords[Keywords::Skills::gearcrafting]    = { 3, 1 };
+    m_Workshop_Coords[Keywords::Skills::jewelrycrafting] = { 1, 3 };
+    m_Workshop_Coords[Keywords::Skills::cooking]         = { 1, 1 };
 }
 
 void ItemCraftingManager::Make_Craft_Item(const System* sys, Character& character, const ItemOrder& item)
@@ -344,21 +346,21 @@ void ItemCraftingManager::Get_Item(const System* sys, Character& character, cons
                 if (coord != nullptr)
                 {
                     const char* l_Weapon = nullptr;
-                    if (rg->skill_name == "mining")
+                    if (rg->skill_name == Keywords::Skills::mining)
                     {
-                        l_Weapon = "copper_pickaxe";
+                        l_Weapon = Keywords::Items::Weapons::Tools::Pickaxes::copper_pickaxe;
                     }
-                    else if (rg->skill_name == "woodcutting")
+                    else if (rg->skill_name == Keywords::Skills::woodcutting)
                     {
-                        l_Weapon = "copper_axe";
+                        l_Weapon = Keywords::Items::Weapons::Tools::Axes::copper_axe;
                     }
-                    else if (rg->skill_name == "fishing")
+                    else if (rg->skill_name == Keywords::Skills::fishing)
                     {
-                        l_Weapon = "fishing_net";
+                        l_Weapon = Keywords::Items::Weapons::Tools::FishingRods::fishing_net;
                     }
-                    else if (rg->skill_name == "alchemy")
+                    else if (rg->skill_name == Keywords::Skills::alchemy)
                     {
-                        l_Weapon = "apprentice_gloves";
+                        l_Weapon = Keywords::Items::Weapons::Tools::Gloves::apprentice_gloves;
                     }
                     if (character.Get_Equiped_Weapon() != l_Weapon)
                     {
@@ -428,14 +430,15 @@ void ItemCraftingManager::Get_Item(const System* sys, Character& character, cons
                 }
                 else if (t->currency == TradeCurrency::TaskCoin)
                 {
-                    const int l_Missing_Task_Coin_Amount = t->amount - character.Get_Item_Count("tasks_coin");
+                    const int l_Missing_Task_Coin_Amount = t->amount - character.Get_Item_Count(Keywords::Items::Currency::tasks_coin);
 
                     if (l_Missing_Task_Coin_Amount <= 0)
                     {
                         character.Add_Move(sys, *npc_coord);
                         character.Add_Buy_Item(sys, { item.code, 1 });
                     }
-                    else if (l_Missing_Task_Coin_Amount < InventoryManager::singleton.Get_Bank_Item_Count("tasks_coin"))
+                    else if (l_Missing_Task_Coin_Amount <
+                             InventoryManager::singleton.Get_Bank_Item_Count(Keywords::Items::Currency::tasks_coin))
                     {
                         const MapCoord coord = InventoryManager::singleton.Get_Bank_Nearest_Coord(character);
                         if (character.Should_Move(coord) == true)
@@ -444,7 +447,7 @@ void ItemCraftingManager::Get_Item(const System* sys, Character& character, cons
                         }
                         else
                         {
-                            character.Add_Withdraw_Item(sys, { "tasks_coin", l_Missing_Task_Coin_Amount });
+                            character.Add_Withdraw_Item(sys, { Keywords::Items::Currency::tasks_coin, l_Missing_Task_Coin_Amount });
                         }
                     }
                 }

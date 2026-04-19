@@ -1,6 +1,8 @@
 #ifndef _TRAINING_MANAGER_HPP
 #define _TRAINING_MANAGER_HPP 1
 
+#if 0
+
 class Character;
 class ItemCraftingManager;
 class System;
@@ -23,5 +25,7 @@ public:
 private:
     void Make_Craft_One_Of(const System* sys, Character& character, const char* item_code) const;
 };
+
+#endif
 
 #endif  // _TRAINING_MANAGER_HPP

@@ -2,6 +2,7 @@
 
 #include <cmath>
 
+#include "keywords.hpp"
 #include "managers/inventory_manager.hpp"
 #include "managers/item_manager.hpp"
 #include "managers/monster_manager.hpp"
@@ -12,10 +13,10 @@ FightSystem::FightSystem() : System("FightSystem")
 {
     m_Monsters.push_back("");
 
-    // m_Healing_Items.push_back({ "fried_eggs", 150, 4, 20 });
-    m_Healing_Items.push_back({ "cooked_chicken", 80, 0, 20 });
-    m_Healing_Items.push_back({ "cooked_gudgeon", 75, 0, 20 });
-    m_Healing_Items.push_back({ "apple", 50, 0, 20 });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::fried_eggs, 150, 4, 20 });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_chicken, 80, 0, 20 });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_gudgeon, 75, 0, 20 });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::apple, 50, 0, 20 });
 }
 
 void FightSystem::Initialize(void)
@@ -126,7 +127,7 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
 void FightSystem::Add_Healing(const System* sys, Character& character)
 {
     const int l_Chararter_Max_Life     = character.Get_Life_Max();
-    const int l_Character_Combat_Level = character.Get_Skill_Level("combat");
+    const int l_Character_Combat_Level = character.Get_Skill_Level(Keywords::Skills::combat);
     int l_Current_Hp                   = character.Get_Life_Current();
     std::vector<int> use;
 
@@ -164,7 +165,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
         { "attack_fire", "attack_water", "attack_earth", "attack_air" }
     };
 
-    const int l_Character_Combat_Level            = character.Get_Skill_Level("combat");
+    const int l_Character_Combat_Level            = character.Get_Skill_Level(Keywords::Skills::combat);
     const std::array<int, 4> l_Monster_Attack     = MonsterManager::singleton.Get_Monster_Attack(monster);
     const std::array<int, 4> l_Monster_Resistance = MonsterManager::singleton.Get_Monster_Resistance(monster);
     const std::array<int, 4> l_Monster_Damages    = {
@@ -284,10 +285,10 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
 
     if (l_Chararcter_Max_Life <= 0)
     {
-        if (l_Chararcter_Max_Life > -30 && (character.Get_Equiped_Utility1() == "small_health_potion"))
+        if (l_Chararcter_Max_Life > -30 && (character.Get_Equiped_Utility1() == Keywords::Items::Utilities::small_health_potion))
         {
             l_Chararcter_Max_Life += 30;
-            context.utility1 = "small_health_potion";
+            context.utility1 = Keywords::Items::Utilities::small_health_potion;
         }
     }
 

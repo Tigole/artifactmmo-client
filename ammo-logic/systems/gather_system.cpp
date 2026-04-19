@@ -1,5 +1,6 @@
 #include "gather_system.hpp"
 
+#include "keywords.hpp"
 #include "managers/inventory_manager.hpp"
 #include "managers/item_manager.hpp"
 #include "managers/resource_manager.hpp"
@@ -110,22 +111,21 @@ WoodcuttingGatheringSystem::WoodcuttingGatheringSystem() : GatherSystem("Woodcut
 {
     static constexpr int item_amount = 200;
 
-    m_Resources.push_back({ "palm_wood", item_amount });
-    m_Resources.push_back({ "maple_wood", item_amount });
-    m_Resources.push_back({ "magic_wood", item_amount });
-    m_Resources.push_back({ "dead_wood", item_amount });
-    m_Resources.push_back({ "hardwood_wood", item_amount });
-    m_Resources.push_back({ "birch_wood", item_amount });
-    m_Resources.push_back({ "spruce_wood", item_amount });
-    m_Resources.push_back({ "ash_wood", item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Woodcutting::palm_wood, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Woodcutting::maple_wood, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Woodcutting::magic_wood, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Woodcutting::dead_wood, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Woodcutting::birch_wood, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Woodcutting::spruce_wood, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Woodcutting::ash_wood, item_amount });
 
-    m_Equipements.push_back("voidstone_axe");
-    m_Equipements.push_back("adamantite_axe");
-    m_Equipements.push_back("mithril_axe");
-    m_Equipements.push_back("gold_axe");
-    m_Equipements.push_back("steel_axe");
-    m_Equipements.push_back("iron_axe");
-    m_Equipements.push_back("copper_axe");
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Axes::voidstone_axe);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Axes::adamantite_axe);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Axes::mithril_axe);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Axes::gold_axe);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Axes::steel_axe);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Axes::iron_axe);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Axes::copper_axe);
 }
 
 MiningGatheringSystem MiningGatheringSystem::singleton;
@@ -134,21 +134,21 @@ MiningGatheringSystem::MiningGatheringSystem() : GatherSystem("MiningGatheringSy
 {
     static constexpr int item_amount = 200;
 
-    m_Resources.push_back({ "adamantine_ore", item_amount });
-    m_Resources.push_back({ "mithril_ore", item_amount });
-    m_Resources.push_back({ "strange_ore", item_amount });
-    m_Resources.push_back({ "gold_ore", item_amount });
-    m_Resources.push_back({ "coal", item_amount });
-    m_Resources.push_back({ "iron_ore", item_amount });
-    m_Resources.push_back({ "copper_ore", item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mining::adamantite_ore, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mining::mithril_ore, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mining::strange_ore, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mining::gold_ore, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mining::coal, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mining::iron_ore, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mining::copper_ore, item_amount });
 
-    m_Equipements.push_back("voidstone_pickaxe");
-    m_Equipements.push_back("adamantite_pickaxe");
-    m_Equipements.push_back("mithril_pickaxe");
-    m_Equipements.push_back("gold_pickaxe");
-    m_Equipements.push_back("steel_pickaxe");
-    m_Equipements.push_back("iron_pickaxe");
-    m_Equipements.push_back("copper_pickaxe");
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Pickaxes::voidstone_pickaxe);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Pickaxes::adamantite_pickaxe);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Pickaxes::mithril_pickaxe);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Pickaxes::gold_pickaxe);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Pickaxes::steel_pickaxe);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Pickaxes::iron_pickaxe);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Pickaxes::copper_pickaxe);
 }
 
 AlchemyGatheringSystem AlchemyGatheringSystem::singleton;
@@ -157,18 +157,18 @@ AlchemyGatheringSystem::AlchemyGatheringSystem() : GatherSystem("AlchemyGatherin
 {
     static constexpr int item_amount = 200;
 
-    m_Resources.push_back({ "torch_cactus_flower", item_amount });
-    m_Resources.push_back({ "glowstem_leaf", item_amount });
-    m_Resources.push_back({ "nettle_leaf", item_amount });
-    m_Resources.push_back({ "sunflower", item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Alchemy::torch_cactus_flower, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Alchemy::glowstem_leaf, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Alchemy::nettle_leaf, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Alchemy::sunflower, item_amount });
 
-    m_Equipements.push_back("voidstone_gloves");
-    m_Equipements.push_back("adamantite_gloves");
-    m_Equipements.push_back("mithril_gloves");
-    m_Equipements.push_back("golden_gloves");
-    m_Equipements.push_back("steel_gloves");
-    m_Equipements.push_back("leather_gloves");
-    m_Equipements.push_back("apprentice_gloves");
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Gloves::voidstone_gloves);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Gloves::adamantite_gloves);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Gloves::mithril_gloves);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Gloves::golden_gloves);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Gloves::steel_gloves);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Gloves::leather_gloves);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::Gloves::apprentice_gloves);
 }
 
 FishingGatherSystem FishingGatherSystem::singleton;
@@ -177,18 +177,18 @@ FishingGatherSystem::FishingGatherSystem() : GatherSystem("FishingGatherSystem")
 {
     static constexpr int item_amount = 200;
 
-    m_Resources.push_back({ "swordfish", item_amount });
-    m_Resources.push_back({ "salmon", item_amount });
-    m_Resources.push_back({ "bass", item_amount });
-    m_Resources.push_back({ "trout", item_amount });
-    m_Resources.push_back({ "shrimp", item_amount });
-    m_Resources.push_back({ "gudgeon", item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Fishing::swordfish, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Fishing::salmon, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Fishing::bass, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Fishing::trout, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Fishing::shrimp, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Fishing::gudgeon, item_amount });
 
-    m_Equipements.push_back("voidstone_fishing_rod");
-    m_Equipements.push_back("adamantite_fishing_rod");
-    m_Equipements.push_back("mithril_fishing_rod");
-    m_Equipements.push_back("gold_fishing_rod");
-    m_Equipements.push_back("steel_fishing_rod");
-    m_Equipements.push_back("spruce_fishing_rod");
-    m_Equipements.push_back("fishing_net");
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::FishingRods::voidstone_fishing_rod);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::FishingRods::adamantite_fishing_rod);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::FishingRods::mithril_fishing_rod);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::FishingRods::gold_fishing_rod);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::FishingRods::steel_fishing_rod);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::FishingRods::spruce_fishing_rod);
+    m_Equipements.push_back(Keywords::Items::Weapons::Tools::FishingRods::fishing_net);
 }

@@ -8,38 +8,6 @@ InventoryManager InventoryManager::singleton;
 
 void InventoryManager::Initialize(void)
 {
-    m_Resources_To_Deposit.push_back("sap");
-    m_Resources_To_Deposit.push_back("apple");
-    m_Resources_To_Deposit.push_back("sunflower");
-    m_Resources_To_Deposit.push_back("algae");
-    m_Resources_To_Deposit.push_back("gudgeon");
-    m_Resources_To_Deposit.push_back("golden_egg");
-    m_Resources_To_Deposit.push_back("fried_eggs");
-    m_Resources_To_Deposit.push_back("emerald_stone");
-    m_Resources_To_Deposit.push_back("sapphire_stone");
-    m_Resources_To_Deposit.push_back("topaz_stone");
-    m_Resources_To_Deposit.push_back("ruby_stone");
-    m_Resources_To_Deposit.push_back("cooked_chicken");
-    m_Resources_To_Deposit.push_back("cooked_gudgeon");
-    m_Resources_To_Deposit.push_back("shell");
-    m_Resources_To_Deposit.push_back("red_slimeball");
-    m_Resources_To_Deposit.push_back("blue_slimeball");
-    m_Resources_To_Deposit.push_back("green_slimeball");
-    m_Resources_To_Deposit.push_back("yellow_slimeball");
-    m_Resources_To_Deposit.push_back("feather");
-    m_Resources_To_Deposit.push_back("egg");
-    m_Resources_To_Deposit.push_back("raw_chicken");
-    m_Resources_To_Deposit.push_back("tasks_coin");
-    m_Resources_To_Deposit.push_back("ash_wood");
-    m_Resources_To_Deposit.push_back("ash_plank");
-    m_Resources_To_Deposit.push_back("copper_ore");
-    m_Resources_To_Deposit.push_back("copper_bar");
-    m_Resources_To_Deposit.push_back("iron_ore");
-    m_Resources_To_Deposit.push_back("iron_bar");
-    m_Resources_To_Deposit.push_back("raw_beef");
-    m_Resources_To_Deposit.push_back("milk_bucket");
-    m_Resources_To_Deposit.push_back("cowhide");
-
     Update_Cache();
 }
 

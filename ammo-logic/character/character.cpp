@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstring>
 
+#include "keywords.hpp"
 #include "managers/inventory_manager.hpp"
 #include "managers/item_manager.hpp"
 #include "net/client.hpp"
@@ -523,39 +524,39 @@ int Character::Get_Gold_Amount(void) const
 
 int Character::Get_Skill_Level(const char* skill_name) const
 {
-    if (strcmp(skill_name, "mining") == 0)
+    if (strcmp(skill_name, Keywords::Skills::mining) == 0)
     {
         return m_Character_Cache["mining_level"].get<int>();
     }
-    if (strcmp(skill_name, "woodcutting") == 0)
+    if (strcmp(skill_name, Keywords::Skills::woodcutting) == 0)
     {
         return m_Character_Cache["woodcutting_level"].get<int>();
     }
-    if (strcmp(skill_name, "fishing") == 0)
+    if (strcmp(skill_name, Keywords::Skills::fishing) == 0)
     {
         return m_Character_Cache["fishing_level"].get<int>();
     }
-    if (strcmp(skill_name, "alchemy") == 0)
+    if (strcmp(skill_name, Keywords::Skills::alchemy) == 0)
     {
         return m_Character_Cache["alchemy_level"].get<int>();
     }
-    if (strcmp(skill_name, "weaponcrafting") == 0)
+    if (strcmp(skill_name, Keywords::Skills::weaponcrafting) == 0)
     {
         return m_Character_Cache["weaponcrafting_level"].get<int>();
     }
-    if (strcmp(skill_name, "gearcrafting") == 0)
+    if (strcmp(skill_name, Keywords::Skills::gearcrafting) == 0)
     {
         return m_Character_Cache["gearcrafting_level"].get<int>();
     }
-    if (strcmp(skill_name, "jewelrycrafting") == 0)
+    if (strcmp(skill_name, Keywords::Skills::jewelrycrafting) == 0)
     {
         return m_Character_Cache["jewelrycrafting_level"].get<int>();
     }
-    if (strcmp(skill_name, "cooking") == 0)
+    if (strcmp(skill_name, Keywords::Skills::cooking) == 0)
     {
         return m_Character_Cache["cooking_level"].get<int>();
     }
-    if (strcmp(skill_name, "combat") == 0)
+    if (strcmp(skill_name, Keywords::Skills::combat) == 0)
     {
         return m_Character_Cache["level"].get<int>();
     }

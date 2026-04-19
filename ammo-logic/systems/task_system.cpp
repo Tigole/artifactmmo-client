@@ -1,6 +1,7 @@
 #include "task_system.hpp"
 
 #include "character/character.hpp"
+#include "keywords.hpp"
 #include "managers/achievement_manager.hpp"
 #include "managers/inventory_manager.hpp"
 #include "managers/item_manager.hpp"
@@ -48,7 +49,7 @@ void TaskSystemMonster::Fill_Pipeline(Character& character)
     }
     else
     {
-        const int l_Task_Coin_Count = InventoryManager::singleton.Get_Bank_Item_Count("tasks_coin");
+        const int l_Task_Coin_Count = InventoryManager::singleton.Get_Bank_Item_Count(Keywords::Items::Currency::tasks_coin);
 
         if ((l_Task_Coin_Count < 50) || (AchivementManager::singleton.Is_Completed("tasks_farmer") == false))
         {
@@ -103,7 +104,7 @@ void TaskSystemItem::Fill_Pipeline(Character& character)
     }
     else
     {
-        const int l_Task_Coin_Count = InventoryManager::singleton.Get_Bank_Item_Count("tasks_coin");
+        const int l_Task_Coin_Count = InventoryManager::singleton.Get_Bank_Item_Count(Keywords::Items::Currency::tasks_coin);
 
         printf("tasks_coin count: %d\n", l_Task_Coin_Count);
         if ((l_Task_Coin_Count < 50) || (AchivementManager::singleton.Is_Completed("tasks_farmer") == false))

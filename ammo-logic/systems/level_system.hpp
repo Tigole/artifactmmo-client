@@ -1,6 +1,7 @@
 #ifndef _LEVEL_SYSTEM_HPP
 #define _LEVEL_SYSTEM_HPP 1
 
+#include "keywords.hpp"
 #include "system.hpp"
 
 class ItemCraftingManager;
@@ -21,15 +22,17 @@ private:
 
 class GearcraftingLevelSystem: public LevelSystem
 {
-    GearcraftingLevelSystem() : LevelSystem("gearcrafting") {}
+    GearcraftingLevelSystem() : LevelSystem(Keywords::Skills::gearcrafting) {}
 
 public:
     static GearcraftingLevelSystem singleton;
 };
 
-class WeaponcraftingLevelSystem: public LevelSystem
+class WeaponcraftingLevelSystem: public System
 {
-    WeaponcraftingLevelSystem() : LevelSystem("weaponcrafting") {}
+    WeaponcraftingLevelSystem() : System("WeaponcraftingLevelSystem") {}
+
+    void Fill_Pipeline(Character& character) override;
 
 public:
     static WeaponcraftingLevelSystem singleton;
@@ -37,7 +40,7 @@ public:
 
 class JewelrycraftingLevelSystem: public LevelSystem
 {
-    JewelrycraftingLevelSystem() : LevelSystem("jewelrycrafting") {}
+    JewelrycraftingLevelSystem() : LevelSystem(Keywords::Skills::jewelrycrafting) {}
 
 public:
     static JewelrycraftingLevelSystem singleton;
@@ -45,7 +48,7 @@ public:
 
 class CookingLevelSystem: public LevelSystem
 {
-    CookingLevelSystem() : LevelSystem("cooking") {}
+    CookingLevelSystem() : LevelSystem(Keywords::Skills::cooking) {}
 
 public:
     static CookingLevelSystem singleton;
@@ -53,7 +56,7 @@ public:
 
 class AlchemyLevelSystem: public LevelSystem
 {
-    AlchemyLevelSystem() : LevelSystem("alchemy") {}
+    AlchemyLevelSystem() : LevelSystem(Keywords::Skills::alchemy) {}
 
 public:
     static AlchemyLevelSystem singleton;

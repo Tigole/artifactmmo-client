@@ -3,13 +3,15 @@
 #include "character/character.hpp"
 #include "managers/item_manager.hpp"
 
+#if 0
+
 TrainingManager TrainingManager::singleton;
 
 void TrainingManager::Train_Woodcutting(const System* sys, Character& character, int skill_level)
 {
     if (skill_level < 10)
     {
-        Make_Craft_One_Of(sys, character, "ash_wood");
+        Make_Craft_One_Of(sys, character, Keywords::Items::Resources::Woodcutting::ash_wood);
     }
 }
 
@@ -17,7 +19,7 @@ void TrainingManager::Train_Fishing(const System* sys, Character& character, int
 {
     if (skill_level < 10)
     {
-        Make_Craft_One_Of(sys, character, "gudgeon");
+        Make_Craft_One_Of(sys, character, Keywords::Items::Resources::Fishing::gudgeon);
     }
 }
 
@@ -34,15 +36,15 @@ void TrainingManager::Train_Gearcrafting(const System* sys, Character& character
 {
     if (skill_level < 5)
     {
-        Make_Craft_One_Of(sys, character, "wooden_shield");
-        /*if ((character.Get_Equiped_Shield() == "wooden_shield") && (character.Get_Item_Count("wooden_shield") > 0))
+        Make_Craft_One_Of(sys, character, Keywords::Items::Shields::wooden_shield);
+        /*if ((character.Get_Equiped_Shield() == Keywords::Items::Shields::wooden_shield) && (character.Get_Item_Count(Keywords::Items::Shields::wooden_shield) > 0))
         {
-            m_Item_Crafting_Manager.Make_Recycle_Item(character, { "wooden_shield", character.Get_Item_Count("wooden_shield") });
+            m_Item_Crafting_Manager.Make_Recycle_Item(character, { Keywords::Items::Shields::wooden_shield, character.Get_Item_Count(Keywords::Items::Shields::wooden_shield) });
         }*/
     }
     else if (skill_level < 10)
     {
-        Make_Craft_One_Of(sys, character, "feather_coat");
+        Make_Craft_One_Of(sys, character, Keywords::Items::BodyArmors::feather_coat);
     }
 }
 
@@ -75,11 +77,11 @@ void TrainingManager::Train_Alchemy(const System* sys, Character& character, int
 {
     if (skill_level < 5)
     {
-        Make_Craft_One_Of(sys, character, "sunflower");
+        Make_Craft_One_Of(sys, character, Keywords::Items::Resources::Alchemy::sunflower);
     }
     else if (skill_level < 10)
     {
-        Make_Craft_One_Of(sys, character, "small_health_potion");
+        Make_Craft_One_Of(sys, character, Keywords::Items::Utilities::small_health_potion);
     }
 }
 
@@ -87,3 +89,5 @@ void TrainingManager::Make_Craft_One_Of(const System* sys, Character& character,
 {
     ItemCraftingManager::singleton.Make_Craft_Item(sys, character, { item_code, character.Get_Item_Count(item_code) + 1 });
 }
+
+#endif
