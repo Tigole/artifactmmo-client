@@ -20,6 +20,9 @@ public:
         return m_System_Name;
     }
 
+protected:
+    int Make_Craft(Character& character, MapCoord workshop_coord, const char* item_code, int item_count) const;
+
 private:
     const char* m_System_Name;
 };
