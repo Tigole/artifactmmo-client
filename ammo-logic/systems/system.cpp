@@ -85,8 +85,8 @@ int System::Make_Craft(Character& character, MapCoord workshop_coord, const char
         const ItemOrder craft_order = { item_code, craft_count };
         character.Add_Move(this, workshop_coord);
         character.Add_Craft(this, craft_order);
-        character.Add_Move(this, InventoryManager::singleton.Get_Bank_Nearest_Coord(workshop_coord));
-        character.Make_Clear_Inventory(this, nullptr);
+        /*character.Add_Move(this, InventoryManager::singleton.Get_Bank_Nearest_Coord(workshop_coord));
+        character.Make_Clear_Inventory(this, nullptr);*/
         return craft_count;
     }
     return 0;

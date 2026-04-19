@@ -30,6 +30,48 @@ struct Keywords
             KEYWORD(sticky_dagger);
             KEYWORD(copper_dagger);
 
+            KEYWORD(iron_dagger);
+            KEYWORD(fire_bow);
+            KEYWORD(king_slime_sword);
+            KEYWORD(mushstaff);
+            KEYWORD(mushmush_bow);
+            KEYWORD(highwayman_dagger);
+            KEYWORD(battlestaff);
+            KEYWORD(forest_whip);
+            KEYWORD(steel_battleaxe);
+            KEYWORD(skull_staff);
+            KEYWORD(hunting_bow);
+            KEYWORD(shuriken);
+            KEYWORD(dreadful_staff);
+            KEYWORD(skull_wand);
+            KEYWORD(wooden_club);
+            KEYWORD(vampire_bow);
+            KEYWORD(greater_dreadful_staff);
+            KEYWORD(death_knight_sword);
+            KEYWORD(gold_sword);
+            KEYWORD(elderwood_staff);
+            KEYWORD(enchanted_bow);
+            KEYWORD(magic_bow);
+            KEYWORD(cursed_sceptre);
+            KEYWORD(strangold_sword);
+            KEYWORD(dreadful_battleaxe);
+            KEYWORD(diamond_sword);
+            KEYWORD(sanguine_edge_of_rosen);
+            KEYWORD(mithril_sword);
+            KEYWORD(lightning_sword);
+            KEYWORD(bloodblade);
+            KEYWORD(wrathsword);
+            KEYWORD(mithril_axe);
+            KEYWORD(bow_from_hell);
+            KEYWORD(hell_staff);
+            KEYWORD(demoniac_dagger);
+            KEYWORD(blade_of_hell);
+            KEYWORD(hell_reaper);
+            KEYWORD(desert_whip);
+            KEYWORD(adamantite_sword);
+            KEYWORD(dust_sword);
+            KEYWORD(moonlight_staff);
+
             struct Tools
             {
                 struct Axes

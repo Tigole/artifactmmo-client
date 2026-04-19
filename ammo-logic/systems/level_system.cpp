@@ -4,63 +4,92 @@
 #include "managers/item_manager.hpp"
 #include "managers/training_manager.hpp"
 
-LevelSystem::LevelSystem(const char* skill) : System(skill), m_Skill(skill) {}
+LevelSystem::LevelSystem(const char* name) : System(name) {}
 
 void LevelSystem::Fill_Pipeline(Character& character)
 {
-    int l_Min_Value         = std::numeric_limits<int>::max();
-    int l_Max_Value         = std::numeric_limits<int>::min();
-    std::size_t l_Min_Index = 0;
+    const int character_level = character.Get_Skill_Level(Keywords::Skills::weaponcrafting);
+    const char* item_code     = m_Default_Item_Code;
 
-    if (character.Is_Task_Item() == true)
+    if (character_level >= 10)
     {
-        const std::string l_Item        = character.Get_Task();
-        const ItemRequiredSkill l_Skill = ItemCraftingManager::singleton.Get_Required_Skill(l_Item.c_str());
+        item_code = m_GT_10_Item_Code;
+    }
+    if (character_level >= 20)
+    {
+        item_code = m_GT_20_Item_Code;
+    }
+    if (character_level >= 30)
+    {
+        item_code = m_GT_30_Item_Code;
+    }
+    if (character_level >= 40)
+    {
+        item_code = m_GT_40_Item_Code;
+    }
 
-        for (auto& r: l_Skill.requirements)
+    {
+        const int craft_count = Make_Craft(character, m_Workshop_Coord, item_code, 100);
+        if (craft_count > 0)
         {
-            const int l_Skill_Level = character.Get_Skill_Level(r.first.c_str());
-            if (l_Skill_Level < r.second)
+            if (m_Recycle)
             {
-                Make_Train(character, r.first.c_str(), l_Skill_Level);
-                return;
+                character.Add_Recycle_Item(this, { item_code, craft_count });
             }
+            character.Make_Clear_Inventory(this, nullptr);
         }
     }
-
-    Make_Train(character, m_Skill, character.Get_Skill_Level(m_Skill));
 }
 
-void LevelSystem::Make_Train(Character& character, const char* skill_name, int skill_level) const
+GearcraftingLevelSystem::GearcraftingLevelSystem() : LevelSystem("GearcraftingLevelSystem")
 {
-    /*if (strcmp(skill_name, Keywords::Skills::alchemy) == 0)
-    {
-        TrainingManager::singleton.Train_Alchemy(this, character, skill_level);
-    }
-    else if (strcmp(skill_name, Keywords::Skills::fishing) == 0)
-    {
-        TrainingManager::singleton.Train_Fishing(this, character, skill_level);
-    }
-    else if (strcmp(skill_name, Keywords::Skills::woodcutting) == 0)
-    {
-        TrainingManager::singleton.Train_Woodcutting(this, character, skill_level);
-    }
-    else if (strcmp(skill_name, Keywords::Skills::weaponcrafting) == 0)
-    {
-        TrainingManager::singleton.Train_Weaponcrafting(this, character, skill_level);
-    }
-    else if (strcmp(skill_name, Keywords::Skills::gearcrafting) == 0)
-    {
-        TrainingManager::singleton.Train_Gearcrafting(this, character, skill_level);
-    }
-    else if (strcmp(skill_name, Keywords::Skills::jewelrycrafting) == 0)
-    {
-        TrainingManager::singleton.Train_Jewelrycrafting(this, character, skill_level);
-    }
-    else if (strcmp(skill_name, Keywords::Skills::cooking) == 0)
-    {
-        TrainingManager::singleton.Train_Cooking(this, character, skill_level);
-    }*/
+    m_Default_Item_Code = Keywords::Items::Boots::copper_boots;
+    m_GT_10_Item_Code   = Keywords::Items::Boots::iron_boots;
+    m_GT_20_Item_Code   = Keywords::Items::Boots::steel_boots;
+    m_GT_30_Item_Code   = Keywords::Items::Boots::gold_boots;
+    m_GT_40_Item_Code   = Keywords::Items::Boots::mithril_boots;
+    m_Workshop_Coord    = { 3, 1 };
+}
+
+WeaponcraftingLevelSystem::WeaponcraftingLevelSystem() : LevelSystem("WeaponcraftingLevelSystem")
+{
+    m_Default_Item_Code = Keywords::Items::Weapons::copper_dagger;
+    m_GT_10_Item_Code   = Keywords::Items::Weapons::iron_sword;
+    m_GT_20_Item_Code   = Keywords::Items::Weapons::battlestaff;
+    m_GT_30_Item_Code   = Keywords::Items::Weapons::gold_sword;
+    m_GT_40_Item_Code   = Keywords::Items::Weapons::mithril_sword;
+    m_Workshop_Coord    = { 2, 1 };
+}
+
+JewelrycraftingLevelSystem::JewelrycraftingLevelSystem() : LevelSystem("JewelrycraftingLevelSystem")
+{
+    m_Default_Item_Code = Keywords::Items::Rings::copper_ring;
+    m_GT_10_Item_Code   = Keywords::Items::Rings::iron_ring;
+    m_GT_20_Item_Code   = Keywords::Items::Rings::steel_ring;
+    m_GT_30_Item_Code   = Keywords::Items::Rings::gold_ring;
+    m_GT_40_Item_Code   = Keywords::Items::Rings::mithril_ring;
+    m_Workshop_Coord    = { 1, 3 };
+}
+
+CookingLevelSystem::CookingLevelSystem() : LevelSystem("CookingLevelSystem")
+{
+    m_Default_Item_Code = Keywords::Items::Consumables::Food::cooked_gudgeon;
+    m_GT_10_Item_Code   = Keywords::Items::Consumables::Food::cooked_shrimp;
+    m_GT_20_Item_Code   = Keywords::Items::Consumables::Food::cooked_trout;
+    m_GT_30_Item_Code   = Keywords::Items::Consumables::Food::cooked_bass;
+    m_GT_40_Item_Code   = Keywords::Items::Consumables::Food::cooked_salmon;
+    m_Workshop_Coord    = { 1, 1 };
+}
+
+AlchemyLevelSystem::AlchemyLevelSystem() : LevelSystem("AlchemyLevelSystem")
+{
+    m_Default_Item_Code = Keywords::Items::Utilities::small_health_potion;
+    m_GT_10_Item_Code   = Keywords::Items::Utilities::water_boost_potion;
+    m_GT_20_Item_Code   = Keywords::Items::Utilities::minor_health_potion;
+    m_GT_30_Item_Code   = Keywords::Items::Utilities::health_potion;
+    m_GT_40_Item_Code   = Keywords::Items::Utilities::greater_health_potion;
+    m_Workshop_Coord    = { 2, 3 };
+    m_Recycle           = false;
 }
 
 GearcraftingLevelSystem GearcraftingLevelSystem::singleton;
@@ -68,8 +97,3 @@ WeaponcraftingLevelSystem WeaponcraftingLevelSystem::singleton;
 JewelrycraftingLevelSystem JewelrycraftingLevelSystem::singleton;
 CookingLevelSystem CookingLevelSystem::singleton;
 AlchemyLevelSystem AlchemyLevelSystem::singleton;
-
-void WeaponcraftingLevelSystem::Fill_Pipeline(Character& character)
-{
-    const int character_level = character.Get_Skill_Level(Keywords::Skills::weaponcrafting);
-}

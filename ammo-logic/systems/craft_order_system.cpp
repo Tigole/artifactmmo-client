@@ -17,6 +17,7 @@ void CraftOrderSystem::Fill_Pipeline(Character& character)
 
         if (Make_Craft(character, m_Workshop_Coord, order.item_code, order.target_amount) != 0)
         {
+            character.Make_Clear_Inventory(this, nullptr);
             break;
         }
     }

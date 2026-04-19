@@ -10,29 +10,31 @@ class TrainingManager;
 class LevelSystem: public System
 {
 public:
-    LevelSystem(const char* skill);
+    LevelSystem(const char* name);
 
     void Fill_Pipeline(Character& character) override;
 
-private:
-    const char* m_Skill;
-
-    void Make_Train(Character& character, const char* skill_name, int skill_level) const;
+protected:
+    MapCoord m_Workshop_Coord;
+    const char* m_Default_Item_Code;
+    const char* m_GT_10_Item_Code;
+    const char* m_GT_20_Item_Code;
+    const char* m_GT_30_Item_Code;
+    const char* m_GT_40_Item_Code;
+    bool m_Recycle = true;
 };
 
 class GearcraftingLevelSystem: public LevelSystem
 {
-    GearcraftingLevelSystem() : LevelSystem(Keywords::Skills::gearcrafting) {}
+    GearcraftingLevelSystem();
 
 public:
     static GearcraftingLevelSystem singleton;
 };
 
-class WeaponcraftingLevelSystem: public System
+class WeaponcraftingLevelSystem: public LevelSystem
 {
-    WeaponcraftingLevelSystem() : System("WeaponcraftingLevelSystem") {}
-
-    void Fill_Pipeline(Character& character) override;
+    WeaponcraftingLevelSystem();
 
 public:
     static WeaponcraftingLevelSystem singleton;
@@ -40,7 +42,7 @@ public:
 
 class JewelrycraftingLevelSystem: public LevelSystem
 {
-    JewelrycraftingLevelSystem() : LevelSystem(Keywords::Skills::jewelrycrafting) {}
+    JewelrycraftingLevelSystem();
 
 public:
     static JewelrycraftingLevelSystem singleton;
@@ -48,7 +50,7 @@ public:
 
 class CookingLevelSystem: public LevelSystem
 {
-    CookingLevelSystem() : LevelSystem(Keywords::Skills::cooking) {}
+    CookingLevelSystem();
 
 public:
     static CookingLevelSystem singleton;
@@ -56,7 +58,7 @@ public:
 
 class AlchemyLevelSystem: public LevelSystem
 {
-    AlchemyLevelSystem() : LevelSystem(Keywords::Skills::alchemy) {}
+    AlchemyLevelSystem();
 
 public:
     static AlchemyLevelSystem singleton;
