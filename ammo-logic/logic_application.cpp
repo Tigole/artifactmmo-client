@@ -55,14 +55,12 @@ void LogicApplication::Run(int argc, char** argv)
         l_Pipeline[idx].Add_System(&ToolCraftSystem::singleton);
         l_Pipeline[idx].Add_System(&WeaponCraftSystem::singleton);
         l_Pipeline[idx].Add_System(&TaskSystemMonster::singleton);
-        // l_Pipeline[idx].Add_System(&FightEquipementSystem::singleton);
+        l_Pipeline[idx].Add_System(&WeaponcraftingLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
         l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
         l_Pipeline[idx].Add_System(&MiningGatheringSystem::singleton);
         l_Pipeline[idx].Add_System(&AlchemyGatheringSystem::singleton);
         l_Pipeline[idx].Add_System(&AlchemyCraftingSystem::singleton);
-        // l_Pipeline[idx].Add_System(&StuffSystem::singleton);
-        l_Pipeline[idx].Add_System(&WeaponcraftingLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&GlobalImprovementSystem::singleton);
         l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
     }
@@ -80,8 +78,6 @@ void LogicApplication::Run(int argc, char** argv)
         l_Pipeline[idx].Add_System(&MiningCraftingSystem::singleton);
         l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
         l_Pipeline[idx].Add_System(&FishingGatherSystem::singleton);
-        // l_Pipeline[idx].Add_System(&FightEquipementSystem::singleton);
-        // l_Pipeline[idx].Add_System(&StuffSystem::singleton);
         l_Pipeline[idx].Add_System(&AlchemyLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&GlobalImprovementSystem::singleton);
         l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
@@ -99,8 +95,6 @@ void LogicApplication::Run(int argc, char** argv)
         l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
         l_Pipeline[idx].Add_System(&FishingGatherSystem::singleton);
         l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
-        // l_Pipeline[idx].Add_System(&FightEquipementSystem::singleton);
-        // l_Pipeline[idx].Add_System(&StuffSystem::singleton);
         l_Pipeline[idx].Add_System(&GearcraftingLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&GlobalImprovementSystem::singleton);
         l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
@@ -120,8 +114,6 @@ void LogicApplication::Run(int argc, char** argv)
         l_Pipeline[idx].Add_System(&FishingGatherSystem::singleton);
         l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
         l_Pipeline[idx].Add_System(&MiningCraftingSystem::singleton);
-        // l_Pipeline[idx].Add_System(&FightEquipementSystem::singleton);
-        // l_Pipeline[idx].Add_System(&StuffSystem::singleton);
         l_Pipeline[idx].Add_System(&CookingLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&GlobalImprovementSystem::singleton);
         l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
@@ -138,15 +130,12 @@ void LogicApplication::Run(int argc, char** argv)
         l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
         l_Pipeline[idx].Add_System(&MiningCraftingSystem::singleton);
         l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
-        // l_Pipeline[idx].Add_System(&FightEquipementSystem::singleton);
-        // l_Pipeline[idx].Add_System(&StuffSystem::singleton);
         l_Pipeline[idx].Add_System(&JewelrycraftingLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&GlobalImprovementSystem::singleton);
         l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
     }
 
     std::vector<std::size_t> l_Characters_To_Update = { 0, 1, 2, 3, 4 };
-    // std::vector<std::size_t> l_Characters_To_Update = { 3 };
     if (argc > 1)
     {
         l_Characters_To_Update.clear();
