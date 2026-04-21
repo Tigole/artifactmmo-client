@@ -8,7 +8,7 @@ LevelSystem::LevelSystem(const char* name) : System(name) {}
 
 void LevelSystem::Fill_Pipeline(Character& character)
 {
-    const int character_level = character.Get_Skill_Level(Keywords::Skills::weaponcrafting);
+    const int character_level = character.Get_Skill_Level(m_Skill_Name);
     const char* item_code     = m_Default_Item_Code;
 
     if (character_level >= 10)
@@ -43,6 +43,7 @@ void LevelSystem::Fill_Pipeline(Character& character)
 
 GearcraftingLevelSystem::GearcraftingLevelSystem() : LevelSystem("GearcraftingLevelSystem")
 {
+    m_Skill_Name        = Keywords::Skills::gearcrafting;
     m_Default_Item_Code = Keywords::Items::Boots::copper_boots;
     m_GT_10_Item_Code   = Keywords::Items::Boots::iron_boots;
     m_GT_20_Item_Code   = Keywords::Items::Boots::steel_boots;
@@ -53,6 +54,7 @@ GearcraftingLevelSystem::GearcraftingLevelSystem() : LevelSystem("GearcraftingLe
 
 WeaponcraftingLevelSystem::WeaponcraftingLevelSystem() : LevelSystem("WeaponcraftingLevelSystem")
 {
+    m_Skill_Name        = Keywords::Skills::weaponcrafting;
     m_Default_Item_Code = Keywords::Items::Weapons::copper_dagger;
     m_GT_10_Item_Code   = Keywords::Items::Weapons::iron_sword;
     m_GT_20_Item_Code   = Keywords::Items::Weapons::battlestaff;
@@ -63,6 +65,7 @@ WeaponcraftingLevelSystem::WeaponcraftingLevelSystem() : LevelSystem("Weaponcraf
 
 JewelrycraftingLevelSystem::JewelrycraftingLevelSystem() : LevelSystem("JewelrycraftingLevelSystem")
 {
+    m_Skill_Name        = Keywords::Skills::jewelrycrafting;
     m_Default_Item_Code = Keywords::Items::Rings::copper_ring;
     m_GT_10_Item_Code   = Keywords::Items::Rings::iron_ring;
     m_GT_20_Item_Code   = Keywords::Items::Rings::steel_ring;
@@ -73,6 +76,7 @@ JewelrycraftingLevelSystem::JewelrycraftingLevelSystem() : LevelSystem("Jewelryc
 
 CookingLevelSystem::CookingLevelSystem() : LevelSystem("CookingLevelSystem")
 {
+    m_Skill_Name        = Keywords::Skills::cooking;
     m_Default_Item_Code = Keywords::Items::Consumables::Food::cooked_gudgeon;
     m_GT_10_Item_Code   = Keywords::Items::Consumables::Food::cooked_shrimp;
     m_GT_20_Item_Code   = Keywords::Items::Consumables::Food::cooked_trout;
@@ -83,6 +87,7 @@ CookingLevelSystem::CookingLevelSystem() : LevelSystem("CookingLevelSystem")
 
 AlchemyLevelSystem::AlchemyLevelSystem() : LevelSystem("AlchemyLevelSystem")
 {
+    m_Skill_Name        = Keywords::Skills::alchemy;
     m_Default_Item_Code = Keywords::Items::Utilities::small_health_potion;
     m_GT_10_Item_Code   = Keywords::Items::Utilities::water_boost_potion;
     m_GT_20_Item_Code   = Keywords::Items::Utilities::minor_health_potion;

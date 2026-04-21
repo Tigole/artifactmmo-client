@@ -16,6 +16,7 @@ public:
 
 protected:
     MapCoord m_Workshop_Coord;
+    const char* m_Skill_Name;
     const char* m_Default_Item_Code;
     const char* m_GT_10_Item_Code;
     const char* m_GT_20_Item_Code;
