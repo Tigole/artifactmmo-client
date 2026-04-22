@@ -93,6 +93,13 @@ AlchemyCraftingSystem::AlchemyCraftingSystem() : CraftOrderSystem("AlchemyCrafti
     m_Items.push_back({ Keywords::Items::Utilities::minor_health_potion, 50 });
     m_Items.push_back({ Keywords::Items::Utilities::small_health_potion, 50 });
 
+    {
+        m_Items.push_back({ Keywords::Items::Utilities::air_boost_potion, 50 });
+        m_Items.push_back({ Keywords::Items::Utilities::earth_boost_potion, 50 });
+        m_Items.push_back({ Keywords::Items::Utilities::fire_boost_potion, 50 });
+        m_Items.push_back({ Keywords::Items::Utilities::water_boost_potion, 50 });
+    }
+
     m_Workshop_Coord = { 2, 3 };
 }
 
@@ -163,6 +170,16 @@ GearcraftingSystem::GearcraftingSystem() : CraftOrderSystem("GearcraftingSystem"
 
     m_Workshop_Coord = { 3, 1 };
 }
+
+JewerlyCraftSystem::JewerlyCraftSystem() : CraftOrderSystem("JewerlyCraftSystem")
+{
+    constexpr const int target_amount = 1;
+    m_Items.push_back({ Keywords::Items::Amulets::life_amulet, target_amount });
+
+    m_Workshop_Coord = { 1, 3 };
+}
+
+JewerlyCraftSystem JewerlyCraftSystem::singleton;
 
 BuyingSystem BuyingSystem::singleton;
 

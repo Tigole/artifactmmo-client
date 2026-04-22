@@ -140,6 +140,7 @@ void LogicApplication::Run(int argc, char** argv)
         l_Pipeline[idx].Add_System(&MiningGatheringSystem::singleton);
         l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
         l_Pipeline[idx].Add_System(&MiningCraftingSystem::singleton);
+        l_Pipeline[idx].Add_System(&JewerlyCraftSystem::singleton);
         l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
         l_Pipeline[idx].Add_System(&JewelrycraftingLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);

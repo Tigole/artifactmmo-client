@@ -83,6 +83,14 @@ public:
     static GearcraftingSystem singleton;
 };
 
+class JewerlyCraftSystem: public CraftOrderSystem
+{
+    JewerlyCraftSystem();
+
+public:
+    static JewerlyCraftSystem singleton;
+};
+
 class BuyingSystem: public System
 {
     BuyingSystem();
