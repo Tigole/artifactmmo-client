@@ -17,7 +17,6 @@
 #include "systems/fight_equipement_system.hpp"
 #include "systems/fight_system.hpp"
 #include "systems/gather_system.hpp"
-#include "systems/global_improvement_system.hpp"
 #include "systems/inventory_management_system.hpp"
 #include "systems/level_system.hpp"
 #include "systems/stuff_system.hpp"
@@ -65,7 +64,6 @@ void LogicApplication::Run(int argc, char** argv)
         l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&AlchemyGatherLevelSystem::singleton);
-        // l_Pipeline[idx].Add_System(&GlobalImprovementSystem::singleton);
         l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
     }
 
@@ -87,7 +85,6 @@ void LogicApplication::Run(int argc, char** argv)
         l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&AlchemyGatherLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
-        // l_Pipeline[idx].Add_System(&GlobalImprovementSystem::singleton);
         l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
     }
 
@@ -108,7 +105,6 @@ void LogicApplication::Run(int argc, char** argv)
         l_Pipeline[idx].Add_System(&AlchemyGatherLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
-        // l_Pipeline[idx].Add_System(&GlobalImprovementSystem::singleton);
         l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
     }
 
@@ -131,7 +127,6 @@ void LogicApplication::Run(int argc, char** argv)
         l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
-        // l_Pipeline[idx].Add_System(&GlobalImprovementSystem::singleton);
         l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
     }
 
@@ -151,7 +146,6 @@ void LogicApplication::Run(int argc, char** argv)
         l_Pipeline[idx].Add_System(&AlchemyGatherLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
         l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
-        // l_Pipeline[idx].Add_System(&GlobalImprovementSystem::singleton);
         l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
     }
 
