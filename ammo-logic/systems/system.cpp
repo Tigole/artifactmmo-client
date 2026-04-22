@@ -58,16 +58,18 @@ int System::Make_Craft(Character& character, MapCoord workshop_coord, const char
             return -1;
         }
 
-        if (r->required_items.size() == 1)
+        craft_count = character.Get_Inventory_Remaining_Space() / character_inventory_space_required;
+        for (std::size_t ii = 0; ii < r->required_items.size(); ii++)
         {
-            craft_count = character.Get_Inventory_Remaining_Space() / r->required_items[0].quantity;
-            craft_count = std::min(craft_count, InventoryManager::singleton.Get_Bank_Item_Count(r->required_items[0].code.c_str()) /
-                                                    r->required_items[0].quantity);
+            craft_count = std::min(craft_count, InventoryManager::singleton.Get_Bank_Item_Count(r->required_items[ii].code.c_str()) /
+                                                    r->required_items[ii].quantity);
             SYSTEM_PRINT(
-                "1 required item (character.Get_Inventory_Remaining_Space(): %d r->required_items[0].quantity: %d "
-                "InventoryManager::singleton.Get_Bank_Item_Count(r->required_items[0].code.c_str()): %d craft_count: %d)",
-                character.Get_Inventory_Remaining_Space(), r->required_items[0].quantity,
-                InventoryManager::singleton.Get_Bank_Item_Count(r->required_items[0].code.c_str()), craft_count);
+                "%d required item (character_inventory_space_required: %d character.Get_Inventory_Remaining_Space(): %d "
+                "r->required_items[%d].quantity: %d "
+                "InventoryManager::singleton.Get_Bank_Item_Count(r->required_items[%d].code.c_str()): %d craft_count: %d)",
+                r->required_items.size(), character_inventory_space_required, character.Get_Inventory_Remaining_Space(), ii,
+                r->required_items[ii].quantity, ii, InventoryManager::singleton.Get_Bank_Item_Count(r->required_items[ii].code.c_str()),
+                craft_count);
         }
 
         SYSTEM_PRINT("craft_count: %d item_count: %d bank_item_count: %d item_count - bank_item_count: %d", craft_count, item_count,
