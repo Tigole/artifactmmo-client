@@ -30,6 +30,7 @@ enum class CharacterOrderType
     DepositGold,
     WithdrawGold,
     BuyItem,
+    BuyBankExpansion,
 
     ClearInventory,
 };
@@ -108,6 +109,10 @@ struct CharacterOrder
     {
         return CharacterOrder(sys, CharacterOrderType::BuyItem, {}, buy, "");
     }
+    static CharacterOrder CreateBuyBankExpansion(const System* sys)
+    {
+        return CharacterOrder(sys, CharacterOrderType::BuyBankExpansion, {}, {}, "");
+    }
     static CharacterOrder CreateClearInventory(const System* sys, const char* keep)
     {
         return CharacterOrder(sys, CharacterOrderType::ClearInventory, {}, {}, keep);
@@ -182,6 +187,7 @@ public:
     void Add_Deposit_Gold(const System* sys, int gold_amount);
     void Add_Withdraw_Gold(const System* sys, int gold_amount);
     void Add_Buy_Item(const System* sys, const ItemOrder& buy);
+    void Add_Buy_Bank_Expasion(const System* sys);
     void Make_Clear_Inventory(const System* sys, const char* keep);
 
     void Update(float elapsed_time);

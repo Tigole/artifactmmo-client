@@ -128,6 +128,11 @@ void Character::Add_Buy_Item(const System* sys, const ItemOrder& buy)
     m_Orders.push_back(CharacterOrder::CreateBuyItem(sys, buy));
 }
 
+void Character::Add_Buy_Bank_Expasion(const System* sys)
+{
+    m_Orders.push_back(CharacterOrder::CreateBuyBankExpansion(sys));
+}
+
 void Character::Make_Clear_Inventory(const System* sys, const char* keep)
 {
     m_Orders.push_back(CharacterOrder::CreateClearInventory(sys, keep == nullptr ? "" : keep));
@@ -221,6 +226,9 @@ void Character::Update(float elapsed_time)
                     break;
                 case CharacterOrderType::BuyItem:
                     m_Remaining_Timeout = Client::singleton.mt_Character_Buy_Item(m_Character_Name, l_Order.item_order, m_Character_Cache);
+                    break;
+                case CharacterOrderType::BuyBankExpansion:
+                    m_Remaining_Timeout = Client::singleton.mt_Character_Buy_Bank_Expansion(m_Character_Name, m_Character_Cache);
                     break;
                 case CharacterOrderType::ClearInventory:
                     {

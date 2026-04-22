@@ -11,7 +11,7 @@ void InventoryManager::Initialize(void)
     Update_Cache();
 }
 
-int InventoryManager::Get_Bank_Item_Count(const char* item_code)
+int InventoryManager::Get_Bank_Item_Count(const char* item_code) const
 {
     auto it = m_Bank_Content.find(item_code);
     if (it != m_Bank_Content.end())
@@ -21,7 +21,17 @@ int InventoryManager::Get_Bank_Item_Count(const char* item_code)
     return 0;
 }
 
-int InventoryManager::Get_Gold_Amount(void)
+int InventoryManager::Get_Bank_Remaining_Slot_Count(void) const
+{
+    return m_Max_Slot_Count - m_Bank_Content.size();
+}
+
+int InventoryManager::Get_Bank_Expansion_Cost(void) const
+{
+    return m_Next_Expansion_Cost;
+}
+
+int InventoryManager::Get_Gold_Amount(void) const
 {
     return m_Gold_Amount;
 }
@@ -92,5 +102,7 @@ void InventoryManager::Update_Cache(void)
 
     Client::singleton.Get_Bank_Detail(tmp);
 
-    m_Gold_Amount = tmp["data"]["gold"].get<int>();
+    m_Gold_Amount         = tmp["data"]["gold"].get<int>();
+    m_Max_Slot_Count      = tmp["data"]["slots"].get<int>();
+    m_Next_Expansion_Cost = tmp["data"]["next_expansion_cost"].get<int>();
 }

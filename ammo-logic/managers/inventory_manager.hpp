@@ -21,9 +21,11 @@ public:
 
     void Initialize(void);
 
-    int Get_Bank_Item_Count(const char* item_code);
+    int Get_Bank_Item_Count(const char* item_code) const;
+    int Get_Bank_Remaining_Slot_Count(void) const;
+    int Get_Bank_Expansion_Cost(void) const;
 
-    int Get_Gold_Amount(void);
+    int Get_Gold_Amount(void) const;
 
     MapCoord Get_Bank_Nearest_Coord(Character& character) const;
     MapCoord Get_Bank_Nearest_Coord(MapCoord coord) const;
@@ -41,6 +43,9 @@ private:
     MapCoord m_Bank_Coord_2 = { 7, 13 };
     std::map<std::string, int> m_Bank_Content;
     int m_Gold_Amount = 0;
+
+    int m_Max_Slot_Count      = 0;
+    int m_Next_Expansion_Cost = 0;
 };
 
 #endif  // _INVENTORY_MANAGER_HPP

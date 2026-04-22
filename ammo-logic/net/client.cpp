@@ -396,6 +396,19 @@ int Client::mt_Character_Buy_Item(const char* character_name, const ItemOrder& b
     return body["data"]["cooldown"]["remaining_seconds"].get<int>();
 }
 
+int Client::mt_Character_Buy_Bank_Expansion(const char* character_name, nlohmann::json& character_cache)
+{
+    std::string l_Path = "/my/";
+    l_Path += character_name;
+    l_Path += "/action/bank/buy_expansion";
+
+    nlohmann::json body = mt_Post(l_Path.c_str());
+
+    character_cache = body["data"]["character"];
+
+    return body["data"]["cooldown"]["remaining_seconds"].get<int>();
+}
+
 void Client::mt_Get_Character_Cache(const char* character_name, nlohmann::json& character_cache)
 {
     std::string l_Path = "/characters/";

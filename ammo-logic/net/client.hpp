@@ -43,6 +43,7 @@ public:
     int mt_Character_Deposit_Gold(const char* character_name, int gold_amount, nlohmann::json& character_cache);
     int mt_Character_Withdraw_Gold(const char* character_name, int gold_amount, nlohmann::json& character_cache);
     int mt_Character_Buy_Item(const char* character_name, const ItemOrder& buy, nlohmann::json& character_cache);
+    int mt_Character_Buy_Bank_Expansion(const char* character_name, nlohmann::json& character_cache);
 
     void mt_Get_Character_Cache(const char* character_name, nlohmann::json& character_cache);
 
