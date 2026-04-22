@@ -4,9 +4,9 @@
 #include "managers/item_manager.hpp"
 #include "managers/training_manager.hpp"
 
-LevelSystem::LevelSystem(const char* name) : System(name) {}
+LevelCraftSystem::LevelCraftSystem(const char* name) : System(name) {}
 
-void LevelSystem::Fill_Pipeline(Character& character)
+void LevelCraftSystem::Fill_Pipeline(Character& character)
 {
     const int character_level = character.Get_Skill_Level(m_Skill_Name);
     const char* item_code     = m_Default_Item_Code;
@@ -28,6 +28,7 @@ void LevelSystem::Fill_Pipeline(Character& character)
         item_code = m_GT_40_Item_Code;
     }
 
+    if (character_level != 50)
     {
         const int craft_count = Make_Craft(character, m_Workshop_Coord, item_code, 100);
         if (craft_count > 0)
@@ -41,7 +42,7 @@ void LevelSystem::Fill_Pipeline(Character& character)
     }
 }
 
-GearcraftingLevelSystem::GearcraftingLevelSystem() : LevelSystem("GearcraftingLevelSystem")
+GearcraftingLevelSystem::GearcraftingLevelSystem() : LevelCraftSystem("GearcraftingLevelSystem")
 {
     m_Skill_Name        = Keywords::Skills::gearcrafting;
     m_Default_Item_Code = Keywords::Items::Boots::copper_boots;
@@ -52,7 +53,7 @@ GearcraftingLevelSystem::GearcraftingLevelSystem() : LevelSystem("GearcraftingLe
     m_Workshop_Coord    = { 3, 1 };
 }
 
-WeaponcraftingLevelSystem::WeaponcraftingLevelSystem() : LevelSystem("WeaponcraftingLevelSystem")
+WeaponcraftingLevelSystem::WeaponcraftingLevelSystem() : LevelCraftSystem("WeaponcraftingLevelSystem")
 {
     m_Skill_Name        = Keywords::Skills::weaponcrafting;
     m_Default_Item_Code = Keywords::Items::Weapons::copper_dagger;
@@ -63,7 +64,7 @@ WeaponcraftingLevelSystem::WeaponcraftingLevelSystem() : LevelSystem("Weaponcraf
     m_Workshop_Coord    = { 2, 1 };
 }
 
-JewelrycraftingLevelSystem::JewelrycraftingLevelSystem() : LevelSystem("JewelrycraftingLevelSystem")
+JewelrycraftingLevelSystem::JewelrycraftingLevelSystem() : LevelCraftSystem("JewelrycraftingLevelSystem")
 {
     m_Skill_Name        = Keywords::Skills::jewelrycrafting;
     m_Default_Item_Code = Keywords::Items::Rings::copper_ring;
@@ -74,7 +75,7 @@ JewelrycraftingLevelSystem::JewelrycraftingLevelSystem() : LevelSystem("Jewelryc
     m_Workshop_Coord    = { 1, 3 };
 }
 
-CookingLevelSystem::CookingLevelSystem() : LevelSystem("CookingLevelSystem")
+CookingLevelSystem::CookingLevelSystem() : LevelCraftSystem("CookingLevelSystem")
 {
     m_Skill_Name        = Keywords::Skills::cooking;
     m_Default_Item_Code = Keywords::Items::Consumables::Food::cooked_gudgeon;
@@ -83,9 +84,10 @@ CookingLevelSystem::CookingLevelSystem() : LevelSystem("CookingLevelSystem")
     m_GT_30_Item_Code   = Keywords::Items::Consumables::Food::cooked_bass;
     m_GT_40_Item_Code   = Keywords::Items::Consumables::Food::cooked_salmon;
     m_Workshop_Coord    = { 1, 1 };
+    m_Recycle           = false;
 }
 
-AlchemyLevelSystem::AlchemyLevelSystem() : LevelSystem("AlchemyLevelSystem")
+AlchemyCraftLevelSystem::AlchemyCraftLevelSystem() : LevelCraftSystem("AlchemyCraftLevelSystem")
 {
     m_Skill_Name        = Keywords::Skills::alchemy;
     m_Default_Item_Code = Keywords::Items::Utilities::small_health_potion;
@@ -101,4 +103,84 @@ GearcraftingLevelSystem GearcraftingLevelSystem::singleton;
 WeaponcraftingLevelSystem WeaponcraftingLevelSystem::singleton;
 JewelrycraftingLevelSystem JewelrycraftingLevelSystem::singleton;
 CookingLevelSystem CookingLevelSystem::singleton;
-AlchemyLevelSystem AlchemyLevelSystem::singleton;
+AlchemyCraftLevelSystem AlchemyCraftLevelSystem::singleton;
+
+LevelGatherSystem::LevelGatherSystem(const char* name) : System(name) {}
+
+void LevelGatherSystem::Fill_Pipeline(Character& character)
+{
+    const int character_level = character.Get_Skill_Level(m_Skill_Name);
+    MapCoord spot_coord       = m_Default_Spot_Coord;
+
+    if (character_level >= 10)
+    {
+        spot_coord = m_GT_10_Spot_Coord;
+    }
+    if (character_level >= 20)
+    {
+        spot_coord = m_GT_20_Spot_Coord;
+    }
+    if (character_level >= 30)
+    {
+        spot_coord = m_GT_30_Spot_Coord;
+    }
+    if (character_level >= 40)
+    {
+        spot_coord = m_GT_40_Spot_Coord;
+    }
+
+    if (character_level != 50)
+    {
+        if (character.Should_Move(spot_coord) == true)
+        {
+            character.Add_Move(this, spot_coord);
+        }
+        character.Add_Gathering(this);
+        SYSTEM_PRINT("will gather at [%d %d]", spot_coord.x, spot_coord.y);
+    }
+}
+
+MiningLevelSystem::MiningLevelSystem() : LevelGatherSystem("MiningLevelSystem")
+{
+    m_Skill_Name         = Keywords::Skills::mining;
+    m_Default_Spot_Coord = { 2, 0 };
+    m_GT_10_Spot_Coord   = { 1, 7 };
+    m_GT_20_Spot_Coord   = m_Default_Spot_Coord;
+    m_GT_30_Spot_Coord   = m_Default_Spot_Coord;
+    m_GT_40_Spot_Coord   = m_Default_Spot_Coord;
+}
+
+WoodcuttingLevelSystem::WoodcuttingLevelSystem() : LevelGatherSystem("WoodcuttingLevelSystem")
+{
+    m_Skill_Name         = Keywords::Skills::woodcutting;
+    m_Default_Spot_Coord = { 6, 1 };
+    m_GT_10_Spot_Coord   = { 2, 6 };
+    m_GT_20_Spot_Coord   = { 3, 5 };
+    m_GT_30_Spot_Coord   = m_Default_Spot_Coord;
+    m_GT_40_Spot_Coord   = { 4, 14 };
+}
+
+FishingLevelSystem::FishingLevelSystem() : LevelGatherSystem("FishingLevelSystem")
+{
+    m_Skill_Name         = Keywords::Skills::fishing;
+    m_Default_Spot_Coord = { 4, 2 };
+    m_GT_10_Spot_Coord   = { 5, 2 };
+    m_GT_20_Spot_Coord   = { 7, 12 };
+    m_GT_30_Spot_Coord   = { 6, 12 };
+    m_GT_40_Spot_Coord   = { -2, -4 };
+}
+
+AlchemyGatherLevelSystem::AlchemyGatherLevelSystem() : LevelGatherSystem("AlchemyGatherLevelSystem")
+{
+    m_Skill_Name         = Keywords::Skills::alchemy;
+    m_Default_Spot_Coord = { 2, 2 };
+    m_GT_10_Spot_Coord   = { 1, 10 };
+    m_GT_20_Spot_Coord   = m_Default_Spot_Coord;
+    m_GT_30_Spot_Coord   = m_Default_Spot_Coord;
+    m_GT_40_Spot_Coord   = m_Default_Spot_Coord;
+}
+
+MiningLevelSystem MiningLevelSystem::singleton;
+WoodcuttingLevelSystem WoodcuttingLevelSystem::singleton;
+FishingLevelSystem FishingLevelSystem::singleton;
+AlchemyGatherLevelSystem AlchemyGatherLevelSystem::singleton;

@@ -5,7 +5,6 @@ add_rules("mode.debug", "mode.release")
 
 add_requires("cpp-httplib  0.22.0", {configs = {ssl=true}})
 add_requires("nlohmann_json", "fmt", "raylib", "clay")
---add_requires()
 
 
 set_languages("c++20")
@@ -37,3 +36,24 @@ target("client-no-ui")
     add_deps("logic")
 
     set_rundir("$(projectdir)")
+
+--target("server-test")
+--    set_kind("binary")
+--    add_packages("cpp-httplib", "nlohmann_json", "fmt")
+--    add_files("ammo-test-server/**.cpp")
+
+    --on_config(function(target)
+    --    -- Source - https://stackoverflow.com/a/29654933
+    --    -- Posted by Paul Kulchenko, modified by community. See post 'Timeline' for change history
+    --    -- Retrieved 2026-04-20, License - CC BY-SA 3.0
+--
+    --    -- retrieve the content of a URL
+    --    local http = require("socket.http")
+    --    local body, code = http.request("https://api.artifactsmmo.com/openapi.json")
+    --    if not body then error(code) end
+--
+    --    -- save the content to a file
+    --    local f = assert(io.open('ammo-test-server/server/openapi.json', 'wb')) -- open in "binary" mode
+    --    f:write(body)
+    --    f:close()
+    --end)

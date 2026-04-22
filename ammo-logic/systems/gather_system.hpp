@@ -18,6 +18,7 @@ public:
     void Initialize(void);
 
     void Fill_Pipeline(Character& character) override;
+    const std::vector<const char*> Get_Equipements(void) const;
 
 protected:
     std::vector<GatherOrder> m_Resources;

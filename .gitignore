@@ -2,3 +2,6 @@
 build/
 
 token.txt
+
+ammo-test-server/openapi.json
+ammo-test-server/server/

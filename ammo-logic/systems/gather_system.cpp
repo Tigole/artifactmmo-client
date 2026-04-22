@@ -105,6 +105,11 @@ void GatherSystem::Fill_Pipeline(Character& character)
     }
 }
 
+const std::vector<const char*> GatherSystem::Get_Equipements(void) const
+{
+    return m_Equipements;
+}
+
 WoodcuttingGatheringSystem WoodcuttingGatheringSystem::singleton;
 
 WoodcuttingGatheringSystem::WoodcuttingGatheringSystem() : GatherSystem("WoodcuttingGatheringSystem")
