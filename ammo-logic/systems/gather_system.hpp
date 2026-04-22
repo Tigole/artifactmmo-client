@@ -61,4 +61,17 @@ public:
     static FishingGatherSystem singleton;
 };
 
+class MobGatherSystem: public System
+{
+    MobGatherSystem();
+
+public:
+    void Fill_Pipeline(Character& character) override;
+
+    static MobGatherSystem singleton;
+
+private:
+    std::vector<GatherOrder> m_Resources;
+};
+
 #endif  // _GATHER_SYSTEM_HPP

@@ -133,3 +133,36 @@ FishingGatherSystem::FishingGatherSystem() : GatherSystem("FishingGatherSystem")
     m_Equipements.push_back(Keywords::Items::Weapons::Tools::FishingRods::spruce_fishing_rod);
     m_Equipements.push_back(Keywords::Items::Weapons::Tools::FishingRods::fishing_net);
 }
+
+MobGatherSystem::MobGatherSystem() : System("MobGatherSystem")
+{
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_chicken, 100 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::red_slimeball, 50 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::blue_slimeball, 50 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::yellow_slimeball, 50 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::green_slimeball, 50 });
+}
+
+#include "fight_system.hpp"
+
+void MobGatherSystem::Fill_Pipeline(Character& character)
+{
+    for (std::size_t ii = 0; ii < m_Resources.size(); ii++)
+    {
+        GatherOrder order               = m_Resources[ii];
+        const int bank_inventory_amount = InventoryManager::singleton.Get_Bank_Item_Count(order.item_code);
+        if (bank_inventory_amount < order.target_amount)
+        {
+            const char* l_Monster_Name = ItemManager::singleton.Get_Loot_Monster_Name(order.item_code);
+            FightContext fight_context;
+
+            if (FightSystem::singleton.MayWin(character, l_Monster_Name, fight_context) == true)
+            {
+                FightSystem::singleton.Fight_Against(this, character, l_Monster_Name, fight_context);
+                return;
+            }
+        }
+    }
+}
+
+MobGatherSystem MobGatherSystem::singleton;
