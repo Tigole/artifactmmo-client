@@ -175,10 +175,10 @@ AlchemyGatherLevelSystem::AlchemyGatherLevelSystem() : LevelGatherSystem("Alchem
     m_Skill_Name         = Keywords::Skills::alchemy;
     m_Equipements        = &AlchemyGatheringSystem::singleton.Get_Equipements();
     m_Default_Spot_Coord = { 2, 2 };
-    m_GT_10_Spot_Coord   = { 1, 10 };
-    m_GT_20_Spot_Coord   = m_Default_Spot_Coord;
+    m_GT_10_Spot_Coord   = m_Default_Spot_Coord;
+    m_GT_20_Spot_Coord   = { 7, 14 };
     m_GT_30_Spot_Coord   = m_Default_Spot_Coord;
-    m_GT_40_Spot_Coord   = m_Default_Spot_Coord;
+    m_GT_40_Spot_Coord   = { 1, 10 };
 }
 
 MiningLevelSystem MiningLevelSystem::singleton;
