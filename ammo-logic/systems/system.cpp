@@ -110,7 +110,7 @@ void System::Make_Gather(Character& character, MapCoord spot_coord, const char* 
         const char* weapon       = equipements[jj];
         const int required_level = ItemManager::singleton.Get_Required_Level(weapon);
 
-        if (character_skill_level < required_level)
+        if (character_skill_level <= required_level)
         {
             SYSTEM_PRINT("skill '%s' is too low to equip '%s' (current: %d required: %d)", skill_name, weapon, character_skill_level,
                          required_level);
