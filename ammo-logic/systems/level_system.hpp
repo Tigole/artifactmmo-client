@@ -74,6 +74,7 @@ public:
 
 protected:
     const char* m_Skill_Name;
+    const std::vector<const char*>* m_Equipements;
     MapCoord m_Default_Spot_Coord;
     MapCoord m_GT_10_Spot_Coord;
     MapCoord m_GT_20_Spot_Coord;

@@ -131,18 +131,16 @@ void LevelGatherSystem::Fill_Pipeline(Character& character)
 
     if (character_level != 50)
     {
-        if (character.Should_Move(spot_coord) == true)
-        {
-            character.Add_Move(this, spot_coord);
-        }
-        character.Add_Gathering(this);
-        SYSTEM_PRINT("will gather at [%d %d]", spot_coord.x, spot_coord.y);
+        Make_Gather(character, spot_coord, m_Skill_Name, *m_Equipements);
     }
 }
+
+#include "gather_system.hpp"
 
 MiningLevelSystem::MiningLevelSystem() : LevelGatherSystem("MiningLevelSystem")
 {
     m_Skill_Name         = Keywords::Skills::mining;
+    m_Equipements        = &MiningGatheringSystem::singleton.Get_Equipements();
     m_Default_Spot_Coord = { 2, 0 };
     m_GT_10_Spot_Coord   = { 1, 7 };
     m_GT_20_Spot_Coord   = m_Default_Spot_Coord;
@@ -153,6 +151,7 @@ MiningLevelSystem::MiningLevelSystem() : LevelGatherSystem("MiningLevelSystem")
 WoodcuttingLevelSystem::WoodcuttingLevelSystem() : LevelGatherSystem("WoodcuttingLevelSystem")
 {
     m_Skill_Name         = Keywords::Skills::woodcutting;
+    m_Equipements        = &WoodcuttingGatheringSystem::singleton.Get_Equipements();
     m_Default_Spot_Coord = { 6, 1 };
     m_GT_10_Spot_Coord   = { 2, 6 };
     m_GT_20_Spot_Coord   = { 3, 5 };
@@ -163,6 +162,7 @@ WoodcuttingLevelSystem::WoodcuttingLevelSystem() : LevelGatherSystem("Woodcuttin
 FishingLevelSystem::FishingLevelSystem() : LevelGatherSystem("FishingLevelSystem")
 {
     m_Skill_Name         = Keywords::Skills::fishing;
+    m_Equipements        = &FishingGatherSystem::singleton.Get_Equipements();
     m_Default_Spot_Coord = { 4, 2 };
     m_GT_10_Spot_Coord   = { 5, 2 };
     m_GT_20_Spot_Coord   = { 7, 12 };
@@ -173,6 +173,7 @@ FishingLevelSystem::FishingLevelSystem() : LevelGatherSystem("FishingLevelSystem
 AlchemyGatherLevelSystem::AlchemyGatherLevelSystem() : LevelGatherSystem("AlchemyGatherLevelSystem")
 {
     m_Skill_Name         = Keywords::Skills::alchemy;
+    m_Equipements        = &AlchemyGatheringSystem::singleton.Get_Equipements();
     m_Default_Spot_Coord = { 2, 2 };
     m_GT_10_Spot_Coord   = { 1, 10 };
     m_GT_20_Spot_Coord   = m_Default_Spot_Coord;

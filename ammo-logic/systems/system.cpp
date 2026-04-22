@@ -2,6 +2,7 @@
 
 #include "managers/inventory_manager.hpp"
 #include "managers/item_manager.hpp"
+#include "managers/resource_manager.hpp"
 
 int System::Make_Craft(Character& character, MapCoord workshop_coord, const char* item_code, int item_count) const
 {
@@ -90,4 +91,68 @@ int System::Make_Craft(Character& character, MapCoord workshop_coord, const char
         return craft_count;
     }
     return 0;
+}
+
+void System::Make_Gather(Character& character, MapCoord spot_coord, const char* skill_name,
+                         const std::vector<const char*>& equipements) const
+{
+    const int character_skill_level = character.Get_Skill_Level(skill_name);
+
+    if (character.Get_Inventory_Remaining_Space() < ResourceManager::singleton.Get_Required_Inventory_Space(spot_coord))
+    {
+        SYSTEM_PRINT("has to make space", character.Get_Character());
+        character.Make_Clear_Inventory(this, nullptr);
+        return;
+    }
+
+    for (std::size_t jj = 0; jj < equipements.size(); jj++)
+    {
+        const char* weapon       = equipements[jj];
+        const int required_level = ItemManager::singleton.Get_Required_Level(weapon);
+
+        if (character_skill_level < required_level)
+        {
+            SYSTEM_PRINT("skill '%s' is too low to equip '%s' (current: %d required: %d)", skill_name, weapon, character_skill_level,
+                         required_level);
+            continue;
+        }
+        if (character.Get_Equiped_Weapon() == weapon)
+        {
+            SYSTEM_PRINT("is already equiped with '%s'", weapon);
+            break;
+        }
+        else
+        {
+            SYSTEM_PRINT("try to equip weapon '%s'", weapon);
+
+            /// if is in inventory
+            if (character.Get_Item_Count(weapon) > 0)
+            {
+                SYSTEM_PRINT("will equip '%s'", weapon);
+                character.Add_Equip_Item(this, "weapon", weapon);
+                return;
+            }
+            /// if in bank
+            else if (InventoryManager::singleton.Get_Bank_Item_Count(weapon) > 0)
+            {
+                const MapCoord bank_coord = InventoryManager::singleton.Get_Bank_Nearest_Coord(character);
+                if (character.Should_Move(bank_coord))
+                {
+                    character.Add_Move(this, bank_coord);
+                    return;
+                }
+
+                character.Add_Withdraw_Item(this, { weapon, 1 });
+                return;
+            }
+            /// Else try with the next one
+        }
+    }
+
+    if (character.Should_Move(spot_coord) == true)
+    {
+        character.Add_Move(this, spot_coord);
+        return;
+    }
+    character.Add_Gathering(this);
 }

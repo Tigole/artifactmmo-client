@@ -35,77 +35,13 @@ void GatherSystem::Fill_Pipeline(Character& character)
                 continue;
             }
 
-            if (character.Get_Inventory_Remaining_Space() < ResourceManager::singleton.Get_Required_Inventory_Space(*coord))
-            {
-                SYSTEM_PRINT("has to make space", character.Get_Character());
-                character.Make_Clear_Inventory(this, nullptr);
-                return;
-            }
-
-            for (std::size_t jj = 0; jj < m_Equipements.size(); jj++)
-            {
-                const char* weapon       = m_Equipements[jj];
-                const int required_level = ItemManager::singleton.Get_Required_Level(weapon);
-
-                if (character_skill_level < required_level)
-                {
-                    SYSTEM_PRINT("skill '%s' is too low to equip '%s' (current: %d required: %d)", req->skill_name.c_str(), weapon,
-                                 character_skill_level, required_level);
-                    continue;
-                }
-                if (character.Get_Equiped_Weapon() == weapon)
-                {
-                    SYSTEM_PRINT("is already equiped with '%s'", weapon);
-                    break;
-                }
-                else
-                {
-                    SYSTEM_PRINT("try to equip weapon '%s'", weapon);
-
-                    /// if is in inventory
-                    if (character.Get_Item_Count(weapon) > 0)
-                    {
-                        character.Add_Equip_Item(this, "weapon", weapon);
-                        return;
-                    }
-                    /// if in bank
-                    else if (InventoryManager::singleton.Get_Bank_Item_Count(weapon) > 0)
-                    {
-                        const MapCoord bank_coord = InventoryManager::singleton.Get_Bank_Nearest_Coord(character);
-                        if (character.Should_Move(bank_coord))
-                        {
-                            character.Add_Move(this, bank_coord);
-                            return;
-                        }
-
-                        character.Add_Withdraw_Item(this, { weapon, 1 });
-                        return;
-                    }
-                    /// Else try with the next one
-                }
-            }
-
-            if ((character.Get_Item_Count(order.item_code) == 0) && (character.Is_Inventory_Empty() == false))
-            {
-                character.Make_Clear_Inventory(this, nullptr);
-                return;
-            }
-
-            if (character.Should_Move(*coord) == true)
-            {
-                character.Add_Move(this, *coord);
-                return;
-            }
-            else
-            {
-                character.Add_Gathering(this);
-                return;
-            }
+            Make_Gather(character, *coord, req->skill_name.c_str(), m_Equipements);
+            return;
         }
     }
 }
 
-const std::vector<const char*> GatherSystem::Get_Equipements(void) const
+const std::vector<const char*>& GatherSystem::Get_Equipements(void) const
 {
     return m_Equipements;
 }
