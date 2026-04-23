@@ -109,7 +109,7 @@ CookingSystem::CookingSystem() : CraftOrderSystem("CookingSystem")
 {
     m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_shrimp, 50 });
     m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_beef, 50 });
-    m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_gudgeon, 300 });
+    m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_gudgeon, 50 });
     m_Items.push_back({ Keywords::Items::Consumables::Food::fried_eggs, 10 });
     m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_chicken, 50 });
 
