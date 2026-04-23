@@ -35,6 +35,13 @@ void GatherSystem::Fill_Pipeline(Character& character)
                 continue;
             }
 
+            if (character.Get_Item_Count(order.item_code) + bank_item_count >= order.target_amount)
+            {
+                SYSTEM_PRINT("has enough in inventory");
+                character.Make_Clear_Inventory(this, nullptr);
+                return;
+            }
+
             Make_Gather(character, *coord, req->skill_name.c_str(), m_Equipements);
             return;
         }
@@ -136,11 +143,16 @@ FishingGatherSystem::FishingGatherSystem() : GatherSystem("FishingGatherSystem")
 
 MobGatherSystem::MobGatherSystem() : System("MobGatherSystem")
 {
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_chicken, 100 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::snake_hide, 50 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::flying_wing, 50 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::mushroom, 50 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_beef, 50 });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::red_slimeball, 50 });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::blue_slimeball, 50 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::yellow_slimeball, 50 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::wool, 50 });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::green_slimeball, 50 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::yellow_slimeball, 50 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_chicken, 100 });
 }
 
 #include "fight_system.hpp"
@@ -153,11 +165,25 @@ void MobGatherSystem::Fill_Pipeline(Character& character)
         const int bank_inventory_amount = InventoryManager::singleton.Get_Bank_Item_Count(order.item_code);
         if (bank_inventory_amount < order.target_amount)
         {
+            if (character.Get_Item_Count(order.item_code) + bank_inventory_amount >= order.target_amount)
+            {
+                SYSTEM_PRINT("has enough in inventory");
+                character.Make_Clear_Inventory(this, nullptr);
+                return;
+            }
             const char* l_Monster_Name = ItemManager::singleton.Get_Loot_Monster_Name(order.item_code);
             FightContext fight_context;
 
             if (FightSystem::singleton.MayWin(character, l_Monster_Name, fight_context) == true)
             {
+                const int required_inventory_space = 10;
+                if (character.Get_Inventory_Remaining_Space() < required_inventory_space)
+                {
+                    SYSTEM_PRINT("has to make space", character.Get_Character());
+                    character.Make_Clear_Inventory(this, nullptr);
+                    return;
+                }
+
                 FightSystem::singleton.Fight_Against(this, character, l_Monster_Name, fight_context);
                 return;
             }
