@@ -21,6 +21,7 @@ struct FightContext
     std::string artifact1;
     std::string artifact2;
     std::string artifact3;
+    int utility1_quantity;
     int turn_count;
     bool should_heal;
 };
@@ -51,7 +52,7 @@ private:
     std::vector<std::string> m_Monsters;
 
     void Handle_Equipment(const System* sys, Character& character, const MapCoord& bank_pos, const char* equipment_name,
-                          const char* equipmenet_type);
+                          int equipement_count, const char* equipmenet_type);
 
     bool Equip_Healing_Stuff(const System* sys, Character& character, const MapCoord& bank_pos) const;
 
@@ -63,6 +64,7 @@ private:
         int inventory_target_count;
     };
     std::vector<HealItem> m_Healing_Items;
+    std::vector<HealItem> m_Healing_Potions;
 };
 
 #endif  // _FIGHT_SYSTEM_HPP

@@ -606,6 +606,47 @@ struct Keywords
             KEYWORD(amulet_of_the_grand_master);
         };
     };
+
+    struct EquipementSlot
+    {
+        KEYWORD(weapon_slot);
+        KEYWORD(rune_slot);
+        KEYWORD(shield_slot);
+        KEYWORD(helmet_slot);
+        KEYWORD(body_armor_slot);
+        KEYWORD(leg_armor_slot);
+        KEYWORD(boots_slot);
+        KEYWORD(ring1_slot);
+        KEYWORD(ring2_slot);
+        KEYWORD(amulet_slot);
+        KEYWORD(artifact1_slot);
+        KEYWORD(artifact2_slot);
+        KEYWORD(artifact3_slot);
+        KEYWORD(utility1_slot);
+        KEYWORD(utility1_slot_quantity);
+        KEYWORD(utility2_slot);
+        KEYWORD(bag_slot);
+    };
+
+    struct ItemSlot
+    {
+        KEYWORD(weapon);
+        KEYWORD(shield);
+        KEYWORD(helmet);
+        KEYWORD(body_armor);
+        KEYWORD(leg_armor);
+        KEYWORD(boots);
+        KEYWORD(ring1);
+        KEYWORD(ring2);
+        KEYWORD(amulet);
+        KEYWORD(artifact1);
+        KEYWORD(artifact2);
+        KEYWORD(artifact3);
+        KEYWORD(utility1);
+        KEYWORD(utility2);
+        KEYWORD(bag);
+        KEYWORD(rune);
+    };
 };
 
 #endif  // _KEYWORDS_HPP

@@ -289,7 +289,7 @@ int Client::mt_Character_Task_Complete(const char* character_name, nlohmann::jso
     return body["data"]["cooldown"]["remaining_seconds"].get<int>();
 }
 
-int Client::mt_Character_Unequip_Item(const char* character_name, const char* slot, nlohmann::json& character_cache)
+int Client::mt_Character_Unequip_Item(const char* character_name, const char* slot, int item_quantity, nlohmann::json& character_cache)
 {
     std::string l_Path = "/my/";
     l_Path += character_name;
@@ -302,13 +302,14 @@ int Client::mt_Character_Unequip_Item(const char* character_name, const char* sl
     return body["data"]["cooldown"]["remaining_seconds"].get<int>();
 }
 
-int Client::mt_Character_Equip_Item(const char* character_name, const char* slot, const char* item_code, nlohmann::json& character_cache)
+int Client::mt_Character_Equip_Item(const char* character_name, const char* slot, const char* item_code, int item_quantity,
+                                    nlohmann::json& character_cache)
 {
     std::string l_Path = "/my/";
     l_Path += character_name;
     l_Path += "/action/equip";
 
-    nlohmann::json body = mt_Post(l_Path.c_str(), EquipOrder { item_code, slot, 1 });
+    nlohmann::json body = mt_Post(l_Path.c_str(), EquipOrder { item_code, slot, item_quantity });
 
     character_cache = body["data"]["character"];
 
@@ -376,7 +377,9 @@ int Client::mt_Character_Withdraw_Gold(const char* character_name, int gold_amou
     l_Path += character_name;
     l_Path += "/action/bank/withdraw/gold";
 
-    nlohmann::json body = mt_Post(l_Path.c_str(), { "quantity", gold_amount });
+    nlohmann::json body = mt_Post(l_Path.c_str(), {
+                                                      { "quantity", gold_amount }
+    });
 
     character_cache = body["data"]["character"];
 

@@ -17,6 +17,10 @@ FightSystem::FightSystem() : System("FightSystem")
     m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_chicken, 80, 0, 20 });
     m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_gudgeon, 75, 0, 20 });
     m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::apple, 50, 0, 20 });
+
+    m_Healing_Potions.push_back({ Keywords::Items::Utilities::health_splash_potion, 150, 30, 0 });
+    m_Healing_Potions.push_back({ Keywords::Items::Utilities::minor_health_potion, 70, 20, 0 });
+    m_Healing_Potions.push_back({ Keywords::Items::Utilities::small_health_potion, 30, 5, 0 });
 }
 
 void FightSystem::Initialize(void)
@@ -48,67 +52,67 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
         const MapCoord bank_pos = InventoryManager::singleton.Get_Bank_Nearest_Coord(character);
         if (character.Get_Equiped_Weapon() != context.weapon)
         {
-            Handle_Equipment(sys, character, bank_pos, context.weapon.c_str(), "weapon");
+            Handle_Equipment(sys, character, bank_pos, context.weapon.c_str(), 1, Keywords::ItemSlot::weapon);
             return;
         }
         if (character.Get_Equiped_Helmet() != context.helmet)
         {
-            Handle_Equipment(sys, character, bank_pos, context.helmet.c_str(), "helmet");
+            Handle_Equipment(sys, character, bank_pos, context.helmet.c_str(), 1, Keywords::ItemSlot::helmet);
             return;
         }
         if (character.Get_Equiped_Body_Armor() != context.body_armor)
         {
-            Handle_Equipment(sys, character, bank_pos, context.body_armor.c_str(), "body_armor");
+            Handle_Equipment(sys, character, bank_pos, context.body_armor.c_str(), 1, Keywords::ItemSlot::body_armor);
             return;
         }
         if (character.Get_Equiped_Leg_Armor() != context.leg_armor)
         {
-            Handle_Equipment(sys, character, bank_pos, context.leg_armor.c_str(), "leg_armor");
+            Handle_Equipment(sys, character, bank_pos, context.leg_armor.c_str(), 1, Keywords::ItemSlot::leg_armor);
             return;
         }
         if (character.Get_Equiped_Boots() != context.boots)
         {
-            Handle_Equipment(sys, character, bank_pos, context.boots.c_str(), "boots");
+            Handle_Equipment(sys, character, bank_pos, context.boots.c_str(), 1, Keywords::ItemSlot::boots);
             return;
         }
         if (character.Get_Equiped_Ring1() != context.ring1)
         {
-            Handle_Equipment(sys, character, bank_pos, context.ring1.c_str(), "ring1");
+            Handle_Equipment(sys, character, bank_pos, context.ring1.c_str(), 1, Keywords::ItemSlot::ring1);
             return;
         }
         if (character.Get_Equiped_Ring2() != context.ring2)
         {
-            Handle_Equipment(sys, character, bank_pos, context.ring2.c_str(), "ring2");
+            Handle_Equipment(sys, character, bank_pos, context.ring2.c_str(), 1, Keywords::ItemSlot::ring2);
             return;
         }
         if (character.Get_Equiped_Shield() != context.shield)
         {
-            Handle_Equipment(sys, character, bank_pos, context.shield.c_str(), "shield");
+            Handle_Equipment(sys, character, bank_pos, context.shield.c_str(), 1, Keywords::ItemSlot::shield);
             return;
         }
         if (character.Get_Equiped_Amulet() != context.amulet)
         {
-            Handle_Equipment(sys, character, bank_pos, context.amulet.c_str(), "amulet");
+            Handle_Equipment(sys, character, bank_pos, context.amulet.c_str(), 1, Keywords::ItemSlot::amulet);
             return;
         }
-        if (character.Get_Equiped_Utility1() != context.utility1)
+        if (character.Get_Equiped_Utility1() != context.utility1 && character.Get_Equiped_Utility1_Quantity() < context.utility1_quantity)
         {
-            Handle_Equipment(sys, character, bank_pos, context.utility1.c_str(), "utility1");
+            Handle_Equipment(sys, character, bank_pos, context.utility1.c_str(), context.utility1_quantity, Keywords::ItemSlot::utility1);
             return;
         }
         if (character.Get_Equiped_Artifact1() != context.artifact1)
         {
-            Handle_Equipment(sys, character, bank_pos, context.artifact1.c_str(), "artifact1");
+            Handle_Equipment(sys, character, bank_pos, context.artifact1.c_str(), 1, Keywords::ItemSlot::artifact1);
             return;
         }
         if (character.Get_Equiped_Artifact2() != context.artifact2)
         {
-            Handle_Equipment(sys, character, bank_pos, context.artifact1.c_str(), "artifact2");
+            Handle_Equipment(sys, character, bank_pos, context.artifact1.c_str(), 1, Keywords::ItemSlot::artifact2);
             return;
         }
         if (character.Get_Equiped_Artifact3() != context.artifact3)
         {
-            Handle_Equipment(sys, character, bank_pos, context.artifact1.c_str(), "artifact3");
+            Handle_Equipment(sys, character, bank_pos, context.artifact1.c_str(), 1, Keywords::ItemSlot::artifact3);
             return;
         }
         if (Equip_Healing_Stuff(sys, character, bank_pos) == true)
@@ -189,10 +193,13 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     int l_Monster_Life        = MonsterManager::singleton.Get_Monster_Hp(monster);
     int l_Chararcter_Max_Life = character.Get_Life_Max();
 
-    int l_Small_Potion_Count = 0;
+    HealItem l_Equiped_Healing_Potion;
+
+    memset(&l_Equiped_Healing_Potion, 0, sizeof(l_Equiped_Healing_Potion));
 
     auto armor_handler = [&](const std::vector<InventoryArmorPart>& armors, std::string& context_armor)
     {
+#error "1rst: check hp boost, then check damages ?"
         for (std::size_t ii = 0; ii < armors.size(); ii++)
         {
             const int l_Damages = Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, armors[ii].resistances);
@@ -205,19 +212,29 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
         }
     };
 
-    context.weapon     = character.Get_Equiped_Weapon();
-    context.helmet     = character.Get_Equiped_Helmet();
-    context.body_armor = character.Get_Equiped_Body_Armor();
-    context.leg_armor  = character.Get_Equiped_Leg_Armor();
-    context.boots      = character.Get_Equiped_Boots();
-    context.ring1      = character.Get_Equiped_Ring1();
-    context.ring2      = character.Get_Equiped_Ring2();
-    context.shield     = character.Get_Equiped_Shield();
-    context.amulet     = character.Get_Equiped_Amulet();
-    context.utility1   = character.Get_Equiped_Utility1();
+    context.weapon            = character.Get_Equiped_Weapon();
+    context.helmet            = character.Get_Equiped_Helmet();
+    context.body_armor        = character.Get_Equiped_Body_Armor();
+    context.leg_armor         = character.Get_Equiped_Leg_Armor();
+    context.boots             = character.Get_Equiped_Boots();
+    context.ring1             = character.Get_Equiped_Ring1();
+    context.ring2             = character.Get_Equiped_Ring2();
+    context.shield            = character.Get_Equiped_Shield();
+    context.amulet            = character.Get_Equiped_Amulet();
+    context.utility1          = character.Get_Equiped_Utility1();
+    context.utility1_quantity = character.Get_Equiped_Utility1_Quantity();
     if (l_Character_Combat_Level > 9)
     {
         context.artifact1 = "novice_guide";
+    }
+    if (l_Character_Combat_Level > 4)
+    {
+        if (character.Get_Equiped_Amulet().empty() &&
+            InventoryManager::singleton.Get_Bank_Item_Count(Keywords::Items::Amulets::life_amulet) > 0)
+        {
+            context.amulet = Keywords::Items::Amulets::life_amulet;
+            l_Chararcter_Max_Life += 30;
+        }
     }
 
     InventoryManager::singleton.Get_Fight_Items(l_Character_Combat_Level, l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor, l_Boots,
@@ -250,6 +267,19 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     armor_handler(l_Rings1, context.ring1);
     armor_handler(l_Rings2, context.ring2);
     armor_handler(l_Amulets, context.amulet);
+    {
+        if (context.utility1.size())
+        {
+            l_Equiped_Healing_Potion.code                   = context.utility1.c_str();
+            l_Equiped_Healing_Potion.inventory_target_count = context.utility1_quantity;
+            auto it = std::find_if(m_Healing_Potions.begin(), m_Healing_Potions.end(),
+                                   [&](const HealItem& h) { return strcmp(h.code, l_Equiped_Healing_Potion.code) == 0; });
+            if (it != m_Healing_Potions.end())
+            {
+                l_Equiped_Healing_Potion.heal = it->heal;
+            }
+        }
+    }
 
     context.turn_count = 0;
     bool l_Player_Turn = true;
@@ -260,10 +290,10 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
 
         if (l_Chararcter_Max_Life < character.Get_Life_Max() / 2)
         {
-            if (l_Small_Potion_Count > 0)
+            if (l_Equiped_Healing_Potion.inventory_target_count > 0)
             {
-                l_Chararcter_Max_Life += 30;
-                l_Small_Potion_Count--;
+                l_Chararcter_Max_Life += l_Equiped_Healing_Potion.heal;
+                l_Equiped_Healing_Potion.inventory_target_count--;
             }
         }
 
@@ -285,22 +315,58 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
 
     if (l_Chararcter_Max_Life <= 0)
     {
+        SYSTEM_PRINT("may win using potions?");
+        /// Even while healing potions character failed
+        const int l_Character_Alchemy_Level = character.Get_Skill_Level(Keywords::Skills::alchemy);
+        for (std::size_t ii = 0; ii < m_Healing_Potions.size(); ii++)
+        {
+            const HealItem& hi = m_Healing_Potions[ii];
+            if (l_Character_Alchemy_Level < hi.required_level)
+            {
+                SYSTEM_PRINT("can't equip '%s' (level: %d required: %d)", hi.code, l_Character_Alchemy_Level, hi.required_level);
+                continue;
+            }
+
+            const int bank_item_count = InventoryManager::singleton.Get_Bank_Item_Count(hi.code);
+
+            if (bank_item_count <= 0)
+            {
+                SYSTEM_PRINT("no '%s' in bank", hi.code);
+                continue;
+            }
+
+            const int max_potion_count = std::min(bank_item_count, character.Get_Inventory_Remaining_Space());
+
+            if ((l_Chararcter_Max_Life + max_potion_count * hi.heal) > 0)
+            {
+                context.utility1          = hi.code;
+                context.utility1_quantity = max_potion_count;
+                l_Chararcter_Max_Life += max_potion_count * hi.heal;
+                SYSTEM_PRINT("will equip with '%s' x%d (l_Chararcter_Max_Life: %d)", hi.code, max_potion_count, l_Chararcter_Max_Life);
+                break;
+            }
+        }
+    }
+
+    /*if (l_Chararcter_Max_Life <= 0)
+    {
         if (l_Chararcter_Max_Life > -30 && (character.Get_Equiped_Utility1() == Keywords::Items::Utilities::small_health_potion))
         {
             l_Chararcter_Max_Life += 30;
             context.utility1 = Keywords::Items::Utilities::small_health_potion;
         }
-    }
+    }*/
 
     context.should_heal = character.Get_Life_Current() < (character.Get_Life_Max() - l_Chararcter_Max_Life);
 
     SYSTEM_PRINT(
         "vs '%s': %s (hp diff: %d - turn count: %d - heal: %d - weapon: '%s' - helmet: '%s' body_armor: '%s' leg_armor: '%s' boots: "
-        "'%s' shield: '%s' ring1: '%s' ring2: '%s' amulet: '%s' utility1: '%s' artifact1: '%s' artifact2: '%s' artifact3: '%s'",
+        "'%s' shield: '%s' ring1: '%s' ring2: '%s' amulet: '%s' utility1: '%s' x%d artifact1: '%s' artifact2: '%s' artifact3: '%s'",
         monster, (l_Chararcter_Max_Life > 0) ? "win" : "loose", l_Chararcter_Max_Life - l_Monster_Life, context.turn_count,
         context.should_heal, context.weapon.c_str(), context.helmet.c_str(), context.body_armor.c_str(), context.leg_armor.c_str(),
         context.boots.c_str(), context.shield.c_str(), context.ring1.c_str(), context.ring2.c_str(), context.amulet.c_str(),
-        context.utility1.c_str(), context.artifact1.c_str(), context.artifact2.c_str(), context.artifact3.c_str());
+        context.utility1.c_str(), context.utility1_quantity, context.artifact1.c_str(), context.artifact2.c_str(),
+        context.artifact3.c_str());
 
     return l_Chararcter_Max_Life > 0;
 }
@@ -327,11 +393,11 @@ const MapCoord* FightSystem::Get_Monster_Coord(const char* monster)
 }
 
 void FightSystem::Handle_Equipment(const System* sys, Character& character, const MapCoord& bank_pos, const char* equipment_name,
-                                   const char* equipmenet_type)
+                                   int equipement_count, const char* equipmenet_type)
 {
     if (character.Is_Empty() == true)
     {
-        if (character.Get_Item_Count(equipment_name) < 1)
+        if (character.Get_Item_Count(equipment_name) < equipement_count)
         {
             if (character.Should_Move(bank_pos) == true)
             {
@@ -342,15 +408,17 @@ void FightSystem::Handle_Equipment(const System* sys, Character& character, cons
                 if (character.Get_Equiped_Item(equipmenet_type).size())
                 {
                     const char* equiped_item = character.Get_Equiped_Item(equipmenet_type).c_str();
-                    character.Add_Unequip_Item(sys, equipmenet_type);
+                    character.Add_Unequip_Item(sys, equipmenet_type, 1);  /// "1": has to be updated with utilities
                     character.Add_Deposit_Item(sys, { equiped_item, character.Get_Item_Count(equiped_item) + 1 });
+                    return;
                 }
-                character.Add_Withdraw_Item(sys, { equipment_name, 1 });
+                character.Add_Withdraw_Item(sys, { equipment_name, equipement_count - character.Get_Item_Count(equipment_name) });
+                character.Add_Equip_Item(sys, equipmenet_type, equipment_name, equipement_count - character.Get_Item_Count(equipment_name));
             }
         }
         else
         {
-            character.Add_Equip_Item(sys, equipmenet_type, equipment_name);
+            character.Add_Equip_Item(sys, equipmenet_type, equipment_name, equipement_count);
         }
     }
 }

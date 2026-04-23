@@ -68,14 +68,14 @@ void Character::Add_UseItem(const System* sys, const ItemOrder& use)
     m_Orders.push_back(CharacterOrder::CreateUseItem(sys, use));
 }
 
-void Character::Add_Unequip_Item(const System* sys, const char* slot)
+void Character::Add_Unequip_Item(const System* sys, const char* slot, int item_quantity)
 {
-    m_Orders.push_back(CharacterOrder::CreateUnequipItem(sys, slot));
+    m_Orders.push_back(CharacterOrder::CreateUnequipItem(sys, slot, item_quantity));
 }
 
-void Character::Add_Equip_Item(const System* sys, const char* slot, const char* item_code)
+void Character::Add_Equip_Item(const System* sys, const char* slot, const char* item_code, int item_quantity)
 {
-    m_Orders.push_back(CharacterOrder::CreateEquipItem(sys, slot, item_code));
+    m_Orders.push_back(CharacterOrder::CreateEquipItem(sys, slot, item_code, item_quantity));
 }
 
 void Character::Add_Gathering(const System* sys)
@@ -159,9 +159,9 @@ void Character::Update(float elapsed_time)
                     break;
                 case CharacterOrderType::Fight:
                     m_Remaining_Timeout = Client::singleton.mt_Character_Fight(m_Character_Name, m_Character_Cache);
-                    printf("raw: '%s'\n", m_Character_Cache.dump().c_str());
+                    // printf("raw: '%s'\n", m_Character_Cache.dump().c_str());
                     m_Character_Cache = m_Character_Cache[0];
-                    printf("filtered: '%s'\n", m_Character_Cache.dump().c_str());
+                    // printf("filtered: '%s'\n", m_Character_Cache.dump().c_str());
                     break;
                 case CharacterOrderType::Rest:
                     m_Remaining_Timeout = Client::singleton.mt_Character_Rest(m_Character_Name, m_Character_Cache);
@@ -173,12 +173,13 @@ void Character::Update(float elapsed_time)
                     m_Remaining_Timeout = Client::singleton.mt_Character_Use_Item(m_Character_Name, l_Order.item_order, m_Character_Cache);
                     break;
                 case CharacterOrderType::UnequipItem:
-                    m_Remaining_Timeout =
-                        Client::singleton.mt_Character_Unequip_Item(m_Character_Name, l_Order.slot.c_str(), m_Character_Cache);
+                    m_Remaining_Timeout = Client::singleton.mt_Character_Unequip_Item(m_Character_Name, l_Order.slot.c_str(),
+                                                                                      l_Order.item_order.quantity, m_Character_Cache);
                     break;
                 case CharacterOrderType::EquipItem:
-                    m_Remaining_Timeout = Client::singleton.mt_Character_Equip_Item(m_Character_Name, l_Order.slot.c_str(),
-                                                                                    l_Order.item_order.code.c_str(), m_Character_Cache);
+                    m_Remaining_Timeout =
+                        Client::singleton.mt_Character_Equip_Item(m_Character_Name, l_Order.slot.c_str(), l_Order.item_order.code.c_str(),
+                                                                  l_Order.item_order.quantity, m_Character_Cache);
                     break;
                 case CharacterOrderType::Gathering:
                     m_Remaining_Timeout = Client::singleton.mt_Character_Gather(m_Character_Name, m_Character_Cache);
@@ -343,74 +344,82 @@ int Character::Get_Item_Count(const char* object_code) const
 
 std::string Character::Get_Equiped_Weapon(void) const
 {
-    return m_Character_Cache["weapon_slot"];
+    return m_Character_Cache[Keywords::EquipementSlot::weapon_slot];
 }
 
 std::string Character::Get_Equiped_Helmet(void) const
 {
-    return m_Character_Cache["helmet_slot"];
+    return m_Character_Cache[Keywords::EquipementSlot::helmet_slot];
 }
 
 std::string Character::Get_Equiped_Body_Armor(void) const
 {
-    return m_Character_Cache["body_armor_slot"];
+    return m_Character_Cache[Keywords::EquipementSlot::body_armor_slot];
 }
 
 std::string Character::Get_Equiped_Leg_Armor(void) const
 {
-    return m_Character_Cache["leg_armor_slot"];
+    return m_Character_Cache[Keywords::EquipementSlot::leg_armor_slot];
 }
 
 std::string Character::Get_Equiped_Boots(void) const
 {
-    return m_Character_Cache["boots_slot"];
+    return m_Character_Cache[Keywords::EquipementSlot::boots_slot];
 }
 
 std::string Character::Get_Equiped_Shield(void) const
 {
-    return m_Character_Cache["shield_slot"];
+    return m_Character_Cache[Keywords::EquipementSlot::shield_slot];
 }
 
 std::string Character::Get_Equiped_Amulet(void) const
 {
-    return m_Character_Cache["amulet_slot"];
+    return m_Character_Cache[Keywords::EquipementSlot::amulet_slot];
 }
 
 std::string Character::Get_Equiped_Ring1(void) const
 {
-    return m_Character_Cache["ring1_slot"];
+    return m_Character_Cache[Keywords::EquipementSlot::ring1_slot];
 }
 
 std::string Character::Get_Equiped_Ring2(void) const
 {
-    return m_Character_Cache["ring2_slot"];
+    return m_Character_Cache[Keywords::EquipementSlot::ring2_slot];
 }
 
 std::string Character::Get_Equiped_Utility1(void) const
 {
-    return m_Character_Cache["utility1_slot"];
+    return m_Character_Cache[Keywords::EquipementSlot::utility1_slot];
+}
+
+int Character::Get_Equiped_Utility1_Quantity(void) const
+{
+    return m_Character_Cache[Keywords::EquipementSlot::utility1_slot_quantity];
 }
 
 std::string Character::Get_Equiped_Artifact1(void) const
 {
-    return m_Character_Cache["artifact1_slot"];
+    return m_Character_Cache[Keywords::EquipementSlot::artifact1_slot];
 }
 
 std::string Character::Get_Equiped_Artifact2(void) const
 {
-    return m_Character_Cache["artifact2_slot"];
+    return m_Character_Cache[Keywords::EquipementSlot::artifact2_slot];
 }
 
 std::string Character::Get_Equiped_Artifact3(void) const
 {
-    return m_Character_Cache["artifact3_slot"];
+    return m_Character_Cache[Keywords::EquipementSlot::artifact3_slot];
 }
 
 bool Character::Is_Item_Equiped(const char* item_code) const
 {
     constexpr const std::array<const char*, 10> l_Slots = {
-        { "weapon_slot", "rune_slot", "shield_slot", "helmet_slot", "body_armor_slot", "leg_armor_slot", "boots_slot", "ring1_slot",
-         "ring2_slot", "amulet_slot" }  /// Some are missing
+        { Keywords::EquipementSlot::weapon_slot, Keywords::EquipementSlot::rune_slot, Keywords::EquipementSlot::shield_slot,
+         Keywords::EquipementSlot::helmet_slot, Keywords::EquipementSlot::body_armor_slot, Keywords::EquipementSlot::leg_armor_slot,
+         Keywords::EquipementSlot::boots_slot, Keywords::EquipementSlot::ring1_slot, Keywords::EquipementSlot::ring2_slot,
+         Keywords::EquipementSlot::amulet_slot }
+        /// Some are missing
     };
     for (std::size_t ii = 0; ii < l_Slots.size(); ii++)
     {

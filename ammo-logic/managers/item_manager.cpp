@@ -370,7 +370,7 @@ void ItemCraftingManager::Get_Item(const System* sys, Character& character, cons
                             {
                                 // character.Add_Unequip_Item("weapon");
                             }
-                            character.Add_Equip_Item(sys, "weapon", l_Weapon);
+                            character.Add_Equip_Item(sys, "weapon", l_Weapon, 1);
                         }
                         else if (InventoryManager::singleton.Get_Bank_Item_Count(l_Weapon) > 0)
                         {
@@ -382,7 +382,7 @@ void ItemCraftingManager::Get_Item(const System* sys, Character& character, cons
                             else
                             {
                                 character.Add_Withdraw_Item(sys, { l_Weapon, 1 });
-                                character.Add_Equip_Item(sys, "weapon", l_Weapon);
+                                character.Add_Equip_Item(sys, "weapon", l_Weapon, 1);
                             }
                         }
                     }

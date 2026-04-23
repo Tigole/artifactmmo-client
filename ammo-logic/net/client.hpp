@@ -35,8 +35,9 @@ public:
     int mt_Character_Task_New(const char* character_name, nlohmann::json& character_cache);
     int mt_Character_Task_Trade(const char* character_name, const ItemOrder& trade, nlohmann::json& character_cache);
     int mt_Character_Task_Complete(const char* character_name, nlohmann::json& character_cache);
-    int mt_Character_Unequip_Item(const char* character_name, const char* slot, nlohmann::json& character_cache);
-    int mt_Character_Equip_Item(const char* character_name, const char* slot, const char* item_code, nlohmann::json& character_cache);
+    int mt_Character_Unequip_Item(const char* character_name, const char* slot, int item_quantity, nlohmann::json& character_cache);
+    int mt_Character_Equip_Item(const char* character_name, const char* slot, const char* item_code, int item_quantity,
+                                nlohmann::json& character_cache);
     int mt_Character_Gather(const char* character_name, nlohmann::json& character_cache);
     int mt_Character_Deposit_Item(const char* character_name, const ItemOrder& deposit, nlohmann::json& character_cache);
     int mt_Character_Withdraw_Item(const char* character_name, const ItemOrder& withdraw, nlohmann::json& character_cache);

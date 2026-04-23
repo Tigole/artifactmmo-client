@@ -1,5 +1,6 @@
 #include "system.hpp"
 
+#include "keywords.hpp"
 #include "managers/inventory_manager.hpp"
 #include "managers/item_manager.hpp"
 #include "managers/resource_manager.hpp"
@@ -131,7 +132,7 @@ void System::Make_Gather(Character& character, MapCoord spot_coord, const char* 
             if (character.Get_Item_Count(weapon) > 0)
             {
                 SYSTEM_PRINT("will equip '%s'", weapon);
-                character.Add_Equip_Item(this, "weapon", weapon);
+                character.Add_Equip_Item(this, Keywords::ItemSlot::weapon, weapon, 1);
                 return;
             }
             /// if in bank

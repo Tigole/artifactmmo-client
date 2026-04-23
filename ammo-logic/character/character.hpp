@@ -39,35 +39,31 @@ struct CharacterOrder
 {
     static CharacterOrder CreateMove(const System* sys, const MapCoord& coord)
     {
-        return { sys, CharacterOrderType::Move, coord, ItemOrder {}, "" };
+        return CharacterOrder(sys, CharacterOrderType::Move, coord, {}, "");
     }
     static CharacterOrder CreateFight(const System* sys)
     {
-        return { sys, CharacterOrderType::Fight, MapCoord {}, ItemOrder {}, "" };
+        return CharacterOrder(sys, CharacterOrderType::Fight, {}, {}, "");
     }
     static CharacterOrder CreateRest(const System* sys)
     {
-        return { sys, CharacterOrderType::Rest, MapCoord {}, ItemOrder {}, "" };
+        return CharacterOrder(sys, CharacterOrderType::Rest, {}, {}, "");
     }
     static CharacterOrder CreateCraft(const System* sys, const ItemOrder& craft)
     {
-        return { sys, CharacterOrderType::Craft, MapCoord {}, craft, "" };
+        return CharacterOrder(sys, CharacterOrderType::Craft, {}, craft, "");
     }
     static CharacterOrder CreateUseItem(const System* sys, const ItemOrder& item)
     {
-        return { sys, CharacterOrderType::UseItem, MapCoord {}, item, "" };
+        return CharacterOrder(sys, CharacterOrderType::UseItem, {}, item, "");
     }
-    static CharacterOrder CreateUnequipItem(const System* sys, const char* slot)
+    static CharacterOrder CreateUnequipItem(const System* sys, const char* slot, int item_quantity)
     {
-        return { sys, CharacterOrderType::UnequipItem, MapCoord {}, ItemOrder {}, slot };
+        return CharacterOrder(sys, CharacterOrderType::UnequipItem, {}, { "", item_quantity }, slot);
     }
-    static CharacterOrder CreateEquipItem(const System* sys, const char* slot, const char* item_code)
+    static CharacterOrder CreateEquipItem(const System* sys, const char* slot, const char* item_code, int item_quantity)
     {
-        return {
-            sys, CharacterOrderType::EquipItem, MapCoord {},
-               ItemOrder { item_code, 1 },
-               slot
-        };
+        return CharacterOrder(sys, CharacterOrderType::EquipItem, MapCoord {}, ItemOrder { item_code, item_quantity }, slot);
     }
     static CharacterOrder CreateGathering(const System* sys)
     {
@@ -175,8 +171,8 @@ public:
     void Add_Rest(const System* sys);
     void Add_Craft(const System* sys, const ItemOrder& craft);
     void Add_UseItem(const System* sys, const ItemOrder& use);
-    void Add_Unequip_Item(const System* sys, const char* slot);
-    void Add_Equip_Item(const System* sys, const char* slot, const char* item_code);
+    void Add_Unequip_Item(const System* sys, const char* slot, int item_quantity);
+    void Add_Equip_Item(const System* sys, const char* slot, const char* item_code, int item_quantity);
     void Add_Gathering(const System* sys);
     void Add_Recycle_Item(const System* sys, const ItemOrder& recycle);
     void Add_Task_New(const System* sys);
@@ -211,6 +207,7 @@ public:
     std::string Get_Equiped_Ring1(void) const;
     std::string Get_Equiped_Ring2(void) const;
     std::string Get_Equiped_Utility1(void) const;
+    int Get_Equiped_Utility1_Quantity(void) const;
     std::string Get_Equiped_Artifact1(void) const;
     std::string Get_Equiped_Artifact2(void) const;
     std::string Get_Equiped_Artifact3(void) const;
