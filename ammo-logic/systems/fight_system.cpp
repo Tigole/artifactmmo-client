@@ -199,9 +199,17 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
 
     auto armor_handler = [&](const std::vector<InventoryArmorPart>& armors, std::string& context_armor)
     {
-#error "1rst: check hp boost, then check damages ?"
+        int current_armor_hp = ItemManager::singleton.Get_Armor_Hp(context_armor.c_str());
         for (std::size_t ii = 0; ii < armors.size(); ii++)
         {
+            const int l_Hp = ItemManager::singleton.Get_Armor_Hp(armors[ii].code.c_str());
+            if ((l_Hp >= current_armor_hp) && (armors[ii].code != context_armor))
+            {
+                current_armor_hp       = l_Hp;
+                l_Character_Resistance = armors[ii].resistances;
+                context_armor          = armors[ii].code;
+                continue;
+            }
             const int l_Damages = Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, armors[ii].resistances);
             if (l_Damages < l_Monster_Dmg)
             {
@@ -226,15 +234,6 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     if (l_Character_Combat_Level > 9)
     {
         context.artifact1 = "novice_guide";
-    }
-    if (l_Character_Combat_Level > 4)
-    {
-        if (character.Get_Equiped_Amulet().empty() &&
-            InventoryManager::singleton.Get_Bank_Item_Count(Keywords::Items::Amulets::life_amulet) > 0)
-        {
-            context.amulet = Keywords::Items::Amulets::life_amulet;
-            l_Chararcter_Max_Life += 30;
-        }
     }
 
     InventoryManager::singleton.Get_Fight_Items(l_Character_Combat_Level, l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor, l_Boots,
