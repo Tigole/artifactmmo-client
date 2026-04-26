@@ -70,6 +70,8 @@ WeaponCraftSystem WeaponCraftSystem::singleton;
 
 WeaponCraftSystem::WeaponCraftSystem() : CraftOrderSystem("WeaponCraftSystem")
 {
+    m_Items.push_back({ Keywords::Items::Weapons::mushmush_bow, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::mushstaff, 1 });
     m_Items.push_back({ Keywords::Items::Weapons::iron_sword, 1 });
     m_Items.push_back({ Keywords::Items::Weapons::fire_staff, 1 });
     m_Items.push_back({ Keywords::Items::Weapons::water_bow, 1 });
@@ -107,6 +109,7 @@ CookingSystem CookingSystem::singleton;
 
 CookingSystem::CookingSystem() : CraftOrderSystem("CookingSystem")
 {
+    m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_wolf_meat, 50 });
     m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_shrimp, 50 });
     m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_beef, 50 });
     m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_gudgeon, 50 });
@@ -153,12 +156,15 @@ GearcraftingSystem GearcraftingSystem::singleton;
 GearcraftingSystem::GearcraftingSystem() : CraftOrderSystem("GearcraftingSystem")
 {
     constexpr const int target_amout = 1;
+    m_Items.push_back({ Keywords::Items::Helmets::mushmush_wizard_hat, target_amout });
+    m_Items.push_back({ Keywords::Items::Helmets::adventurer_helmet, target_amout });
+    m_Items.push_back({ Keywords::Items::BodyArmors::mushmush_jacket, target_amout });
+    m_Items.push_back({ Keywords::Items::Boots::adventurer_boots, target_amout });
     m_Items.push_back({ Keywords::Items::Helmets::copper_helmet, target_amout });
     m_Items.push_back({ Keywords::Items::Boots::copper_boots, target_amout });
     m_Items.push_back({ Keywords::Items::LegArmors::copper_legs_armor, target_amout });
     m_Items.push_back({ Keywords::Items::Shields::wooden_shield, target_amout });
     m_Items.push_back({ Keywords::Items::BodyArmors::feather_coat, target_amout });
-    m_Items.push_back({ Keywords::Items::Amulets::life_amulet, target_amout });
     m_Items.push_back({ Keywords::Items::Boots::leather_boots, target_amout });
     m_Items.push_back({ Keywords::Items::BodyArmors::leather_armor, target_amout });
     m_Items.push_back({ Keywords::Items::Helmets::adventurer_helmet, target_amout });
@@ -174,7 +180,9 @@ GearcraftingSystem::GearcraftingSystem() : CraftOrderSystem("GearcraftingSystem"
 JewerlyCraftSystem::JewerlyCraftSystem() : CraftOrderSystem("JewerlyCraftSystem")
 {
     constexpr const int target_amount = 1;
+    // m_Items.push_back({ Keywords::Items::Rings::copper_ring, target_amount }); // Done with level system
     m_Items.push_back({ Keywords::Items::Amulets::life_amulet, target_amount });
+    m_Items.push_back({ Keywords::Items::Rings::life_ring, target_amount });
 
     m_Workshop_Coord = { 1, 3 };
 }
