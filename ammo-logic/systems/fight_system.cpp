@@ -384,11 +384,7 @@ int FightSystem::Calculate_Effective_Damages(const std::array<int, 4>& attack, c
          static_cast<int>(round(attack[3] * (1.0f + 0.01f * (damages[3] - resistance[3])))) }
     };
     const int sum = l_Tmp[0] + l_Tmp[1] + l_Tmp[2] + l_Tmp[3];
-    /*for (std::size_t ii = 0; ii < 4 && false; ii++)
-    {
-        printf("[%zu] att: %d dmg: %d res: %d tot: %d\n", ii, attack[ii], damages[ii], resistance[ii], l_Tmp[ii]);
-    }*/
-    return round((sum * critical_strike) / 100.0f);
+    return sum + round((sum * critical_strike) / 100.0f);
 }
 
 const MapCoord* FightSystem::Get_Monster_Coord(const char* monster)
