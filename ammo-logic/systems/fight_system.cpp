@@ -1,5 +1,6 @@
 #include "fight_system.hpp"
 
+#include <algorithm>
 #include <cmath>
 
 #include "keywords.hpp"
@@ -285,7 +286,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     }
 
     context.turn_count = 0;
-    bool l_Player_Turn = true;
+    bool l_Player_Turn = character.Get_Initiative() > MonsterManager::singleton.Get_Monster_Initiative(monster);
     while ((l_Monster_Life > 0) && (l_Chararcter_Max_Life > 0))
     {
         const int l_Character_Dmg = Calculate_Effective_Damages(l_Character_Attack, l_Character_Damages, l_Monster_Resistance);

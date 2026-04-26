@@ -330,6 +330,11 @@ std::array<int, 4> Character::Get_Resistance(void) const
     };
 }
 
+int Character::Get_Initiative(void) const
+{
+    return m_Character_Cache["initiative"].get<int>();
+}
+
 int Character::Get_Item_Count(const char* object_code) const
 {
     for (auto it = m_Character_Cache["inventory"].begin(); it != m_Character_Cache["inventory"].end(); it++)

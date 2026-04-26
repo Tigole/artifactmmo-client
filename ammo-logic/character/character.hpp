@@ -195,6 +195,7 @@ public:
     std::array<int, 4> Get_Attack(void) const;
     std::array<int, 4> Get_Damage(void) const;
     std::array<int, 4> Get_Resistance(void) const;
+    int Get_Initiative(void) const;
 
     int Get_Item_Count(const char* object_code) const;
     std::string Get_Equiped_Weapon(void) const;
