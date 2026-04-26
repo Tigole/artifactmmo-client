@@ -143,7 +143,7 @@ MiningLevelSystem::MiningLevelSystem() : LevelGatherSystem("MiningLevelSystem")
     m_Equipements        = &MiningGatheringSystem::singleton.Get_Equipements();
     m_Default_Spot_Coord = { 2, 0 };
     m_GT_10_Spot_Coord   = { 1, 7 };
-    m_GT_20_Spot_Coord   = m_Default_Spot_Coord;
+    m_GT_20_Spot_Coord   = { 1, 6 };
     m_GT_30_Spot_Coord   = m_Default_Spot_Coord;
     m_GT_40_Spot_Coord   = m_Default_Spot_Coord;
 }
@@ -155,7 +155,7 @@ WoodcuttingLevelSystem::WoodcuttingLevelSystem() : LevelGatherSystem("Woodcuttin
     m_Default_Spot_Coord = { 6, 1 };
     m_GT_10_Spot_Coord   = { 2, 6 };
     m_GT_20_Spot_Coord   = { 3, 5 };
-    m_GT_30_Spot_Coord   = m_Default_Spot_Coord;
+    m_GT_30_Spot_Coord   = { 9, 6 };
     m_GT_40_Spot_Coord   = { 4, 14 };
 }
 
