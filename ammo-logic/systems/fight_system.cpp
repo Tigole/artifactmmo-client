@@ -321,7 +321,8 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
                      MonsterManager::singleton.Get_Monster_Hp(monster), l_Character_Dmg);
     }
 
-    if (l_Chararcter_Max_Life <= 0)
+    const int level_diff = l_Character_Combat_Level - MonsterManager::singleton.Get_Monster_Level(monster);
+    if (l_Chararcter_Max_Life <= 0 && (level_diff < 10))
     {
         SYSTEM_PRINT("may win using potions?");
         /// Even while healing potions character failed
