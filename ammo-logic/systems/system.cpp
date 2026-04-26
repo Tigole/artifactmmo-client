@@ -66,8 +66,8 @@ int System::Make_Craft(Character& character, MapCoord workshop_coord, const char
                                                     r->required_items[ii].quantity);
             SYSTEM_PRINT(
                 "%zu required item (character_inventory_space_required: %d character.Get_Inventory_Remaining_Space(): %d "
-                "r->required_items[%d].quantity: %d "
-                "InventoryManager::singleton.Get_Bank_Item_Count(r->required_items[%d].code.c_str()): %d craft_count: %d)",
+                "r->required_items[%zu].quantity: %d "
+                "InventoryManager::singleton.Get_Bank_Item_Count(r->required_items[%zu].code.c_str()): %d craft_count: %d)",
                 r->required_items.size(), character_inventory_space_required, character.Get_Inventory_Remaining_Space(), ii,
                 r->required_items[ii].quantity, ii, InventoryManager::singleton.Get_Bank_Item_Count(r->required_items[ii].code.c_str()),
                 craft_count);
@@ -103,7 +103,7 @@ void System::Make_Gather(Character& character, MapCoord spot_coord, const char* 
 
     if (character.Get_Inventory_Remaining_Space() < ResourceManager::singleton.Get_Required_Inventory_Space(spot_coord))
     {
-        SYSTEM_PRINT("has to make space", character.Get_Character());
+        SYSTEM_PRINT("has to make space");
         character.Make_Clear_Inventory(this, nullptr);
         return;
     }
