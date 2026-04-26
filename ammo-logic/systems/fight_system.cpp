@@ -291,7 +291,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
 
     context.turn_count = 0;
     bool l_Player_Turn = character.Get_Initiative() > MonsterManager::singleton.Get_Monster_Initiative(monster);
-    while ((l_Monster_Life > 0) && (l_Chararcter_Max_Life > 0))
+    while (l_Monster_Life > 0)
     {
         const int l_Character_Dmg = Calculate_Effective_Damages(l_Character_Attack, l_Character_Damages, l_Monster_Resistance);
         const int l_Monster_Dmg   = Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, l_Character_Resistance);
@@ -334,7 +334,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
                 SYSTEM_PRINT("can't equip '%s' (level: %d required: %d)", hi.code, l_Character_Combat_Level, hi.required_level);
                 continue;
             }
-
+            // #error "Have to count exactly how many are required and get all but equip what is needed"
             const int bank_item_count = InventoryManager::singleton.Get_Bank_Item_Count(hi.code);
 
             if (bank_item_count <= 0)
@@ -343,27 +343,20 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
                 continue;
             }
 
-            const int max_potion_count = std::min(bank_item_count, character.Get_Inventory_Remaining_Space());
-
-            if ((l_Chararcter_Max_Life + max_potion_count * hi.heal) > 0)
+            const int max_potion_count      = std::min(bank_item_count, character.Get_Inventory_Remaining_Space() - 1);
+            const int hp_to_win             = abs(l_Chararcter_Max_Life) + 1;
+            const int required_potion_count = ceil((float)hp_to_win / hi.heal);
+            SYSTEM_PRINT("may win using '%s' x%d", hi.code, required_potion_count);
+            if ((required_potion_count < max_potion_count) && (required_potion_count < 5))
             {
                 context.utility1          = hi.code;
-                context.utility1_quantity = max_potion_count;
-                l_Chararcter_Max_Life += max_potion_count * hi.heal;
-                SYSTEM_PRINT("will equip with '%s' x%d (l_Chararcter_Max_Life: %d)", hi.code, max_potion_count, l_Chararcter_Max_Life);
+                context.utility1_quantity = required_potion_count;
+                l_Chararcter_Max_Life += required_potion_count * hi.heal;
+                SYSTEM_PRINT("will equip with '%s' x%d (l_Chararcter_Max_Life: %d)", hi.code, required_potion_count, l_Chararcter_Max_Life);
                 break;
             }
         }
     }
-
-    /*if (l_Chararcter_Max_Life <= 0)
-    {
-        if (l_Chararcter_Max_Life > -30 && (character.Get_Equiped_Utility1() == Keywords::Items::Utilities::small_health_potion))
-        {
-            l_Chararcter_Max_Life += 30;
-            context.utility1 = Keywords::Items::Utilities::small_health_potion;
-        }
-    }*/
 
     context.should_heal = character.Get_Life_Current() < (character.Get_Life_Max() - l_Chararcter_Max_Life);
 
@@ -413,6 +406,11 @@ void FightSystem::Handle_Equipment(const System* sys, Character& character, cons
             }
             else
             {
+                const int item_count_to_withdraw = /*strcmp(equipmenet_type, Keywords::EquipementSlot::utility1_slot) == 0
+                                                     ? InventoryManager::singleton.Get_Bank_Item_Count(equipment_name)
+                                                     : */
+                                                   equipement_count - character.Get_Item_Count(equipment_name);
+                character.Add_Withdraw_Item(sys, { equipment_name, item_count_to_withdraw });
                 if (character.Get_Equiped_Item(equipmenet_type).size())
                 {
                     const char* equiped_item = character.Get_Equiped_Item(equipmenet_type).c_str();
@@ -420,7 +418,6 @@ void FightSystem::Handle_Equipment(const System* sys, Character& character, cons
                     character.Add_Deposit_Item(sys, { equiped_item, character.Get_Item_Count(equiped_item) + 1 });
                     return;
                 }
-                character.Add_Withdraw_Item(sys, { equipment_name, equipement_count - character.Get_Item_Count(equipment_name) });
                 character.Add_Equip_Item(sys, equipmenet_type, equipment_name, equipement_count - character.Get_Item_Count(equipment_name));
             }
         }
