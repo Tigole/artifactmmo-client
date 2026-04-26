@@ -183,8 +183,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     std::vector<InventoryArmorPart> l_Body_Armor;
     std::vector<InventoryArmorPart> l_Leg_Armor;
     std::vector<InventoryArmorPart> l_Boots;
-    std::vector<InventoryArmorPart> l_Rings1;
-    std::vector<InventoryArmorPart> l_Rings2;
+    std::vector<InventoryArmorPart> l_Rings;
     std::vector<InventoryArmorPart> l_Shields;
     std::vector<InventoryArmorPart> l_Amulets;
     int l_Character_Dmg = Calculate_Effective_Damages(l_Character_Attack, l_Character_Damages, l_Monster_Resistance);
@@ -237,9 +236,9 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     }
 
     InventoryManager::singleton.Get_Fight_Items(l_Character_Combat_Level, l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor, l_Boots,
-                                                l_Shields, l_Rings1, l_Rings2, l_Amulets);
+                                                l_Shields, l_Rings, l_Amulets);
     character.Get_Fight_Items(ItemManager::singleton, l_Character_Combat_Level, l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor, l_Boots,
-                              l_Shields, l_Rings1, l_Rings2, l_Amulets);
+                              l_Shields, l_Rings, l_Amulets);
 
     SYSTEM_PRINT("equipped weapon: '%s'", context.weapon.c_str());
     for (std::size_t ii = 0; ii < l_Weapons.size(); ii++)
@@ -263,8 +262,13 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     armor_handler(l_Leg_Armor, context.leg_armor);
     armor_handler(l_Boots, context.boots);
     armor_handler(l_Shields, context.shield);
-    armor_handler(l_Rings1, context.ring1);
-    armor_handler(l_Rings2, context.ring2);
+    const std::string currentRing1 = context.ring1;
+    armor_handler(l_Rings, context.ring1);
+    if (currentRing1 != context.ring1)
+    {
+        l_Rings.erase(std::find_if(l_Rings.begin(), l_Rings.end(), [&](const InventoryArmorPart& p) { return p.code == context.ring1; }));
+    }
+    armor_handler(l_Rings, context.ring2);
     armor_handler(l_Amulets, context.amulet);
     {
         if (context.utility1.size())

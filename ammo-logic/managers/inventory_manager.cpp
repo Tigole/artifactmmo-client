@@ -55,8 +55,7 @@ MapCoord InventoryManager::Get_Bank_Nearest_Coord(MapCoord coord) const
 void InventoryManager::Get_Fight_Items(int level, std::vector<InventoryWeapons>& weapons, std::vector<InventoryArmorPart>& helmets,
                                        std::vector<InventoryArmorPart>& body_armors, std::vector<InventoryArmorPart>& leg_armors,
                                        std::vector<InventoryArmorPart>& boots, std::vector<InventoryArmorPart>& shields,
-                                       std::vector<InventoryArmorPart>& rings1, std::vector<InventoryArmorPart>& rings2,
-                                       std::vector<InventoryArmorPart>& amulets) const
+                                       std::vector<InventoryArmorPart>& rings, std::vector<InventoryArmorPart>& amulets) const
 {
     auto armor_handler = [this](int level, const char* armor_type, const char* item_code, std::vector<InventoryArmorPart>& armors)
     {
@@ -83,8 +82,7 @@ void InventoryManager::Get_Fight_Items(int level, std::vector<InventoryWeapons>&
         armor_handler(level, "leg_armor", item_code, leg_armors);
         armor_handler(level, "boots", item_code, boots);
         armor_handler(level, "amulet", item_code, amulets);
-        armor_handler(level, "ring", item_code, rings1);
-        // armor_handler(level, "ring", item_code, rings2);
+        armor_handler(level, "ring", item_code, rings);
         armor_handler(level, "shield", item_code, shields);
     }
 }

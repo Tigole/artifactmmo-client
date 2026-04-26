@@ -33,8 +33,7 @@ public:
     void Get_Fight_Items(int level, std::vector<InventoryWeapons>& weapons, std::vector<InventoryArmorPart>& helmets,
                          std::vector<InventoryArmorPart>& body_armors, std::vector<InventoryArmorPart>& leg_armors,
                          std::vector<InventoryArmorPart>& boots, std::vector<InventoryArmorPart>& shields,
-                         std::vector<InventoryArmorPart>& rings1, std::vector<InventoryArmorPart>& rings2,
-                         std::vector<InventoryArmorPart>& amulets) const;
+                         std::vector<InventoryArmorPart>& rings, std::vector<InventoryArmorPart>& amulets) const;
 
     void Update_Cache(void);
 

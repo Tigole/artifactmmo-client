@@ -222,8 +222,8 @@ public:
     void Get_Fight_Items(const ItemManager& item_manager, int level, std::vector<InventoryWeapons>& weapons,
                          std::vector<InventoryArmorPart>& helmets, std::vector<InventoryArmorPart>& body_armors,
                          std::vector<InventoryArmorPart>& leg_armors, std::vector<InventoryArmorPart>& boots,
-                         std::vector<InventoryArmorPart>& shields, std::vector<InventoryArmorPart>& rings1,
-                         std::vector<InventoryArmorPart>& rings2, std::vector<InventoryArmorPart>& amulets) const;
+                         std::vector<InventoryArmorPart>& shields, std::vector<InventoryArmorPart>& rings,
+                         std::vector<InventoryArmorPart>& amulets) const;
     bool Is_Inventory_Slot_Resource(const ItemManager& item_manager, int slot) const;
     bool Is_Inventory_Empty(void) const;
 

@@ -490,8 +490,8 @@ ItemOrder Character::Get_Inventory_Item(int slot) const
 void Character::Get_Fight_Items(const ItemManager& item_manager, int level, std::vector<InventoryWeapons>& weapons,
                                 std::vector<InventoryArmorPart>& helmets, std::vector<InventoryArmorPart>& body_armors,
                                 std::vector<InventoryArmorPart>& leg_armors, std::vector<InventoryArmorPart>& boots,
-                                std::vector<InventoryArmorPart>& shields, std::vector<InventoryArmorPart>& rings1,
-                                std::vector<InventoryArmorPart>& rings2, std::vector<InventoryArmorPart>& amulets) const
+                                std::vector<InventoryArmorPart>& shields, std::vector<InventoryArmorPart>& rings,
+                                std::vector<InventoryArmorPart>& amulets) const
 {
     const auto& inventory = m_Character_Cache["inventory"];
 
@@ -512,7 +512,7 @@ void Character::Get_Fight_Items(const ItemManager& item_manager, int level, std:
     Get_Inventory_Armor(item_manager, level, "body_armor", body_armors);
     Get_Inventory_Armor(item_manager, level, "leg_armor", leg_armors);
     Get_Inventory_Armor(item_manager, level, "shield", shields);
-    Get_Inventory_Armor(item_manager, level, "ring", rings1);
+    Get_Inventory_Armor(item_manager, level, "ring", rings);
     Get_Inventory_Armor(item_manager, level, "amulet", amulets);
 }
 
