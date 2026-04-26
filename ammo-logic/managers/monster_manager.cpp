@@ -61,6 +61,11 @@ int MonsterManager::Get_Monster_Initiative(const char* monster)
     return m_Monsters[monster]["initiative"];
 }
 
+int MonsterManager::Get_Monster_Critical_Strike(const char* monster)
+{
+    return m_Monsters[monster]["critical_strike"];
+}
+
 const MapCoord* MonsterManager::Get_Monster_Coord(const char* monster) const
 {
     return MapManager::singleton.Get_Monster_Coord(monster);

@@ -44,7 +44,7 @@ public:
     bool MayWin(const Character& character, const char* monster, FightContext& context);
 
     int Calculate_Effective_Damages(const std::array<int, 4>& attack, const std::array<int, 4>& damages,
-                                    const std::array<int, 4>& resistance);
+                                    const std::array<int, 4>& resistance, int critical_strike);
 
     const MapCoord* Get_Monster_Coord(const char* monster);
 

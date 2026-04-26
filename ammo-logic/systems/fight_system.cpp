@@ -191,8 +191,9 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     std::vector<InventoryArmorPart> l_Rings;
     std::vector<InventoryArmorPart> l_Shields;
     std::vector<InventoryArmorPart> l_Amulets;
-    int l_Character_Dmg = Calculate_Effective_Damages(l_Character_Attack, l_Character_Damages, l_Monster_Resistance);
-    int l_Monster_Dmg   = Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, l_Character_Resistance);
+    int l_Character_Dmg                 = Calculate_Effective_Damages(l_Character_Attack, l_Character_Damages, l_Monster_Resistance, 0);
+    const int l_Monster_Critical_Strike = MonsterManager::singleton.Get_Monster_Critical_Strike(monster);
+    int l_Monster_Dmg = Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, l_Character_Resistance, l_Monster_Critical_Strike);
 
     int l_Monster_Life        = MonsterManager::singleton.Get_Monster_Hp(monster);
     int l_Chararcter_Max_Life = character.Get_Life_Max();
@@ -214,7 +215,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
                 context_armor          = armors[ii].code;
                 continue;
             }
-            const int l_Damages = Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, armors[ii].resistances);
+            const int l_Damages = Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, armors[ii].resistances, 0);
             if (l_Damages < l_Monster_Dmg)
             {
                 l_Monster_Dmg          = l_Damages;
@@ -249,7 +250,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     for (std::size_t ii = 0; ii < l_Weapons.size(); ii++)
     {
         const InventoryWeapons& l_Weapon = l_Weapons[ii];
-        const int l_Weapon_Dmg           = Calculate_Effective_Damages(l_Weapon.attacks, l_Weapon.damages, l_Monster_Resistance);
+        const int l_Weapon_Dmg           = Calculate_Effective_Damages(l_Weapon.attacks, l_Weapon.damages, l_Monster_Resistance, 0);
         SYSTEM_PRINT("weapon: '%s' [%d %d %d %d] dmg: %d", l_Weapon.code.c_str(), l_Weapon.attacks[0], l_Weapon.attacks[1],
                      l_Weapon.attacks[2], l_Weapon.attacks[3], l_Weapon_Dmg);
         if (l_Weapon_Dmg > l_Character_Dmg)
@@ -293,8 +294,9 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     bool l_Player_Turn = character.Get_Initiative() > MonsterManager::singleton.Get_Monster_Initiative(monster);
     while (l_Monster_Life > 0)
     {
-        const int l_Character_Dmg = Calculate_Effective_Damages(l_Character_Attack, l_Character_Damages, l_Monster_Resistance);
-        const int l_Monster_Dmg   = Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, l_Character_Resistance);
+        const int l_Character_Dmg = Calculate_Effective_Damages(l_Character_Attack, l_Character_Damages, l_Monster_Resistance, 0);
+        const int l_Monster_Dmg =
+            Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, l_Character_Resistance, l_Monster_Critical_Strike);
 
         if (l_Chararcter_Max_Life < character.Get_Life_Max() / 2)
         {
@@ -373,7 +375,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
 }
 
 int FightSystem::Calculate_Effective_Damages(const std::array<int, 4>& attack, const std::array<int, 4>& damages,
-                                             const std::array<int, 4>& resistance)
+                                             const std::array<int, 4>& resistance, int critical_strike)
 {
     const std::array<int, 4> l_Tmp = {
         { static_cast<int>(round(attack[0] * (1.0f + 0.01f * (damages[0] - resistance[0])))),
@@ -381,11 +383,12 @@ int FightSystem::Calculate_Effective_Damages(const std::array<int, 4>& attack, c
          static_cast<int>(round(attack[2] * (1.0f + 0.01f * (damages[2] - resistance[2])))),
          static_cast<int>(round(attack[3] * (1.0f + 0.01f * (damages[3] - resistance[3])))) }
     };
-    for (std::size_t ii = 0; ii < 4 && false; ii++)
+    const int sum = l_Tmp[0] + l_Tmp[1] + l_Tmp[2] + l_Tmp[3];
+    /*for (std::size_t ii = 0; ii < 4 && false; ii++)
     {
         printf("[%zu] att: %d dmg: %d res: %d tot: %d\n", ii, attack[ii], damages[ii], resistance[ii], l_Tmp[ii]);
-    }
-    return l_Tmp[0] + l_Tmp[1] + l_Tmp[2] + l_Tmp[3];
+    }*/
+    return round((sum * critical_strike) / 100.0f);
 }
 
 const MapCoord* FightSystem::Get_Monster_Coord(const char* monster)
