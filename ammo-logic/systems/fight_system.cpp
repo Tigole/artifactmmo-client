@@ -14,6 +14,10 @@ FightSystem::FightSystem() : System("FightSystem")
 {
     m_Monsters.push_back("");
 
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::mushroom_soup, 240, 15, 20 });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_wolf_meat, 200, 15, 20 });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_shrimp, 150, 10, 20 });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_beef, 150, 5, 20 });
     m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::fried_eggs, 150, 4, 20 });
     m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_chicken, 80, 0, 20 });
     m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_gudgeon, 75, 0, 20 });
@@ -439,6 +443,12 @@ bool FightSystem::Equip_Healing_Stuff(const System* sys, Character& character, c
     if (inventory_has_healing_item == true)
     {
         SYSTEM_PRINT("has healing item in inventory");
+        return false;
+    }
+
+    if (character.Get_Inventory_Remaining_Slot_Count() < 5)
+    {
+        SYSTEM_PRINT("has to keep free space");
         return false;
     }
 
