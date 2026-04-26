@@ -383,7 +383,7 @@ int FightSystem::Calculate_Effective_Damages(const std::array<int, 4>& attack, c
     };
     for (std::size_t ii = 0; ii < 4 && false; ii++)
     {
-        printf("[%d] att: %d dmg: %d res: %d tot: %d\n", ii, attack[ii], damages[ii], resistance[ii], l_Tmp[ii]);
+        printf("[%zu] att: %d dmg: %d res: %d tot: %d\n", ii, attack[ii], damages[ii], resistance[ii], l_Tmp[ii]);
     }
     return l_Tmp[0] + l_Tmp[1] + l_Tmp[2] + l_Tmp[3];
 }
@@ -409,7 +409,7 @@ void FightSystem::Handle_Equipment(const System* sys, Character& character, cons
                 const int item_count_to_withdraw = /*strcmp(equipmenet_type, Keywords::EquipementSlot::utility1_slot) == 0
                                                      ? InventoryManager::singleton.Get_Bank_Item_Count(equipment_name)
                                                      : */
-                                                   equipement_count - character.Get_Item_Count(equipment_name);
+                    equipement_count - character.Get_Item_Count(equipment_name);
                 character.Add_Withdraw_Item(sys, { equipment_name, item_count_to_withdraw });
                 if (character.Get_Equiped_Item(equipmenet_type).size())
                 {

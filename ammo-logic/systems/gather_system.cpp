@@ -183,7 +183,7 @@ void MobGatherSystem::Fill_Pipeline(Character& character)
                 const int required_inventory_space = 10;
                 if (character.Get_Inventory_Remaining_Space() < required_inventory_space)
                 {
-                    SYSTEM_PRINT("has to make space", character.Get_Character());
+                    SYSTEM_PRINT("has to make space");
                     character.Make_Clear_Inventory(this, nullptr);
                     return;
                 }

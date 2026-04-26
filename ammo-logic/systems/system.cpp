@@ -65,7 +65,7 @@ int System::Make_Craft(Character& character, MapCoord workshop_coord, const char
             craft_count = std::min(craft_count, InventoryManager::singleton.Get_Bank_Item_Count(r->required_items[ii].code.c_str()) /
                                                     r->required_items[ii].quantity);
             SYSTEM_PRINT(
-                "%d required item (character_inventory_space_required: %d character.Get_Inventory_Remaining_Space(): %d "
+                "%zu required item (character_inventory_space_required: %d character.Get_Inventory_Remaining_Space(): %d "
                 "r->required_items[%d].quantity: %d "
                 "InventoryManager::singleton.Get_Bank_Item_Count(r->required_items[%d].code.c_str()): %d craft_count: %d)",
                 r->required_items.size(), character_inventory_space_required, character.Get_Inventory_Remaining_Space(), ii,

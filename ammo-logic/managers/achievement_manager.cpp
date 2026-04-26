@@ -23,7 +23,7 @@ void AchivementManager::Update_Cache(void)
 
     Client::singleton.Get_Account_Achievements(achivements);
 
-    printf("achivements.size: %d\n", achivements.size());
+    printf("achivements.size: %zu\n", achivements.size());
     for (std::size_t ii = 0; ii < achivements.size(); ii++)
     {
         // printf("achivement[%d]: '%s'\n", ii, achivements[ii].dump().c_str());
