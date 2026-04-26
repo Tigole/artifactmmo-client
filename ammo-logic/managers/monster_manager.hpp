@@ -20,9 +20,11 @@ public:
 
     void Get_Monster_List(std::vector<std::string>& monsters);
 
+    int Get_Monster_Level(const char* monster);
     int Get_Monster_Hp(const char* monster);
     std::array<int, 4> Get_Monster_Attack(const char* monster);
     std::array<int, 4> Get_Monster_Resistance(const char* monster);
+    int Get_Monster_Initiative(const char* monster);
 
     const MapCoord* Get_Monster_Coord(const char* monster) const;
     void Get_Monster_Loot(const char* monster, std::vector<Loot>& loot) const;

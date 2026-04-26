@@ -1,5 +1,6 @@
 #include "monster_manager.hpp"
 
+#include "keywords.hpp"
 #include "net/client.hpp"
 
 MonsterManager MonsterManager::singleton;
@@ -29,6 +30,11 @@ void MonsterManager::Get_Monster_List(std::vector<std::string>& monsters)
     { return m_Monsters[left]["level"].get<int>() > m_Monsters[right]["level"].get<int>(); });
 }
 
+int MonsterManager::Get_Monster_Level(const char* monster)
+{
+    return m_Monsters[monster]["level"].get<int>();
+}
+
 int MonsterManager::Get_Monster_Hp(const char* monster)
 {
     return m_Monsters[monster]["hp"].get<int>();
@@ -48,6 +54,11 @@ std::array<int, 4> MonsterManager::Get_Monster_Resistance(const char* monster)
         { m_Monsters[monster]["res_fire"].get<int>(), m_Monsters[monster]["res_water"].get<int>(),
          m_Monsters[monster]["res_earth"].get<int>(), m_Monsters[monster]["res_air"].get<int>() }
     };
+}
+
+int MonsterManager::Get_Monster_Initiative(const char* monster)
+{
+    return m_Monsters[monster]["initiative"];
 }
 
 const MapCoord* MonsterManager::Get_Monster_Coord(const char* monster) const
