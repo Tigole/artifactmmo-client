@@ -326,13 +326,12 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     {
         SYSTEM_PRINT("may win using potions?");
         /// Even while healing potions character failed
-        const int l_Character_Alchemy_Level = character.Get_Skill_Level(Keywords::Skills::alchemy);
         for (std::size_t ii = 0; ii < m_Healing_Potions.size(); ii++)
         {
             const HealItem& hi = m_Healing_Potions[ii];
-            if (l_Character_Alchemy_Level < hi.required_level)
+            if (l_Character_Combat_Level < hi.required_level)
             {
-                SYSTEM_PRINT("can't equip '%s' (level: %d required: %d)", hi.code, l_Character_Alchemy_Level, hi.required_level);
+                SYSTEM_PRINT("can't equip '%s' (level: %d required: %d)", hi.code, l_Character_Combat_Level, hi.required_level);
                 continue;
             }
 
