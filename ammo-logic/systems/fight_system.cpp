@@ -174,7 +174,12 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
         { "attack_fire", "attack_water", "attack_earth", "attack_air" }
     };
 
-    const int l_Character_Combat_Level            = character.Get_Skill_Level(Keywords::Skills::combat);
+    const int l_Character_Combat_Level = character.Get_Skill_Level(Keywords::Skills::combat);
+    const int l_Monster_Level          = MonsterManager::singleton.Get_Monster_Level(monster);
+    if (l_Monster_Level > l_Character_Combat_Level)
+    {
+        return false;
+    }
     const std::array<int, 4> l_Monster_Attack     = MonsterManager::singleton.Get_Monster_Attack(monster);
     const std::array<int, 4> l_Monster_Resistance = MonsterManager::singleton.Get_Monster_Resistance(monster);
     const std::array<int, 4> l_Monster_Damages    = {
@@ -334,7 +339,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
 #endif
     }
 
-    const int level_diff = l_Character_Combat_Level - MonsterManager::singleton.Get_Monster_Level(monster);
+    const int level_diff = l_Character_Combat_Level - l_Monster_Level;
     if (l_Chararcter_Max_Life <= 0 && (level_diff < 10))
     {
         SYSTEM_PRINT("may win using potions?");
