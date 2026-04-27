@@ -415,6 +415,11 @@ void FightSystem::Handle_Equipment(const System* sys, Character& character, cons
 {
     if (character.Is_Empty() == true)
     {
+        if (character.Get_Life_Current() < ItemManager::singleton.Get_Armor_Hp(equipment_name))
+        {
+            Add_Healing(this, character);
+            return;
+        }
         if (character.Get_Item_Count(equipment_name) < equipement_count)
         {
             if (character.Should_Move(bank_pos) == true)
