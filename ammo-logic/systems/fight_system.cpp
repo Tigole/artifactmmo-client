@@ -208,17 +208,26 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
         for (std::size_t ii = 0; ii < armors.size(); ii++)
         {
             const int l_Hp = ItemManager::singleton.Get_Armor_Hp(armors[ii].code.c_str());
-            if ((l_Hp >= current_armor_hp) && (armors[ii].code != context_armor))
+            if (l_Hp < current_armor_hp)
             {
-                current_armor_hp       = l_Hp;
-                l_Character_Resistance = armors[ii].resistances;
-                context_armor          = armors[ii].code;
                 continue;
             }
-            const int l_Damages = Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, armors[ii].resistances, 0);
-            if (l_Damages < l_Monster_Dmg)
+
+            if (l_Hp == current_armor_hp)
             {
-                l_Monster_Dmg          = l_Damages;
+                const int l_Damages = Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, armors[ii].resistances, 0);
+                if (l_Damages < l_Monster_Dmg)
+                {
+                    l_Monster_Dmg          = l_Damages;
+                    l_Character_Resistance = armors[ii].resistances;
+                    context_armor          = armors[ii].code;
+                }
+                continue;
+            }
+
+            if (armors[ii].code != context_armor)
+            {
+                current_armor_hp       = l_Hp;
                 l_Character_Resistance = armors[ii].resistances;
                 context_armor          = armors[ii].code;
             }
@@ -318,9 +327,11 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
             l_Player_Turn = true;
         }
         context.turn_count++;
+#if 0
         SYSTEM_PRINT("turn %d '%s' %d/%d (monster dmg %d) vs '%s' %d/%d (character dmg %d)", context.turn_count, character.Get_Character(),
                      l_Chararcter_Max_Life, character.Get_Life_Max(), l_Monster_Dmg, monster, l_Monster_Life,
                      MonsterManager::singleton.Get_Monster_Hp(monster), l_Character_Dmg);
+#endif
     }
 
     const int level_diff = l_Character_Combat_Level - MonsterManager::singleton.Get_Monster_Level(monster);
@@ -383,8 +394,10 @@ int FightSystem::Calculate_Effective_Damages(const std::array<int, 4>& attack, c
          static_cast<int>(round(attack[2] * (1.0f + 0.01f * (damages[2] - resistance[2])))),
          static_cast<int>(round(attack[3] * (1.0f + 0.01f * (damages[3] - resistance[3])))) }
     };
-    const int sum = l_Tmp[0] + l_Tmp[1] + l_Tmp[2] + l_Tmp[3];
-    return sum + round((sum * critical_strike) / 100.0f);
+    const int sum   = l_Tmp[0] + l_Tmp[1] + l_Tmp[2] + l_Tmp[3];
+    const int total = sum + round((sum * critical_strike) / 100.0f);
+    // printf("Calculate_Effective_Damages: sum: %d total: %d\n", sum, total);
+    return total;
 }
 
 const MapCoord* FightSystem::Get_Monster_Coord(const char* monster)
