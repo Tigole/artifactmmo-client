@@ -417,6 +417,11 @@ std::string Character::Get_Equiped_Artifact3(void) const
     return m_Character_Cache[Keywords::EquipementSlot::artifact3_slot];
 }
 
+std::string Character::Get_Equiped_Bag(void) const
+{
+    return m_Character_Cache[Keywords::EquipementSlot::bag_slot];
+}
+
 bool Character::Is_Item_Equiped(const char* item_code) const
 {
     constexpr const std::array<const char*, 10> l_Slots = {

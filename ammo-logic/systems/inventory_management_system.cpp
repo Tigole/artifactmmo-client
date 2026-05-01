@@ -1,5 +1,6 @@
 #include "inventory_management_system.hpp"
 
+#include "keywords.hpp"
 #include "managers/inventory_manager.hpp"
 
 InventoryManagementSystem InventoryManagementSystem::singleton;
@@ -31,6 +32,25 @@ void InventoryManagementSystem::Fill_Pipeline(Character& character)
 
     if (character.Should_Move(InventoryManager::singleton.Get_Bank_Nearest_Coord(character.Get_Map_Coord())) == false)
     {
+        const std::array<std::pair<int, const char*>, 3> bags = {
+            { std::make_pair(50, Keywords::Items::Bags::sandwhisper_bag), std::make_pair(10, Keywords::Items::Bags::backpack),
+             std::make_pair(5, Keywords::Items::Bags::satchel) }
+        };
+        const int combat_level = character.Get_Skill_Level(Keywords::Skills::combat);
+
+        for (const auto& p: bags)
+        {
+            if ((combat_level >= p.first) && (character.Get_Equiped_Bag() != p.second) &&
+                (InventoryManager::singleton.Get_Bank_Item_Count(p.second) > 0))
+            {
+                if (character.Get_Item_Count(p.second) < 1)
+                {
+                    character.Add_Withdraw_Item(this, { p.second, 1 });
+                }
+                character.Add_Equip_Item(this, Keywords::EquipementSlot::bag_slot, p.second, 1);
+            }
+        }
+
         if (InventoryManager::singleton.Get_Bank_Remaining_Slot_Count() < 5)
         {
             const int gold_amount    = InventoryManager::singleton.Get_Gold_Amount();

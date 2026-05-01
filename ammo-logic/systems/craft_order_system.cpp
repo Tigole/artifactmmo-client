@@ -173,6 +173,7 @@ GearcraftingSystem::GearcraftingSystem() : CraftOrderSystem("GearcraftingSystem"
     m_Items.push_back({ Keywords::Items::BodyArmors::adventurer_vest, target_amout });
     m_Items.push_back({ Keywords::Items::Helmets::leather_hat, target_amout });
     m_Items.push_back({ Keywords::Items::LegArmors::leather_legs_armor, target_amout });
+    m_Items.push_back({ Keywords::Items::Bags::satchel, target_amout });
 
     m_Workshop_Coord = { 3, 1 };
 }

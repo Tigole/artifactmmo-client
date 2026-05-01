@@ -212,6 +212,7 @@ public:
     std::string Get_Equiped_Artifact1(void) const;
     std::string Get_Equiped_Artifact2(void) const;
     std::string Get_Equiped_Artifact3(void) const;
+    std::string Get_Equiped_Bag(void) const;
     bool Is_Item_Equiped(const char* item_code) const;
     std::string Get_Equiped_Item(EquipementType type) const;
     std::string Get_Equiped_Item(const char* type) const;

@@ -605,6 +605,13 @@ struct Keywords
             KEYWORD(dust_amulet);
             KEYWORD(amulet_of_the_grand_master);
         };
+
+        struct Bags
+        {
+            KEYWORD(satchel);
+            KEYWORD(backpack);
+            KEYWORD(sandwhisper_bag);
+        };
     };
 
     struct EquipementSlot
@@ -646,6 +653,66 @@ struct Keywords
         KEYWORD(utility2);
         KEYWORD(bag);
         KEYWORD(rune);
+    };
+
+    struct Effects
+    {
+        KEYWORD(boost_hp);
+        KEYWORD(boost_dmg_fire);
+        KEYWORD(boost_dmg_water);
+        KEYWORD(boost_dmg_air);
+        KEYWORD(boost_dmg_earth);
+        KEYWORD(restore);
+        KEYWORD(healing);
+        KEYWORD(antipoison);
+        KEYWORD(poison);
+        KEYWORD(lifesteal);
+        KEYWORD(reconstitution);
+        KEYWORD(burn);
+        KEYWORD(boost_res_air);
+        KEYWORD(boost_res_water);
+        KEYWORD(boost_res_earth);
+        KEYWORD(boost_res_fire);
+        KEYWORD(corrupted);
+        KEYWORD(guard);
+        KEYWORD(shell);
+        KEYWORD(frenzy);
+        KEYWORD(void_drain);
+        KEYWORD(berserker_rage);
+        KEYWORD(vampiric_strike);
+        KEYWORD(healing_aura);
+        KEYWORD(barrier);
+        KEYWORD(splash_restore);
+        KEYWORD(christmas_magic);
+        KEYWORD(protective_bubble);
+        KEYWORD(heal);
+        KEYWORD(gold);
+        KEYWORD(teleport);
+        KEYWORD(attack_fire);
+        KEYWORD(attack_water);
+        KEYWORD(attack_air);
+        KEYWORD(attack_earth);
+        KEYWORD(dmg);
+        KEYWORD(dmg_fire);
+        KEYWORD(dmg_water);
+        KEYWORD(dmg_air);
+        KEYWORD(dmg_earth);
+        KEYWORD(res_fire);
+        KEYWORD(res_water);
+        KEYWORD(res_air);
+        KEYWORD(res_earth);
+        KEYWORD(critical_strike);
+        KEYWORD(wisdom);
+        KEYWORD(prospecting);
+        KEYWORD(woodcutting);
+        KEYWORD(fishing);
+        KEYWORD(mining);
+        KEYWORD(alchemy);
+        KEYWORD(hp);
+        KEYWORD(inventory_space);
+        KEYWORD(haste);
+        KEYWORD(initiative);
+        KEYWORD(threat);
     };
 };
 
