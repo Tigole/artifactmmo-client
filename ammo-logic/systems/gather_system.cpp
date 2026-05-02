@@ -181,7 +181,7 @@ void MobGatherSystem::Fill_Pipeline(Character& character)
             const char* l_Monster_Name = ItemManager::singleton.Get_Loot_Monster_Name(order.item_code);
             FightContext fight_context;
 
-            if (FightSystem::singleton.MayWin(character, l_Monster_Name, fight_context) == true)
+            if (FightSystem::singleton.MayWin(character, l_Monster_Name, false, fight_context) == true)
             {
                 const int required_inventory_space = 10;
                 if (character.Get_Inventory_Remaining_Space() < required_inventory_space)

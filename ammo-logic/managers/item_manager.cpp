@@ -293,7 +293,7 @@ bool ItemCraftingManager::May_Craft(Character& character, const char* item_code)
     else if (l_Monster_Name != nullptr)
     {
         FightContext f;
-        return FightSystem::singleton.MayWin(character, l_Monster_Name, f);
+        return FightSystem::singleton.MayWin(character, l_Monster_Name, false, f);
     }
     return false;
 }
@@ -327,7 +327,7 @@ void ItemCraftingManager::Get_Item(const System* sys, Character& character, cons
         if (l_Monster_Name != nullptr)
         {
             FightContext fight_context;
-            if (FightSystem::singleton.MayWin(character, l_Monster_Name, fight_context) == true)
+            if (FightSystem::singleton.MayWin(character, l_Monster_Name, false, fight_context) == true)
             {
                 FightSystem::singleton.Fight_Against(sys, character, l_Monster_Name, fight_context);
                 return;

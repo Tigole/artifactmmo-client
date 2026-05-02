@@ -41,7 +41,7 @@ public:
 
     void Add_Healing(const System* sys, Character& character);
 
-    bool MayWin(const Character& character, const char* monster, FightContext& context);
+    bool MayWin(const Character& character, const char* monster, bool may_use_potion, FightContext& context);
 
     int Calculate_Effective_Damages(const std::array<int, 4>& attack, const std::array<int, 4>& damages,
                                     const std::array<int, 4>& resistance, int critical_strike);

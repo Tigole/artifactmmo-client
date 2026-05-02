@@ -41,7 +41,7 @@ void FightSystem::Fill_Pipeline(Character& character)
     {
         const char* l_Monster   = m_Monsters[ii].c_str();
         const MapCoord* l_Coord = MonsterManager::singleton.Get_Monster_Coord(l_Monster, character.Get_Map_Coord());
-        if ((l_Coord != nullptr) && (MayWin(character, l_Monster, l_Context) == true))
+        if ((l_Coord != nullptr) && (MayWin(character, l_Monster, false, l_Context) == true))
         {
             Fight_Against(this, character, l_Monster, l_Context);
             return;
@@ -167,7 +167,7 @@ void FightSystem::Add_Healing(const System* sys, Character& character)
     }
 }
 
-bool FightSystem::MayWin(const Character& character, const char* monster, FightContext& context)
+bool FightSystem::MayWin(const Character& character, const char* monster, bool may_use_potion, FightContext& context)
 {
     static const std::array<const char*, 4> attck_names = {
         { "attack_fire", "attack_water", "attack_earth", "attack_air" }
@@ -339,7 +339,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     }
 
     const int level_diff = l_Character_Combat_Level - l_Monster_Level;
-    if (l_Chararcter_Max_Life <= 0 && (level_diff < 10))
+    if (may_use_potion && l_Chararcter_Max_Life <= 0 && (level_diff < 10))
     {
         SYSTEM_PRINT("may win using potions?");
         /// Even while healing potions character failed
@@ -471,7 +471,7 @@ bool FightSystem::Equip_Healing_Stuff(const System* sys, Character& character, c
         const int item_target_quantity = hi.inventory_target_count;
         const int bank_item_count      = InventoryManager::singleton.Get_Bank_Item_Count(item_code);
         const int character_item_count = character.Get_Item_Count(item_code);
-        const bool enough_hp           = character.Get_Life_Max() * 3 > hi.heal;
+        const bool enough_hp           = (character.Get_Life_Max() * 3) > hi.heal;
 
         if (enough_hp && bank_item_count > 0 && character_item_count == 0)
         {
