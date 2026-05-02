@@ -471,8 +471,9 @@ bool FightSystem::Equip_Healing_Stuff(const System* sys, Character& character, c
         const int item_target_quantity = hi.inventory_target_count;
         const int bank_item_count      = InventoryManager::singleton.Get_Bank_Item_Count(item_code);
         const int character_item_count = character.Get_Item_Count(item_code);
+        const bool enough_hp           = character.Get_Life_Max() * 3 > hi.heal;
 
-        if (bank_item_count > 0 && character_item_count == 0)
+        if (enough_hp && bank_item_count > 0 && character_item_count == 0)
         {
             if (character.Should_Move(bank_pos) == true)
             {
