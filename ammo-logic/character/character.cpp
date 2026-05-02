@@ -275,14 +275,14 @@ void Character::Update(float elapsed_time)
                 }
                 m_Current_Index++;
                 m_Remaining_Timeout += 0.5f;  /// Fix me 499
-                printf("'%s' cooldown %d (%d [%d %d] ['%s' %d] '%s')\n", m_Character_Name, (int)m_Remaining_Timeout, l_Order.type,
+                printf("'%s' cooldown %d (%d [%d %d] ['%s' %d] '%s')\n", m_Character_Name, (int)m_Remaining_Timeout, (int)l_Order.type,
                        l_Order.coord.x, l_Order.coord.y, l_Order.item_order.code.c_str(), l_Order.item_order.quantity,
                        l_Order.slot.c_str());
             }
             catch (const std::exception& e)
             {
-                printf("exception: '%s' (%d [%d %d] ['%s' %d] '%s')\n", m_Character_Name, l_Order.type, l_Order.coord.x, l_Order.coord.y,
-                       l_Order.item_order.code.c_str(), l_Order.item_order.quantity, l_Order.slot.c_str());
+                printf("exception: '%s' (%d [%d %d] ['%s' %d] '%s')\n", m_Character_Name, (int)l_Order.type, l_Order.coord.x,
+                       l_Order.coord.y, l_Order.item_order.code.c_str(), l_Order.item_order.quantity, l_Order.slot.c_str());
                 printf("%s\n", e.what());
                 throw e;
             }
