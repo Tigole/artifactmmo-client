@@ -6,6 +6,7 @@
 #include "keywords.hpp"
 #include "managers/inventory_manager.hpp"
 #include "managers/item_manager.hpp"
+#include "managers/monster_manager.hpp"
 #include "net/client.hpp"
 #include "systems/system.hpp"
 
@@ -48,9 +49,9 @@ void Character::Add_Move(const System* sys, const MapCoord& coords)
     m_Orders.push_back(CharacterOrder::CreateMove(sys, coords));
 }
 
-void Character::Add_Fight(const System* sys)
+void Character::Add_Fight(const System* sys, const char* monster)
 {
-    m_Orders.push_back(CharacterOrder::CreateFight(sys));
+    m_Orders.push_back(CharacterOrder::CreateFight(sys, monster));
 }
 
 void Character::Add_Rest(const System* sys)
@@ -158,10 +159,22 @@ void Character::Update(float elapsed_time)
                     }
                     break;
                 case CharacterOrderType::Fight:
-                    m_Remaining_Timeout = Client::singleton.mt_Character_Fight(m_Character_Name, m_Character_Cache);
-                    // printf("raw: '%s'\n", m_Character_Cache.dump().c_str());
-                    m_Character_Cache = m_Character_Cache[0];
-                    // printf("filtered: '%s'\n", m_Character_Cache.dump().c_str());
+                    {
+                        const MapCoord* coords = MonsterManager::singleton.Get_Monster_Coord(l_Order.slot.c_str(), Get_Map_Coord());
+                        if (coords != nullptr)
+                        {
+                            if (Should_Move(*coords))
+                            {
+                                Add_Move(l_Order.system, *coords);
+                                Add_Fight(l_Order.system, l_Order.slot.c_str());
+                            }
+                            else
+                            {
+                                m_Remaining_Timeout = Client::singleton.mt_Character_Fight(m_Character_Name, m_Character_Cache);
+                                m_Character_Cache   = m_Character_Cache[0];
+                            }
+                        }
+                    }
                     break;
                 case CharacterOrderType::Rest:
                     m_Remaining_Timeout = Client::singleton.mt_Character_Rest(m_Character_Name, m_Character_Cache);

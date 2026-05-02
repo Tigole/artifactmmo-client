@@ -66,9 +66,9 @@ int MonsterManager::Get_Monster_Critical_Strike(const char* monster)
     return m_Monsters[monster]["critical_strike"];
 }
 
-const MapCoord* MonsterManager::Get_Monster_Coord(const char* monster) const
+const MapCoord* MonsterManager::Get_Monster_Coord(const char* monster, MapCoord current_pos) const
 {
-    return MapManager::singleton.Get_Monster_Coord(monster);
+    return MapManager::singleton.Get_Monster_Coord(monster, current_pos);
 }
 
 void MonsterManager::Get_Monster_Loot(const char* monster, std::vector<Loot>& loot) const

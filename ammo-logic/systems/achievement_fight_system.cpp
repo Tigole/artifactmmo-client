@@ -3,6 +3,7 @@
 #include <random>
 
 #include "fight_system.hpp"
+#include "managers/monster_manager.hpp"
 
 AchievementFightSystem AchievementFightSystem::singleton;
 
@@ -41,7 +42,7 @@ void AchievementFightSystem::Fill_Pipeline(Character& pipeline)
     for (std::size_t ii = 0; ii < l_Indices.size(); ii++)
     {
         const char* l_Monster   = m_Target_Monsters[l_Indices[ii]].c_str();
-        const MapCoord* l_Coord = FightSystem::singleton.Get_Monster_Coord(l_Monster);
+        const MapCoord* l_Coord = MonsterManager::singleton.Get_Monster_Coord(l_Monster, pipeline.Get_Map_Coord());
         FightContext fight_context;
         if ((l_Coord != nullptr) && (FightSystem::singleton.MayWin(pipeline, l_Monster, fight_context) == true))
         {
@@ -50,7 +51,7 @@ void AchievementFightSystem::Fill_Pipeline(Character& pipeline)
             {
                 FightSystem::singleton.Add_Healing(this, pipeline);
             }
-            pipeline.Add_Fight(this);
+            pipeline.Add_Fight(this, l_Monster);
             return;
         }
     }

@@ -17,14 +17,14 @@ public:
 
     void Initialize(void);
 
-    const MapCoord* Get_Monster_Coord(const char* monster) const;
+    const MapCoord* Get_Monster_Coord(const char* monster, MapCoord current_pos) const;
     const MapCoord* Get_Spot_Coord(const char* resource) const;
 
 private:
     std::map<std::string, std::vector<MapCoord>> m_Monsters_Coords;
     std::map<std::string, std::vector<MapCoord>> m_Spots_Coords;
 
-    const MapCoord* Get(const char* key, const std::map<std::string, std::vector<MapCoord>>& c) const;
+    const MapCoord* Get(const char* key, MapCoord current_pos, const std::map<std::string, std::vector<MapCoord>>& c) const;
 };
 
 #endif  // _MAP_MANAGER_HPP

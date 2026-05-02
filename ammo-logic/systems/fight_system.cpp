@@ -40,7 +40,7 @@ void FightSystem::Fill_Pipeline(Character& character)
     for (std::size_t ii = 0; ii < m_Monsters.size(); ii++)
     {
         const char* l_Monster   = m_Monsters[ii].c_str();
-        const MapCoord* l_Coord = MonsterManager::singleton.Get_Monster_Coord(l_Monster);
+        const MapCoord* l_Coord = MonsterManager::singleton.Get_Monster_Coord(l_Monster, character.Get_Map_Coord());
         if ((l_Coord != nullptr) && (MayWin(character, l_Monster, l_Context) == true))
         {
             Fight_Against(this, character, l_Monster, l_Context);
@@ -51,7 +51,7 @@ void FightSystem::Fill_Pipeline(Character& character)
 
 void FightSystem::Fight_Against(const System* sys, Character& character, const char* monster, const FightContext& context)
 {
-    const MapCoord* l_Coord = MonsterManager::singleton.Get_Monster_Coord(monster);
+    const MapCoord* l_Coord = MonsterManager::singleton.Get_Monster_Coord(monster, character.Get_Map_Coord());
     if (l_Coord != nullptr)
     {
         const MapCoord bank_pos = InventoryManager::singleton.Get_Bank_Nearest_Coord(character);
@@ -128,8 +128,7 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
         {
             Add_Healing(sys, character);
         }
-        character.Add_Move(sys, *l_Coord);
-        character.Add_Fight(sys);
+        character.Add_Fight(sys, monster);
     }
 }
 
@@ -403,11 +402,6 @@ int FightSystem::Calculate_Effective_Damages(const std::array<int, 4>& attack, c
     const int total = sum + round((sum * critical_strike) / 100.0f);
     // printf("Calculate_Effective_Damages: sum: %d total: %d\n", sum, total);
     return total;
-}
-
-const MapCoord* FightSystem::Get_Monster_Coord(const char* monster)
-{
-    return MonsterManager::singleton.Get_Monster_Coord(monster);
 }
 
 void FightSystem::Handle_Equipment(const System* sys, Character& character, const MapCoord& bank_pos, const char* equipment_name,

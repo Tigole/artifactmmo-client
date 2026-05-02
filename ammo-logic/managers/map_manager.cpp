@@ -26,22 +26,31 @@ void MapManager::Initialize(void)
     }
 }
 
-const MapCoord* MapManager::Get_Monster_Coord(const char* monster) const
+const MapCoord* MapManager::Get_Monster_Coord(const char* monster, MapCoord current_pos) const
 {
-    return Get(monster, m_Monsters_Coords);
+    return Get(monster, current_pos, m_Monsters_Coords);
 }
 
 const MapCoord* MapManager::Get_Spot_Coord(const char* resource) const
 {
-    return Get(resource, m_Spots_Coords);
+    return Get(resource, { 0, 0 }, m_Spots_Coords);
 }
 
-const MapCoord* MapManager::Get(const char* key, const std::map<std::string, std::vector<MapCoord>>& c) const
+const MapCoord* MapManager::Get(const char* key, MapCoord current_pos, const std::map<std::string, std::vector<MapCoord>>& c) const
 {
     auto it = c.find(key);
     if (it != c.end())
     {
-        return &it->second.front();
+        std::size_t idx = 0;
+        int distance    = current_pos.Get_Distance(it->second[0]);
+        for (std::size_t ii = 1; ii < it->second.size(); ii++)
+        {
+            if (current_pos.Get_Distance(it->second[ii]) < distance)
+            {
+                idx = ii;
+            }
+        }
+        return &it->second[idx];
     }
     return nullptr;
 }

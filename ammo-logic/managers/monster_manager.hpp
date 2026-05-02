@@ -27,7 +27,7 @@ public:
     int Get_Monster_Initiative(const char* monster);
     int Get_Monster_Critical_Strike(const char* monster);
 
-    const MapCoord* Get_Monster_Coord(const char* monster) const;
+    const MapCoord* Get_Monster_Coord(const char* monster, MapCoord current_pos) const;
     void Get_Monster_Loot(const char* monster, std::vector<Loot>& loot) const;
 
 private:

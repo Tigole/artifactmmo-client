@@ -41,9 +41,9 @@ struct CharacterOrder
     {
         return CharacterOrder(sys, CharacterOrderType::Move, coord, {}, "");
     }
-    static CharacterOrder CreateFight(const System* sys)
+    static CharacterOrder CreateFight(const System* sys, const char* monster)
     {
-        return CharacterOrder(sys, CharacterOrderType::Fight, {}, {}, "");
+        return CharacterOrder(sys, CharacterOrderType::Fight, {}, {}, monster);
     }
     static CharacterOrder CreateRest(const System* sys)
     {
@@ -167,7 +167,7 @@ public:
     const CharacterOrder* Get_Current_Order(void) const;
 
     void Add_Move(const System* sys, const MapCoord& coords);
-    void Add_Fight(const System* sys);
+    void Add_Fight(const System* sys, const char* monster);
     void Add_Rest(const System* sys);
     void Add_Craft(const System* sys, const ItemOrder& craft);
     void Add_UseItem(const System* sys, const ItemOrder& use);
