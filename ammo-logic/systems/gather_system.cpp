@@ -143,7 +143,10 @@ FishingGatherSystem::FishingGatherSystem() : GatherSystem("FishingGatherSystem")
 
 MobGatherSystem::MobGatherSystem() : System("MobGatherSystem")
 {
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::spider_leg, 10 });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::pig_skin, 10 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::skeleton_skull, 10 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::skeleton_bone, 10 });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_wolf_meat, 50 });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::wolf_bone, 10 });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::wolf_hair, 10 });
