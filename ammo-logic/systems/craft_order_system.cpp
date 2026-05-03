@@ -181,7 +181,8 @@ GearcraftingSystem::GearcraftingSystem() : CraftOrderSystem("GearcraftingSystem"
 JewerlyCraftSystem::JewerlyCraftSystem() : CraftOrderSystem("JewerlyCraftSystem")
 {
     constexpr const int target_amount = 1;
-    // m_Items.push_back({ Keywords::Items::Rings::copper_ring, target_amount }); // Done with level system
+    m_Items.push_back({ Keywords::Items::Rings::iron_ring, target_amount });
+    m_Items.push_back({ Keywords::Items::Rings::copper_ring, target_amount });
     m_Items.push_back({ Keywords::Items::Amulets::life_amulet, target_amount });
     m_Items.push_back({ Keywords::Items::Rings::life_ring, target_amount });
 
