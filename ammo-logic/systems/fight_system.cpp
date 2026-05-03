@@ -254,10 +254,10 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
         context.artifact1 = "novice_guide";
     }
 
-    InventoryManager::singleton.Get_Fight_Items(l_Character_Combat_Level, l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor, l_Boots,
-                                                l_Shields, l_Rings, l_Amulets);
     character.Get_Fight_Items(ItemManager::singleton, l_Character_Combat_Level, l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor, l_Boots,
                               l_Shields, l_Rings, l_Amulets);
+    InventoryManager::singleton.Get_Fight_Items(l_Character_Combat_Level, l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor, l_Boots,
+                                                l_Shields, l_Rings, l_Amulets);
 
     SYSTEM_PRINT("equipped weapon: '%s'", context.weapon.c_str());
     for (std::size_t ii = 0; ii < l_Weapons.size(); ii++)
