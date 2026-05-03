@@ -209,6 +209,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
     auto armor_handler = [&](const std::vector<InventoryArmorPart>& armors, std::string& context_armor)
     {
         int current_armor_hp = ItemManager::singleton.Get_Armor_Hp(context_armor.c_str());
+        SYSTEM_PRINT("current armor '%s'", context_armor.c_str());
         for (std::size_t ii = 0; ii < armors.size(); ii++)
         {
             const int l_Hp = ItemManager::singleton.Get_Armor_Hp(armors[ii].code.c_str());
@@ -217,11 +218,16 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
                 continue;
             }
 
+            // SYSTEM_PRINT("armor '%s' %d >= %d", armors[ii].code.c_str(), l_Hp, current_armor_hp);
+
             if (l_Hp == current_armor_hp)
             {
-                const int l_Damages = Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, armors[ii].resistances, 0);
+                const int l_Damages =
+                    Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, armors[ii].resistances, l_Monster_Critical_Strike);
                 if (l_Damages < l_Monster_Dmg)
                 {
+                    /*SYSTEM_PRINT("will try using armor '%s' l_Monster_Dmg: %d l_Damages: %d", armors[ii].code.c_str(), l_Monster_Dmg,
+                                 l_Damages);*/
                     l_Monster_Dmg          = l_Damages;
                     l_Character_Resistance = armors[ii].resistances;
                     context_armor          = armors[ii].code;
@@ -234,6 +240,8 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
                 current_armor_hp       = l_Hp;
                 l_Character_Resistance = armors[ii].resistances;
                 context_armor          = armors[ii].code;
+                l_Monster_Dmg          = Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, armors[ii].resistances, 0);
+                // SYSTEM_PRINT("will try using armor '%s'", armors[ii].code.c_str());
             }
         }
     };
