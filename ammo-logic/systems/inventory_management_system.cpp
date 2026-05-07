@@ -47,7 +47,7 @@ void InventoryManagementSystem::Fill_Pipeline(Character& character)
                 {
                     character.Add_Withdraw_Item(this, { p.second, 1 });
                 }
-                character.Add_Equip_Item(this, Keywords::EquipementSlot::bag_slot, p.second, 1);
+                character.Add_Equip_Item(this, Keywords::ItemSlot::bag, p.second, 1);
             }
         }
 
