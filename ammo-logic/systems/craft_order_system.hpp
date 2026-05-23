@@ -98,12 +98,12 @@ struct TradeOrder
     int traded_item_amount;
 };
 
-class BuyingSystem: public System
+class TasksTradingSystem: public System
 {
-    BuyingSystem();
+    TasksTradingSystem();
 
 public:
-    static BuyingSystem singleton;
+    static TasksTradingSystem singleton;
 
     void Fill_Pipeline(Character& character) override;
 

@@ -197,9 +197,9 @@ JewerlyCraftSystem::JewerlyCraftSystem() : CraftOrderSystem("JewerlyCraftSystem"
 
 JewerlyCraftSystem JewerlyCraftSystem::singleton;
 
-BuyingSystem BuyingSystem::singleton;
+TasksTradingSystem TasksTradingSystem::singleton;
 
-BuyingSystem::BuyingSystem() : System("BuyingSystem")
+TasksTradingSystem::TasksTradingSystem() : System("TasksTradingSystem")
 {
     const char* task_coin = Keywords::Items::Currency::tasks_coin;
 
@@ -217,7 +217,7 @@ BuyingSystem::BuyingSystem() : System("BuyingSystem")
     });
 }
 
-void BuyingSystem::Fill_Pipeline(Character& character)
+void TasksTradingSystem::Fill_Pipeline(Character& character)
 {
     for (std::size_t ii = 0; ii < m_Items.size(); ii++)
     {

@@ -119,7 +119,7 @@ void LogicApplication::Run(int argc, char** argv)
         static constexpr int idx = 2;
         l_Pipeline[idx].Set_Character("Eldra");
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
-        l_Pipeline[idx].Add_System(&BuyingSystem::singleton);
+        l_Pipeline[idx].Add_System(&TasksTradingSystem::singleton);
         l_Pipeline[idx].Add_System(&TaskSystemItem::singleton);
         {
             {
