@@ -23,6 +23,7 @@ void Character::Set_Character(const char* character_name)
     m_Remaining_Timeout = m_Character_Cache["cooldown"].get<int>();
     m_Position.x        = m_Character_Cache["x"].get<int>();
     m_Position.y        = m_Character_Cache["y"].get<int>();
+    m_Position.layer    = m_Character_Cache["layer"].get<std::string>();
     printf("'%s' init cooldown: %d\n", m_Character_Name, (int)m_Remaining_Timeout);
 }
 
@@ -153,9 +154,27 @@ void Character::Update(float elapsed_time)
                 switch (l_Order.type)
                 {
                 case CharacterOrderType::Move:
-                    if (Should_Move(l_Order.coord) == true)
                     {
-                        m_Remaining_Timeout = Client::singleton.mt_Character_Move(m_Character_Name, l_Order.coord, m_Character_Cache);
+                        if (l_Order.coord.layer != m_Position.layer)
+                        {
+                            printf("'%s' has to transition from '%s' to '%s'\n", m_Character_Name, m_Position.layer.c_str(),
+                                   l_Order.coord.layer.c_str());
+                            if (m_Position.x != 5 || m_Position.y != -3)
+                            {
+                                printf("'%s' move to [5 -3]\n", m_Character_Name);
+                                m_Remaining_Timeout =
+                                    Client::singleton.mt_Character_Move(m_Character_Name, { m_Position.layer, 5, -3 }, m_Character_Cache);
+                            }
+                            else
+                            {
+                                m_Remaining_Timeout = Client::singleton.mt_Character_Transition(m_Character_Name, m_Character_Cache);
+                            }
+                            m_Current_Index--;
+                        }
+                        else if (Should_Move(l_Order.coord) == true)
+                        {
+                            m_Remaining_Timeout = Client::singleton.mt_Character_Move(m_Character_Name, l_Order.coord, m_Character_Cache);
+                        }
                     }
                     break;
                 case CharacterOrderType::Fight:
@@ -287,8 +306,9 @@ void Character::Update(float elapsed_time)
                 throw e;
             }
 
-            m_Position.x = m_Character_Cache["x"].get<int>();
-            m_Position.y = m_Character_Cache["y"].get<int>();
+            m_Position.x     = m_Character_Cache["x"].get<int>();
+            m_Position.y     = m_Character_Cache["y"].get<int>();
+            m_Position.layer = m_Character_Cache["layer"].get<std::string>();
         }
         else
         {

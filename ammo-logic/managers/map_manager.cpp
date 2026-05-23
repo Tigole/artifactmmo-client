@@ -14,13 +14,16 @@ void MapManager::Initialize(void)
         {
             const std::string l_Content_Type = m["interactions"]["content"]["type"];
             const std::string l_Content_Code = m["interactions"]["content"]["code"];
+            const std::string layer          = m["layer"].get<std::string>();
+            const int x                      = m["x"].get<int>();
+            const int y                      = m["y"].get<int>();
             if (l_Content_Type == "monster")
             {
-                m_Monsters_Coords[l_Content_Code].push_back(MapCoord { m["x"].get<int>(), m["y"].get<int>() });
+                m_Monsters_Coords[l_Content_Code].emplace_back(layer, x, y);
             }
             if (l_Content_Type == "resource")
             {
-                m_Spots_Coords[l_Content_Code].push_back(MapCoord { m["x"].get<int>(), m["y"].get<int>() });
+                m_Spots_Coords[l_Content_Code].emplace_back(layer, x, y);
             }
         }
     }
@@ -33,7 +36,7 @@ const MapCoord* MapManager::Get_Monster_Coord(const char* monster, MapCoord curr
 
 const MapCoord* MapManager::Get_Spot_Coord(const char* resource) const
 {
-    return Get(resource, { 0, 0 }, m_Spots_Coords);
+    return Get(resource, { "", 0, 0 }, m_Spots_Coords);
 }
 
 const MapCoord* MapManager::Get(const char* key, MapCoord current_pos, const std::map<std::string, std::vector<MapCoord>>& c) const

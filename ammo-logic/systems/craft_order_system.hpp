@@ -91,6 +91,13 @@ public:
     static JewerlyCraftSystem singleton;
 };
 
+struct TradeOrder
+{
+    CraftOrder item;
+    const char* traded_item_code;
+    int traded_item_amount;
+};
+
 class BuyingSystem: public System
 {
     BuyingSystem();
@@ -99,6 +106,8 @@ public:
     static BuyingSystem singleton;
 
     void Fill_Pipeline(Character& character) override;
+
+    std::vector<TradeOrder> m_Items;
 };
 
 #endif  // _CRAFT_ORDER_SYSTEM_HPP

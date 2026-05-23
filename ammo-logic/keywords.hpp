@@ -714,6 +714,13 @@ struct Keywords
         KEYWORD(initiative);
         KEYWORD(threat);
     };
+
+    struct MapLayers
+    {
+        KEYWORD(interior);
+        KEYWORD(overworld);
+        KEYWORD(underground);
+    };
 };
 
 #endif  // _KEYWORDS_HPP

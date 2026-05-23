@@ -185,6 +185,19 @@ int Client::mt_Character_Move(const char* character_name, const MapCoord& map_co
     return body["data"]["cooldown"]["remaining_seconds"].get<int>();
 }
 
+int Client::mt_Character_Transition(const char* character_name, nlohmann::json& character_cache)
+{
+    std::string l_Path = "/my/";
+    l_Path += character_name;
+    l_Path += "/action/transition";
+
+    nlohmann::json body = mt_Post(l_Path.c_str());
+
+    character_cache = body["data"]["character"];
+
+    return body["data"]["cooldown"]["remaining_seconds"].get<int>();
+}
+
 int Client::mt_Character_Fight(const char* character_name, nlohmann::json& character_cache)
 {
     std::string l_Path = "/my/";

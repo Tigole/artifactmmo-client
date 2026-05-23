@@ -50,7 +50,7 @@ GearcraftingLevelSystem::GearcraftingLevelSystem() : LevelCraftSystem("Gearcraft
     m_GT_20_Item_Code   = Keywords::Items::Boots::steel_boots;
     m_GT_30_Item_Code   = Keywords::Items::Boots::gold_boots;
     m_GT_40_Item_Code   = Keywords::Items::Boots::mithril_boots;
-    m_Workshop_Coord    = { 3, 1 };
+    m_Workshop_Coord    = { Keywords::MapLayers::overworld, 3, 1 };
 }
 
 WeaponcraftingLevelSystem::WeaponcraftingLevelSystem() : LevelCraftSystem("WeaponcraftingLevelSystem")
@@ -61,7 +61,7 @@ WeaponcraftingLevelSystem::WeaponcraftingLevelSystem() : LevelCraftSystem("Weapo
     m_GT_20_Item_Code   = Keywords::Items::Weapons::battlestaff;
     m_GT_30_Item_Code   = Keywords::Items::Weapons::gold_sword;
     m_GT_40_Item_Code   = Keywords::Items::Weapons::mithril_sword;
-    m_Workshop_Coord    = { 2, 1 };
+    m_Workshop_Coord    = { Keywords::MapLayers::overworld, 2, 1 };
 }
 
 JewelrycraftingLevelSystem::JewelrycraftingLevelSystem() : LevelCraftSystem("JewelrycraftingLevelSystem")
@@ -72,7 +72,7 @@ JewelrycraftingLevelSystem::JewelrycraftingLevelSystem() : LevelCraftSystem("Jew
     m_GT_20_Item_Code   = Keywords::Items::Rings::steel_ring;
     m_GT_30_Item_Code   = Keywords::Items::Rings::gold_ring;
     m_GT_40_Item_Code   = Keywords::Items::Rings::mithril_ring;
-    m_Workshop_Coord    = { 1, 3 };
+    m_Workshop_Coord    = { Keywords::MapLayers::overworld, 1, 3 };
 }
 
 CookingLevelSystem::CookingLevelSystem() : LevelCraftSystem("CookingLevelSystem")
@@ -83,7 +83,7 @@ CookingLevelSystem::CookingLevelSystem() : LevelCraftSystem("CookingLevelSystem"
     m_GT_20_Item_Code   = Keywords::Items::Consumables::Food::cooked_trout;
     m_GT_30_Item_Code   = Keywords::Items::Consumables::Food::cooked_bass;
     m_GT_40_Item_Code   = Keywords::Items::Consumables::Food::cooked_salmon;
-    m_Workshop_Coord    = { 1, 1 };
+    m_Workshop_Coord    = { Keywords::MapLayers::overworld, 1, 1 };
     m_Recycle           = false;
 }
 
@@ -95,7 +95,7 @@ AlchemyCraftLevelSystem::AlchemyCraftLevelSystem() : LevelCraftSystem("AlchemyCr
     m_GT_20_Item_Code   = Keywords::Items::Utilities::minor_health_potion;
     m_GT_30_Item_Code   = Keywords::Items::Utilities::health_potion;
     m_GT_40_Item_Code   = Keywords::Items::Utilities::greater_health_potion;
-    m_Workshop_Coord    = { 2, 3 };
+    m_Workshop_Coord    = { Keywords::MapLayers::overworld, 2, 3 };
     m_Recycle           = false;
 }
 
@@ -141,9 +141,9 @@ MiningLevelSystem::MiningLevelSystem() : LevelGatherSystem("MiningLevelSystem")
 {
     m_Skill_Name         = Keywords::Skills::mining;
     m_Equipements        = &MiningGatheringSystem::singleton.Get_Equipements();
-    m_Default_Spot_Coord = { 2, 0 };
-    m_GT_10_Spot_Coord   = { 1, 7 };
-    m_GT_20_Spot_Coord   = { 1, 6 };
+    m_Default_Spot_Coord = { Keywords::MapLayers::overworld, 2, 0 };
+    m_GT_10_Spot_Coord   = { Keywords::MapLayers::overworld, 1, 7 };
+    m_GT_20_Spot_Coord   = { Keywords::MapLayers::overworld, 1, 6 };
     m_GT_30_Spot_Coord   = m_Default_Spot_Coord;
     m_GT_40_Spot_Coord   = m_Default_Spot_Coord;
 }
@@ -152,33 +152,33 @@ WoodcuttingLevelSystem::WoodcuttingLevelSystem() : LevelGatherSystem("Woodcuttin
 {
     m_Skill_Name         = Keywords::Skills::woodcutting;
     m_Equipements        = &WoodcuttingGatheringSystem::singleton.Get_Equipements();
-    m_Default_Spot_Coord = { 6, 1 };
-    m_GT_10_Spot_Coord   = { 2, 6 };
-    m_GT_20_Spot_Coord   = { 3, 5 };
-    m_GT_30_Spot_Coord   = { 9, 6 };
-    m_GT_40_Spot_Coord   = { 4, 14 };
+    m_Default_Spot_Coord = { Keywords::MapLayers::overworld, 6, 1 };
+    m_GT_10_Spot_Coord   = { Keywords::MapLayers::overworld, 2, 6 };
+    m_GT_20_Spot_Coord   = { Keywords::MapLayers::overworld, 3, 5 };
+    m_GT_30_Spot_Coord   = { Keywords::MapLayers::overworld, 9, 6 };
+    m_GT_40_Spot_Coord   = { Keywords::MapLayers::overworld, 4, 14 };
 }
 
 FishingLevelSystem::FishingLevelSystem() : LevelGatherSystem("FishingLevelSystem")
 {
     m_Skill_Name         = Keywords::Skills::fishing;
     m_Equipements        = &FishingGatherSystem::singleton.Get_Equipements();
-    m_Default_Spot_Coord = { 4, 2 };
-    m_GT_10_Spot_Coord   = { 5, 2 };
-    m_GT_20_Spot_Coord   = { 7, 12 };
-    m_GT_30_Spot_Coord   = { 6, 12 };
-    m_GT_40_Spot_Coord   = { -2, -4 };
+    m_Default_Spot_Coord = { Keywords::MapLayers::overworld, 4, 2 };
+    m_GT_10_Spot_Coord   = { Keywords::MapLayers::overworld, 5, 2 };
+    m_GT_20_Spot_Coord   = { Keywords::MapLayers::overworld, 7, 12 };
+    m_GT_30_Spot_Coord   = { Keywords::MapLayers::overworld, 6, 12 };
+    m_GT_40_Spot_Coord   = { Keywords::MapLayers::overworld, -2, -4 };
 }
 
 AlchemyGatherLevelSystem::AlchemyGatherLevelSystem() : LevelGatherSystem("AlchemyGatherLevelSystem")
 {
     m_Skill_Name         = Keywords::Skills::alchemy;
     m_Equipements        = &AlchemyGatheringSystem::singleton.Get_Equipements();
-    m_Default_Spot_Coord = { 2, 2 };
+    m_Default_Spot_Coord = { Keywords::MapLayers::overworld, 2, 2 };
     m_GT_10_Spot_Coord   = m_Default_Spot_Coord;
-    m_GT_20_Spot_Coord   = { 7, 14 };
+    m_GT_20_Spot_Coord   = { Keywords::MapLayers::overworld, 7, 14 };
     m_GT_30_Spot_Coord   = m_Default_Spot_Coord;
-    m_GT_40_Spot_Coord   = { 1, 10 };
+    m_GT_40_Spot_Coord   = { Keywords::MapLayers::overworld, 1, 10 };
 }
 
 MiningLevelSystem MiningLevelSystem::singleton;

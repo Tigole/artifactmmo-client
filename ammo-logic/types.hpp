@@ -17,8 +17,9 @@ struct MapContent
 
 struct MapCoord
 {
+    std::string layer;
     int x, y;
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE(MapCoord, x, y);
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(MapCoord, x, y, layer);
 
     int Get_Distance(MapCoord other) const
     {
@@ -27,7 +28,7 @@ struct MapCoord
 
     bool operator==(const MapCoord& rhs)
     {
-        return x == rhs.x && y == rhs.y;
+        return x == rhs.x && y == rhs.y && layer == rhs.layer;
     }
 };
 

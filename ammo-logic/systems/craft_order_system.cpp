@@ -63,7 +63,7 @@ ToolCraftSystem::ToolCraftSystem() : CraftOrderSystem("ToolCraftSystem")
     m_Items.push_back({ Keywords::Items::Weapons::Tools::Gloves::apprentice_gloves, target_amount });
     m_Items.push_back({ Keywords::Items::Weapons::Tools::FishingRods::fishing_net, target_amount });
 
-    m_Workshop_Coord = { 2, 1 };
+    m_Workshop_Coord = { Keywords::MapLayers::overworld, 2, 1 };
 }
 
 WeaponCraftSystem WeaponCraftSystem::singleton;
@@ -80,7 +80,7 @@ WeaponCraftSystem::WeaponCraftSystem() : CraftOrderSystem("WeaponCraftSystem")
     m_Items.push_back({ Keywords::Items::Weapons::sticky_dagger, 1 });
     m_Items.push_back({ Keywords::Items::Weapons::copper_dagger, 1 });
 
-    m_Workshop_Coord = { 2, 1 };
+    m_Workshop_Coord = { Keywords::MapLayers::overworld, 2, 1 };
 }
 
 AlchemyCraftingSystem AlchemyCraftingSystem::singleton;
@@ -102,7 +102,7 @@ AlchemyCraftingSystem::AlchemyCraftingSystem() : CraftOrderSystem("AlchemyCrafti
         m_Items.push_back({ Keywords::Items::Utilities::water_boost_potion, 50 });
     }
 
-    m_Workshop_Coord = { 2, 3 };
+    m_Workshop_Coord = { Keywords::MapLayers::overworld, 2, 3 };
 }
 
 CookingSystem CookingSystem::singleton;
@@ -116,66 +116,72 @@ CookingSystem::CookingSystem() : CraftOrderSystem("CookingSystem")
     m_Items.push_back({ Keywords::Items::Consumables::Food::fried_eggs, 10 });
     m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_chicken, 50 });
 
-    m_Workshop_Coord = { 1, 1 };
+    m_Workshop_Coord = { Keywords::MapLayers::overworld, 1, 1 };
 }
 
 MiningCraftingSystem MiningCraftingSystem::singleton;
 
 MiningCraftingSystem::MiningCraftingSystem() : CraftOrderSystem("MiningCraftingSystem")
 {
-    constexpr const int target_amout = 50;
-    m_Items.push_back({ Keywords::Items::Resources::Bar::adamantite_bar, target_amout });
-    m_Items.push_back({ Keywords::Items::Resources::Bar::mithril_bar, target_amout });
-    m_Items.push_back({ Keywords::Items::Resources::Bar::strangold_bar, target_amout });
-    m_Items.push_back({ Keywords::Items::Resources::Bar::gold_bar, target_amout });
-    m_Items.push_back({ Keywords::Items::Resources::Bar::steel_bar, target_amout });
-    m_Items.push_back({ Keywords::Items::Resources::Bar::iron_bar, target_amout });
-    m_Items.push_back({ Keywords::Items::Resources::Bar::copper_bar, target_amout });
+    constexpr const int infinite_amount = 9999999;
+    m_Items.push_back({ Keywords::Items::Resources::PreciousStone::emerald, infinite_amount });
+    m_Items.push_back({ Keywords::Items::Resources::PreciousStone::sapphire, infinite_amount });
+    m_Items.push_back({ Keywords::Items::Resources::PreciousStone::topaz, infinite_amount });
+    m_Items.push_back({ Keywords::Items::Resources::PreciousStone::ruby, infinite_amount });
 
-    m_Workshop_Coord = { 1, 5 };
+    constexpr const int target_amount = 50;
+    m_Items.push_back({ Keywords::Items::Resources::Bar::adamantite_bar, target_amount });
+    m_Items.push_back({ Keywords::Items::Resources::Bar::mithril_bar, target_amount });
+    m_Items.push_back({ Keywords::Items::Resources::Bar::strangold_bar, target_amount });
+    m_Items.push_back({ Keywords::Items::Resources::Bar::gold_bar, target_amount });
+    m_Items.push_back({ Keywords::Items::Resources::Bar::steel_bar, target_amount });
+    m_Items.push_back({ Keywords::Items::Resources::Bar::iron_bar, target_amount });
+    m_Items.push_back({ Keywords::Items::Resources::Bar::copper_bar, target_amount });
+
+    m_Workshop_Coord = { Keywords::MapLayers::overworld, 1, 5 };
 }
 
 WoodcuttingCraftingSystem WoodcuttingCraftingSystem::singleton;
 
 WoodcuttingCraftingSystem::WoodcuttingCraftingSystem() : CraftOrderSystem("WoodcuttingCraftingSystem")
 {
-    constexpr const int target_amout = 50;
-    m_Items.push_back({ Keywords::Items::Resources::Plank::maple_plank, target_amout });
-    m_Items.push_back({ Keywords::Items::Resources::Plank::magical_plank, target_amout });
-    m_Items.push_back({ Keywords::Items::Resources::Plank::dead_wood_plank, target_amout });
-    m_Items.push_back({ Keywords::Items::Resources::Plank::palm_plank, target_amout });
-    m_Items.push_back({ Keywords::Items::Resources::Plank::hardwood_plank, target_amout });
-    m_Items.push_back({ Keywords::Items::Resources::Plank::spruce_plank, target_amout });
-    m_Items.push_back({ Keywords::Items::Resources::Plank::ash_plank, target_amout });
+    constexpr const int target_amount = 50;
+    m_Items.push_back({ Keywords::Items::Resources::Plank::maple_plank, target_amount });
+    m_Items.push_back({ Keywords::Items::Resources::Plank::magical_plank, target_amount });
+    m_Items.push_back({ Keywords::Items::Resources::Plank::dead_wood_plank, target_amount });
+    m_Items.push_back({ Keywords::Items::Resources::Plank::palm_plank, target_amount });
+    m_Items.push_back({ Keywords::Items::Resources::Plank::hardwood_plank, target_amount });
+    m_Items.push_back({ Keywords::Items::Resources::Plank::spruce_plank, target_amount });
+    m_Items.push_back({ Keywords::Items::Resources::Plank::ash_plank, target_amount });
 
-    m_Workshop_Coord = { -2, -3 };
+    m_Workshop_Coord = { Keywords::MapLayers::overworld, -2, -3 };
 }
 
 GearcraftingSystem GearcraftingSystem::singleton;
 
 GearcraftingSystem::GearcraftingSystem() : CraftOrderSystem("GearcraftingSystem")
 {
-    constexpr const int target_amout = 1;
-    m_Items.push_back({ Keywords::Items::Helmets::mushmush_wizard_hat, target_amout });
-    m_Items.push_back({ Keywords::Items::Helmets::adventurer_helmet, target_amout });
-    m_Items.push_back({ Keywords::Items::BodyArmors::mushmush_jacket, target_amout });
-    m_Items.push_back({ Keywords::Items::Boots::adventurer_boots, target_amout });
-    m_Items.push_back({ Keywords::Items::Helmets::copper_helmet, target_amout });
-    m_Items.push_back({ Keywords::Items::Boots::copper_boots, target_amout });
-    m_Items.push_back({ Keywords::Items::LegArmors::copper_legs_armor, target_amout });
-    m_Items.push_back({ Keywords::Items::Shields::wooden_shield, target_amout });
-    m_Items.push_back({ Keywords::Items::BodyArmors::feather_coat, target_amout });
-    m_Items.push_back({ Keywords::Items::Boots::leather_boots, target_amout });
-    m_Items.push_back({ Keywords::Items::BodyArmors::leather_armor, target_amout });
-    m_Items.push_back({ Keywords::Items::Helmets::adventurer_helmet, target_amout });
-    m_Items.push_back({ Keywords::Items::LegArmors::iron_legs_armor, target_amout });
-    m_Items.push_back({ Keywords::Items::BodyArmors::iron_armor, target_amout });
-    m_Items.push_back({ Keywords::Items::BodyArmors::adventurer_vest, target_amout });
-    m_Items.push_back({ Keywords::Items::Helmets::leather_hat, target_amout });
-    m_Items.push_back({ Keywords::Items::LegArmors::leather_legs_armor, target_amout });
-    m_Items.push_back({ Keywords::Items::Bags::satchel, target_amout });
+    constexpr const int target_amount = 1;
+    m_Items.push_back({ Keywords::Items::Helmets::mushmush_wizard_hat, target_amount });
+    m_Items.push_back({ Keywords::Items::Helmets::adventurer_helmet, target_amount });
+    m_Items.push_back({ Keywords::Items::BodyArmors::mushmush_jacket, target_amount });
+    m_Items.push_back({ Keywords::Items::Boots::adventurer_boots, target_amount });
+    m_Items.push_back({ Keywords::Items::Helmets::copper_helmet, target_amount });
+    m_Items.push_back({ Keywords::Items::Boots::copper_boots, target_amount });
+    m_Items.push_back({ Keywords::Items::LegArmors::copper_legs_armor, target_amount });
+    m_Items.push_back({ Keywords::Items::Shields::wooden_shield, target_amount });
+    m_Items.push_back({ Keywords::Items::BodyArmors::feather_coat, target_amount });
+    m_Items.push_back({ Keywords::Items::Boots::leather_boots, target_amount });
+    m_Items.push_back({ Keywords::Items::BodyArmors::leather_armor, target_amount });
+    m_Items.push_back({ Keywords::Items::Helmets::adventurer_helmet, target_amount });
+    m_Items.push_back({ Keywords::Items::LegArmors::iron_legs_armor, target_amount });
+    m_Items.push_back({ Keywords::Items::BodyArmors::iron_armor, target_amount });
+    m_Items.push_back({ Keywords::Items::BodyArmors::adventurer_vest, target_amount });
+    m_Items.push_back({ Keywords::Items::Helmets::leather_hat, target_amount });
+    m_Items.push_back({ Keywords::Items::LegArmors::leather_legs_armor, target_amount });
+    m_Items.push_back({ Keywords::Items::Bags::satchel, target_amount });
 
-    m_Workshop_Coord = { 3, 1 };
+    m_Workshop_Coord = { Keywords::MapLayers::overworld, 3, 1 };
 }
 
 JewerlyCraftSystem::JewerlyCraftSystem() : CraftOrderSystem("JewerlyCraftSystem")
@@ -186,48 +192,69 @@ JewerlyCraftSystem::JewerlyCraftSystem() : CraftOrderSystem("JewerlyCraftSystem"
     m_Items.push_back({ Keywords::Items::Amulets::life_amulet, target_amount });
     m_Items.push_back({ Keywords::Items::Rings::life_ring, target_amount });
 
-    m_Workshop_Coord = { 1, 3 };
+    m_Workshop_Coord = { Keywords::MapLayers::overworld, 1, 3 };
 }
 
 JewerlyCraftSystem JewerlyCraftSystem::singleton;
 
 BuyingSystem BuyingSystem::singleton;
 
-BuyingSystem::BuyingSystem() : System("BuyingSystem") {}
+BuyingSystem::BuyingSystem() : System("BuyingSystem")
+{
+    const char* task_coin = Keywords::Items::Currency::tasks_coin;
+
+    m_Items.push_back({
+        { Keywords::Items::Resources::Task::jasper_crystal, 5 },
+        task_coin, 8
+    });
+    m_Items.push_back({
+        { Keywords::Items::Resources::Task::magical_cure, 4 },
+        task_coin, 8
+    });
+    m_Items.push_back({
+        { Keywords::Items::Resources::Task::astralyte_crystal, 3 },
+        task_coin, 12
+    });
+}
 
 void BuyingSystem::Fill_Pipeline(Character& character)
 {
-    const char* item_to_buy           = Keywords::Items::Resources::Task::jasper_crystal;
-    const char* task_coin             = Keywords::Items::Currency::tasks_coin;
-    const int bank_item_count         = InventoryManager::singleton.Get_Bank_Item_Count(item_to_buy);
-    const MapCoord trader_coord       = { 5, 11 };
-    const MapCoord nearest_bank_coord = InventoryManager::singleton.Get_Bank_Nearest_Coord(character);
-
-    if (AchivementManager::singleton.Is_Completed("tasks_farmer") == false)
+    for (std::size_t ii = 0; ii < m_Items.size(); ii++)
     {
-        SYSTEM_PRINT("achievement not completed");
-        return;
-    }
+        const char* item_to_buy           = m_Items[ii].item.item_code;
+        const char* traded_item_code      = m_Items[ii].traded_item_code;
+        const int traded_item_amount      = m_Items[ii].traded_item_amount;
+        const int bank_item_count         = InventoryManager::singleton.Get_Bank_Item_Count(item_to_buy);
+        const MapCoord trader_coord       = { Keywords::MapLayers::overworld, 5, 11 };
+        const MapCoord nearest_bank_coord = InventoryManager::singleton.Get_Bank_Nearest_Coord(character);
 
-    if (bank_item_count < 5)
-    {
-        if (InventoryManager::singleton.Get_Bank_Item_Count(task_coin) < 8)
+        if (AchivementManager::singleton.Is_Completed("tasks_farmer") == false)
         {
-            SYSTEM_PRINT("not enough '%s'", task_coin);
+            SYSTEM_PRINT("achievement not completed");
             return;
         }
 
-        /// Move to bank
-        if (character.Should_Move(nearest_bank_coord))
+        if (bank_item_count < m_Items[ii].item.target_amount)
         {
-            character.Add_Move(this, nearest_bank_coord);
+            if (InventoryManager::singleton.Get_Bank_Item_Count(traded_item_code) < traded_item_amount)
+            {
+                SYSTEM_PRINT("not enough '%s'", traded_item_code);
+                return;
+            }
+
+            /// Move to bank
+            if (character.Should_Move(nearest_bank_coord))
+            {
+                character.Add_Move(this, nearest_bank_coord);
+                return;
+            }
+
+            character.Add_Withdraw_Item(this, { traded_item_code, traded_item_amount });
+            character.Add_Move(this, trader_coord);
+            character.Add_Buy_Item(this, { item_to_buy, 1 });
+            character.Add_Move(this, InventoryManager::singleton.Get_Bank_Nearest_Coord(trader_coord));
+            character.Make_Clear_Inventory(this, nullptr);
             return;
         }
-
-        character.Add_Withdraw_Item(this, { task_coin, 8 });
-        character.Add_Move(this, trader_coord);
-        character.Add_Buy_Item(this, { item_to_buy, 1 });
-        character.Add_Move(this, InventoryManager::singleton.Get_Bank_Nearest_Coord(trader_coord));
-        character.Make_Clear_Inventory(this, nullptr);
     }
 }

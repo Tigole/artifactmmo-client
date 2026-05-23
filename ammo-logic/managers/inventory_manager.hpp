@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "keywords.hpp"
 #include "types.hpp"
 
 class Client;
@@ -38,8 +39,8 @@ public:
     void Update_Cache(void);
 
 private:
-    MapCoord m_Bank_Coord_1 = { 4, 1 };
-    MapCoord m_Bank_Coord_2 = { 7, 13 };
+    MapCoord m_Bank_Coord_1 = { Keywords::MapLayers::overworld, 4, 1 };
+    MapCoord m_Bank_Coord_2 = { Keywords::MapLayers::overworld, 7, 13 };
     std::map<std::string, int> m_Bank_Content;
     int m_Gold_Amount = 0;
 

@@ -43,7 +43,7 @@ void TaskSystemMonster::Fill_Pipeline(Character& character)
         }
         else
         {
-            character.Add_Move(this, { 1, 2 });
+            character.Add_Move(this, { Keywords::MapLayers::overworld, 1, 2 });
             character.Add_Task_Complete(this);
         }
     }

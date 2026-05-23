@@ -9,10 +9,6 @@ ItemManager ItemManager::singleton;
 void ItemManager::Initialize()
 {
     Client::singleton.Get_Items(m_Items);
-    for (auto& i: m_Items)
-    {
-        printf("item '%s'\n", i.first.c_str());
-    }
     Initialize_Recipes();
 }
 
@@ -234,14 +230,14 @@ ItemCraftingManager ItemCraftingManager::singleton;
 
 void ItemCraftingManager::Initialize(void)
 {
-    m_Workshop_Coords[Keywords::Skills::mining]          = { 1, 5 };
-    m_Workshop_Coords[Keywords::Skills::woodcutting]     = { -2, -3 };
-    m_Workshop_Coords[Keywords::Skills::fishing]         = { 0, 0 };
-    m_Workshop_Coords[Keywords::Skills::alchemy]         = { 2, 3 };
-    m_Workshop_Coords[Keywords::Skills::weaponcrafting]  = { 2, 1 };
-    m_Workshop_Coords[Keywords::Skills::gearcrafting]    = { 3, 1 };
-    m_Workshop_Coords[Keywords::Skills::jewelrycrafting] = { 1, 3 };
-    m_Workshop_Coords[Keywords::Skills::cooking]         = { 1, 1 };
+    m_Workshop_Coords[Keywords::Skills::mining]          = { Keywords::MapLayers::overworld, 1, 5 };
+    m_Workshop_Coords[Keywords::Skills::woodcutting]     = { Keywords::MapLayers::overworld, -2, -3 };
+    m_Workshop_Coords[Keywords::Skills::fishing]         = { Keywords::MapLayers::overworld, 0, 0 };
+    m_Workshop_Coords[Keywords::Skills::alchemy]         = { Keywords::MapLayers::overworld, 2, 3 };
+    m_Workshop_Coords[Keywords::Skills::weaponcrafting]  = { Keywords::MapLayers::overworld, 2, 1 };
+    m_Workshop_Coords[Keywords::Skills::gearcrafting]    = { Keywords::MapLayers::overworld, 3, 1 };
+    m_Workshop_Coords[Keywords::Skills::jewelrycrafting] = { Keywords::MapLayers::overworld, 1, 3 };
+    m_Workshop_Coords[Keywords::Skills::cooking]         = { Keywords::MapLayers::overworld, 1, 1 };
 }
 
 void ItemCraftingManager::Make_Craft_Item(const System* sys, Character& character, const ItemOrder& item)

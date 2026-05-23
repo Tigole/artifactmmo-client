@@ -27,6 +27,7 @@ public:
     MapCoord mt_Get_Map_With_Content_Code(const char* content_code);
 
     int mt_Character_Move(const char* character_name, const MapCoord& map_coord, nlohmann::json& character_cache);
+    int mt_Character_Transition(const char* character_name, nlohmann::json& character_cache);
     int mt_Character_Fight(const char* character_name, nlohmann::json& character_cache);
     int mt_Character_Rest(const char* character_name, nlohmann::json& character_cache);
     int mt_Character_Craft(const char* character_name, const ItemOrder& craft, nlohmann::json& character_cache);
