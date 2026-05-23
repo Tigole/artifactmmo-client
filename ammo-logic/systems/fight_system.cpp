@@ -167,6 +167,8 @@ void FightSystem::Add_Healing(const System* sys, Character& character)
     }
 }
 
+#define FIGHT_SYSTEM_DEBUG
+
 bool FightSystem::MayWin(const Character& character, const char* monster, bool may_use_potion, FightContext& context)
 {
     static const std::array<const char*, 4> attck_names = {
@@ -184,6 +186,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
     const std::array<int, 4> l_Monster_Damages    = {
         { 0, 0, 0, 0 }
     };
+    const int l_Poison                        = MonsterManager::singleton.Get_Monster_Effect_Poison(monster);
     std::array<int, 4> l_Character_Attack     = character.Get_Attack();
     std::array<int, 4> l_Character_Damages    = character.Get_Damage();
     std::array<int, 4> l_Character_Resistance = character.Get_Resistance();
@@ -276,7 +279,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
                      l_Weapon.attacks[2], l_Weapon.attacks[3], l_Weapon_Dmg);
         if (l_Weapon_Dmg > l_Character_Dmg)
         {
-            SYSTEM_PRINT("try using weapon '%s' (%d better than %d)", l_Weapon.code.c_str(), l_Character_Dmg, l_Weapon_Dmg);
+            SYSTEM_PRINT("try using weapon '%s' (%d better than %d)", l_Weapon.code.c_str(), l_Weapon_Dmg, l_Character_Dmg);
             l_Character_Dmg     = l_Weapon_Dmg;
             l_Character_Attack  = l_Weapon.attacks;
             l_Character_Damages = l_Weapon.damages;
@@ -317,7 +320,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
     {
         const int l_Character_Dmg = Calculate_Effective_Damages(l_Character_Attack, l_Character_Damages, l_Monster_Resistance, 0);
         const int l_Monster_Dmg =
-            Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, l_Character_Resistance, l_Monster_Critical_Strike);
+            Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, l_Character_Resistance, l_Monster_Critical_Strike) + l_Poison;
 
         if (l_Chararcter_Max_Life < character.Get_Life_Max() / 2)
         {
@@ -339,10 +342,13 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
             l_Player_Turn = true;
         }
         context.turn_count++;
-#if 0
-        SYSTEM_PRINT("turn %d '%s' %d/%d (monster dmg %d) vs '%s' %d/%d (character dmg %d)", context.turn_count, character.Get_Character(),
-                     l_Chararcter_Max_Life, character.Get_Life_Max(), l_Monster_Dmg, monster, l_Monster_Life,
-                     MonsterManager::singleton.Get_Monster_Hp(monster), l_Character_Dmg);
+#ifdef FIGHT_SYSTEM_DEBUG
+        if (strcmp(character.Get_Character(), "Niva") == 0 && strcmp(monster, "spider") == 0)
+        {
+            SYSTEM_PRINT("turn %d '%s' %d/%d (monster dmg %d) vs '%s' %d/%d (character dmg %d)", context.turn_count,
+                         character.Get_Character(), l_Chararcter_Max_Life, character.Get_Life_Max(), l_Monster_Dmg, monster, l_Monster_Life,
+                         MonsterManager::singleton.Get_Monster_Hp(monster), l_Character_Dmg);
+        }
 #endif
     }
 

@@ -66,6 +66,19 @@ int MonsterManager::Get_Monster_Critical_Strike(const char* monster)
     return m_Monsters[monster]["critical_strike"];
 }
 
+int MonsterManager::Get_Monster_Effect_Poison(const char* monster)
+{
+    auto effects = m_Monsters[monster]["effects"];
+    for (auto it = effects.begin(); it != effects.end(); ++it)
+    {
+        if (it.value()["code"].get<std::string>() == Keywords::Effects::poison)
+        {
+            return it.value()["value"].get<int>();
+        }
+    }
+    return 0;
+}
+
 const MapCoord* MonsterManager::Get_Monster_Coord(const char* monster, MapCoord current_pos) const
 {
     return MapManager::singleton.Get_Monster_Coord(monster, current_pos);
