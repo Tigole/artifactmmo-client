@@ -94,6 +94,7 @@ AlchemyCraftingSystem::AlchemyCraftingSystem() : CraftOrderSystem("AlchemyCrafti
     m_Items.push_back({ Keywords::Items::Utilities::health_potion, 50 });
     m_Items.push_back({ Keywords::Items::Utilities::minor_health_potion, 50 });
     m_Items.push_back({ Keywords::Items::Utilities::small_health_potion, 50 });
+    m_Items.push_back({ Keywords::Items::Utilities::small_antidote, 50 });
 
     {
         m_Items.push_back({ Keywords::Items::Utilities::air_boost_potion, 50 });
@@ -191,6 +192,10 @@ JewerlyCraftSystem::JewerlyCraftSystem() : CraftOrderSystem("JewerlyCraftSystem"
     m_Items.push_back({ Keywords::Items::Rings::copper_ring, target_amount });
     m_Items.push_back({ Keywords::Items::Amulets::life_amulet, target_amount });
     m_Items.push_back({ Keywords::Items::Rings::life_ring, target_amount });
+    m_Items.push_back({ Keywords::Items::Rings::fire_ring, target_amount });
+    m_Items.push_back({ Keywords::Items::Rings::water_ring, target_amount });
+    m_Items.push_back({ Keywords::Items::Rings::earth_ring, target_amount });
+    m_Items.push_back({ Keywords::Items::Rings::air_ring, target_amount });
 
     m_Workshop_Coord = { Keywords::MapLayers::overworld, 1, 3 };
 }

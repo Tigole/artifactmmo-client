@@ -435,6 +435,16 @@ int Character::Get_Equiped_Utility1_Quantity(void) const
     return m_Character_Cache[Keywords::EquipementSlot::utility1_slot_quantity];
 }
 
+std::string Character::Get_Equiped_Utility2(void) const
+{
+    return m_Character_Cache[Keywords::EquipementSlot::utility2_slot];
+}
+
+int Character::Get_Equiped_Utility2_Quantity(void) const
+{
+    return m_Character_Cache[Keywords::EquipementSlot::utility2_slot_quantity];
+}
+
 std::string Character::Get_Equiped_Artifact1(void) const
 {
     return m_Character_Cache[Keywords::EquipementSlot::artifact1_slot];

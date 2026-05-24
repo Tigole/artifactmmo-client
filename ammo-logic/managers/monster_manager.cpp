@@ -68,10 +68,20 @@ int MonsterManager::Get_Monster_Critical_Strike(const char* monster)
 
 int MonsterManager::Get_Monster_Effect_Poison(const char* monster)
 {
+    return Get_Monster_Effect(monster, Keywords::Effects::poison);
+}
+
+int MonsterManager::Get_Monster_Effect_Corruption(const char* monster)
+{
+    return Get_Monster_Effect(monster, Keywords::Effects::corrupted);
+}
+
+int MonsterManager::Get_Monster_Effect(const char* monster, const char* effect)
+{
     auto effects = m_Monsters[monster]["effects"];
     for (auto it = effects.begin(); it != effects.end(); ++it)
     {
-        if (it.value()["code"].get<std::string>() == Keywords::Effects::poison)
+        if (it.value()["code"].get<std::string>() == effect)
         {
             return it.value()["value"].get<int>();
         }

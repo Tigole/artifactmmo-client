@@ -18,10 +18,12 @@ struct FightContext
     std::string shield;
     std::string amulet;
     std::string utility1;
+    std::string utility2;
     std::string artifact1;
     std::string artifact2;
     std::string artifact3;
     int utility1_quantity;
+    int utility2_quantity;
     int turn_count;
     bool should_heal;
 };

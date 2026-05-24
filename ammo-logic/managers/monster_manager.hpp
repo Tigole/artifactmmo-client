@@ -27,6 +27,7 @@ public:
     int Get_Monster_Initiative(const char* monster);
     int Get_Monster_Critical_Strike(const char* monster);
     int Get_Monster_Effect_Poison(const char* monster);
+    int Get_Monster_Effect_Corruption(const char* monster);
 
     const MapCoord* Get_Monster_Coord(const char* monster, MapCoord current_pos) const;
     void Get_Monster_Loot(const char* monster, std::vector<Loot>& loot) const;
@@ -34,6 +35,8 @@ public:
 private:
     std::map<std::string, nlohmann::json> m_Monsters;
     std::map<std::string, std::vector<Loot>> m_Monsters_Loot;
+
+    int Get_Monster_Effect(const char* monster, const char* effect);
 };
 
 #endif  // _MONSTER_MANAGER_HPP

@@ -209,6 +209,8 @@ public:
     std::string Get_Equiped_Ring2(void) const;
     std::string Get_Equiped_Utility1(void) const;
     int Get_Equiped_Utility1_Quantity(void) const;
+    std::string Get_Equiped_Utility2(void) const;
+    int Get_Equiped_Utility2_Quantity(void) const;
     std::string Get_Equiped_Artifact1(void) const;
     std::string Get_Equiped_Artifact2(void) const;
     std::string Get_Equiped_Artifact3(void) const;

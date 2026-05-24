@@ -632,6 +632,7 @@ struct Keywords
         KEYWORD(utility1_slot);
         KEYWORD(utility1_slot_quantity);
         KEYWORD(utility2_slot);
+        KEYWORD(utility2_slot_quantity);
         KEYWORD(bag_slot);
     };
 
