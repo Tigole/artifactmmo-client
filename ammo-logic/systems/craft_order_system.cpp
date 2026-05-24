@@ -28,6 +28,7 @@ ToolCraftSystem ToolCraftSystem::singleton;
 ToolCraftSystem::ToolCraftSystem() : CraftOrderSystem("ToolCraftSystem")
 {
     constexpr const int target_amount = 1;
+
     m_Items.push_back({ Keywords::Items::Weapons::Tools::Axes::voidstone_axe, target_amount });
     m_Items.push_back({ Keywords::Items::Weapons::Tools::Pickaxes::voidstone_pickaxe, target_amount });
     m_Items.push_back({ Keywords::Items::Weapons::Tools::Gloves::voidstone_gloves, target_amount });
@@ -116,6 +117,7 @@ CookingSystem::CookingSystem() : CraftOrderSystem("CookingSystem")
     m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_gudgeon, 50 });
     m_Items.push_back({ Keywords::Items::Consumables::Food::fried_eggs, 10 });
     m_Items.push_back({ Keywords::Items::Consumables::Food::cooked_chicken, 50 });
+    m_Items.push_back({ Keywords::Items::Consumables::Food::mushroom_soup, 50 });
 
     m_Workshop_Coord = { Keywords::MapLayers::overworld, 1, 1 };
 }
@@ -125,12 +127,14 @@ MiningCraftingSystem MiningCraftingSystem::singleton;
 MiningCraftingSystem::MiningCraftingSystem() : CraftOrderSystem("MiningCraftingSystem")
 {
     constexpr const int infinite_amount = 9999999;
+
     m_Items.push_back({ Keywords::Items::Resources::PreciousStone::emerald, infinite_amount });
     m_Items.push_back({ Keywords::Items::Resources::PreciousStone::sapphire, infinite_amount });
     m_Items.push_back({ Keywords::Items::Resources::PreciousStone::topaz, infinite_amount });
     m_Items.push_back({ Keywords::Items::Resources::PreciousStone::ruby, infinite_amount });
 
-    constexpr const int target_amount = 50;
+    constexpr const int target_amount = 10;
+
     m_Items.push_back({ Keywords::Items::Resources::Bar::adamantite_bar, target_amount });
     m_Items.push_back({ Keywords::Items::Resources::Bar::mithril_bar, target_amount });
     m_Items.push_back({ Keywords::Items::Resources::Bar::strangold_bar, target_amount });
@@ -146,7 +150,8 @@ WoodcuttingCraftingSystem WoodcuttingCraftingSystem::singleton;
 
 WoodcuttingCraftingSystem::WoodcuttingCraftingSystem() : CraftOrderSystem("WoodcuttingCraftingSystem")
 {
-    constexpr const int target_amount = 50;
+    constexpr const int target_amount = 10;
+
     m_Items.push_back({ Keywords::Items::Resources::Plank::maple_plank, target_amount });
     m_Items.push_back({ Keywords::Items::Resources::Plank::magical_plank, target_amount });
     m_Items.push_back({ Keywords::Items::Resources::Plank::dead_wood_plank, target_amount });
@@ -163,6 +168,7 @@ GearcraftingSystem GearcraftingSystem::singleton;
 GearcraftingSystem::GearcraftingSystem() : CraftOrderSystem("GearcraftingSystem")
 {
     constexpr const int target_amount = 1;
+
     m_Items.push_back({ Keywords::Items::Helmets::mushmush_wizard_hat, target_amount });
     m_Items.push_back({ Keywords::Items::Helmets::adventurer_helmet, target_amount });
     m_Items.push_back({ Keywords::Items::BodyArmors::mushmush_jacket, target_amount });
@@ -188,6 +194,7 @@ GearcraftingSystem::GearcraftingSystem() : CraftOrderSystem("GearcraftingSystem"
 JewerlyCraftSystem::JewerlyCraftSystem() : CraftOrderSystem("JewerlyCraftSystem")
 {
     constexpr const int target_amount = 1;
+
     m_Items.push_back({ Keywords::Items::Rings::iron_ring, target_amount });
     m_Items.push_back({ Keywords::Items::Rings::copper_ring, target_amount });
     m_Items.push_back({ Keywords::Items::Amulets::life_amulet, target_amount });

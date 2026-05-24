@@ -57,7 +57,7 @@ WoodcuttingGatheringSystem WoodcuttingGatheringSystem::singleton;
 
 WoodcuttingGatheringSystem::WoodcuttingGatheringSystem() : GatherSystem("WoodcuttingGatheringSystem")
 {
-    static constexpr int item_amount = 200;
+    static constexpr int item_amount = 50;
 
     m_Resources.push_back({ Keywords::Items::Resources::Woodcutting::palm_wood, item_amount });
     m_Resources.push_back({ Keywords::Items::Resources::Woodcutting::maple_wood, item_amount });
@@ -80,7 +80,7 @@ MiningGatheringSystem MiningGatheringSystem::singleton;
 
 MiningGatheringSystem::MiningGatheringSystem() : GatherSystem("MiningGatheringSystem")
 {
-    static constexpr int item_amount = 200;
+    static constexpr int item_amount = 50;
 
     m_Resources.push_back({ Keywords::Items::Resources::Mining::adamantite_ore, item_amount });
     m_Resources.push_back({ Keywords::Items::Resources::Mining::mithril_ore, item_amount });
@@ -103,7 +103,7 @@ AlchemyGatheringSystem AlchemyGatheringSystem::singleton;
 
 AlchemyGatheringSystem::AlchemyGatheringSystem() : GatherSystem("AlchemyGatheringSystem")
 {
-    static constexpr int item_amount = 200;
+    static constexpr int item_amount = 50;
 
     m_Resources.push_back({ Keywords::Items::Resources::Alchemy::torch_cactus_flower, item_amount });
     m_Resources.push_back({ Keywords::Items::Resources::Alchemy::glowstem_leaf, item_amount });
@@ -123,7 +123,7 @@ FishingGatherSystem FishingGatherSystem::singleton;
 
 FishingGatherSystem::FishingGatherSystem() : GatherSystem("FishingGatherSystem")
 {
-    static constexpr int item_amount = 200;
+    static constexpr int item_amount = 50;
 
     m_Resources.push_back({ Keywords::Items::Resources::Fishing::swordfish, item_amount });
     m_Resources.push_back({ Keywords::Items::Resources::Fishing::salmon, item_amount });
