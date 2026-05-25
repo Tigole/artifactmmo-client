@@ -147,19 +147,19 @@ MobGatherSystem::MobGatherSystem() : System("MobGatherSystem")
     m_Resources.push_back({ Keywords::Items::Resources::Mob::pig_skin, 10 });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::skeleton_skull, 10 });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::skeleton_bone, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_wolf_meat, 50 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_wolf_meat, 10 });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::wolf_bone, 10 });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::wolf_hair, 10 });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::snake_hide, 10 });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::flying_wing, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::mushroom, 50 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_beef, 50 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::red_slimeball, 50 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::blue_slimeball, 50 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::wool, 50 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::green_slimeball, 50 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::yellow_slimeball, 50 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_chicken, 100 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::mushroom, 10 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_beef, 10 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::red_slimeball, 10 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::blue_slimeball, 10 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::wool, 10 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::green_slimeball, 10 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::yellow_slimeball, 10 });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_chicken, 10 });
 }
 
 #include "fight_system.hpp"
