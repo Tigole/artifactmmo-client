@@ -186,23 +186,23 @@ void AlchemyLevelSystem::Fill_Pipeline(Character& character)
     {
         return;
     }
-    if (character_level >= 45)
+    else if (character_level >= 45)
     {
         Make_Craft(character, craft_coord, Keywords::Items::Utilities::enchanted_health_potion, craft_count);
     }
-    if (character_level >= 40)
+    else if (character_level >= 40)
     {
         Make_Gather(character, { Keywords::MapLayers::overworld, 1, 10 }, skill, *m_Equipements);
     }
-    if (character_level >= 30)
+    else if (character_level >= 30)
     {
         Make_Craft(character, craft_coord, Keywords::Items::Utilities::health_potion, craft_count);
     }
-    if (character_level >= 20)
+    else if (character_level >= 20)
     {
         Make_Gather(character, { Keywords::MapLayers::overworld, 7, 14 }, skill, *m_Equipements);
     }
-    if (character_level >= 10)
+    else if (character_level >= 10)
     {
         Make_Craft(character, craft_coord, Keywords::Items::Utilities::earth_boost_potion, craft_count);
     }
