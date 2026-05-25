@@ -71,6 +71,20 @@ WeaponCraftSystem WeaponCraftSystem::singleton;
 
 WeaponCraftSystem::WeaponCraftSystem() : CraftOrderSystem("WeaponCraftSystem")
 {
+    m_Items.push_back({ Keywords::Items::Weapons::enchanted_bow, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::obsidian_battleaxe, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::elderwood_staff, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::gold_sword, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::greater_dreadful_staff, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::vampire_bow, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::skull_wand, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::dreadful_staff, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::shuriken, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::hunting_bow, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::skull_staff, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::steel_battleaxe, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::forest_whip, 1 });
+    m_Items.push_back({ Keywords::Items::Weapons::battlestaff, 1 });
     m_Items.push_back({ Keywords::Items::Weapons::mushmush_bow, 1 });
     m_Items.push_back({ Keywords::Items::Weapons::mushstaff, 1 });
     m_Items.push_back({ Keywords::Items::Weapons::iron_sword, 1 });
@@ -169,8 +183,25 @@ GearcraftingSystem::GearcraftingSystem() : CraftOrderSystem("GearcraftingSystem"
 {
     constexpr const int target_amount = 1;
 
+    m_Items.push_back({ Keywords::Items::Helmets::magic_wizard_hat, target_amount });
+    m_Items.push_back({ Keywords::Items::Helmets::steel_helm, target_amount });
+    m_Items.push_back({ Keywords::Items::Boots::steel_boots, target_amount });
+    m_Items.push_back({ Keywords::Items::Shields::slime_shield, target_amount });
+    m_Items.push_back({ Keywords::Items::BodyArmors::steel_armor, target_amount });
+    m_Items.push_back({ Keywords::Items::LegArmors::steel_legs_armor, target_amount });
+    m_Items.push_back({ Keywords::Items::LegArmors::skeleton_pants, target_amount });
+    m_Items.push_back({ Keywords::Items::BodyArmors::skeleton_armor, target_amount });
+    m_Items.push_back({ Keywords::Items::Helmets::skeleton_helmet, target_amount });
+    m_Items.push_back({ Keywords::Items::Helmets::tromatising_mask, target_amount });
+    m_Items.push_back({ Keywords::Items::Boots::snakeskin_boots, target_amount });
+    m_Items.push_back({ Keywords::Items::BodyArmors::hard_leather_armor, target_amount });
+    m_Items.push_back({ Keywords::Items::LegArmors::hard_leather_pants, target_amount });
+    m_Items.push_back({ Keywords::Items::Helmets::hard_leather_helmet, target_amount });
+    m_Items.push_back({ Keywords::Items::Boots::hard_leather_boots, target_amount });
+
+    m_Items.push_back({ Keywords::Items::Helmets::lucky_wizard_hat, target_amount });
     m_Items.push_back({ Keywords::Items::Helmets::mushmush_wizard_hat, target_amount });
-    m_Items.push_back({ Keywords::Items::Helmets::adventurer_helmet, target_amount });
+    m_Items.push_back({ Keywords::Items::LegArmors::adventurer_pants, target_amount });
     m_Items.push_back({ Keywords::Items::BodyArmors::mushmush_jacket, target_amount });
     m_Items.push_back({ Keywords::Items::Boots::adventurer_boots, target_amount });
     m_Items.push_back({ Keywords::Items::Helmets::copper_helmet, target_amount });

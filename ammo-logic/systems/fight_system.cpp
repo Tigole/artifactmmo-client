@@ -191,7 +191,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
     const std::array<int, 4> l_Monster_Damages = {
         { 0, 0, 0, 0 }
     };
-    const int l_Poison                        = MonsterManager::singleton.Get_Monster_Effect_Poison(monster);
+    int l_Poison                              = MonsterManager::singleton.Get_Monster_Effect_Poison(monster);
     const int l_Corruption                    = MonsterManager::singleton.Get_Monster_Effect_Corruption(monster);
     std::array<int, 4> l_Character_Attack     = character.Get_Attack();
     std::array<int, 4> l_Character_Damages    = character.Get_Damage();
@@ -276,6 +276,8 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
     InventoryManager::singleton.Get_Fight_Items(l_Character_Combat_Level, l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor, l_Boots,
                                                 l_Shields, l_Rings, l_Amulets);
 
+    SYSTEM_PRINT("try to fight against '%s'", monster);
+
     SYSTEM_PRINT("equipped weapon: '%s'", context.weapon.c_str());
     for (std::size_t ii = 0; ii < l_Weapons.size(); ii++)
     {
@@ -325,8 +327,12 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
         SYSTEM_PRINT("Must use antidote");
         const char* item_code     = Keywords::Items::Utilities::small_antidote;
         const int inventory_count = InventoryManager::singleton.Get_Bank_Item_Count(item_code);
-        context.utility2          = item_code;
-        context.utility2_quantity = InventoryManager::singleton.Get_Bank_Item_Count(item_code);
+        if (inventory_count > 0)
+        {
+            context.utility2          = item_code;
+            context.utility2_quantity = 1;  // InventoryManager::singleton.Get_Bank_Item_Count(item_code);
+            l_Poison                  = 0;
+        }
     }
 
     context.turn_count = 0;
@@ -334,21 +340,11 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
     while (l_Monster_Life > 0)
     {
         const int l_Character_Dmg = Calculate_Effective_Damages(l_Character_Attack, l_Character_Damages, l_Monster_Resistance, 0);
-        int l_Monster_Dmg =
-            Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, l_Character_Resistance, l_Monster_Critical_Strike);
+        const int l_Monster_Dmg =
+            Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, l_Character_Resistance, l_Monster_Critical_Strike) + l_Poison;
 
         /// update data
         {
-            /// Poison/Antidote
-            if (context.utility2_quantity > 0)
-            {
-                context.utility2_quantity--;
-            }
-            else
-            {
-                l_Monster_Dmg += l_Poison;
-            }
-
             /// Corruption
             for (std::size_t ii = 0; ii < 4; ii++)
             {
@@ -428,7 +424,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
     SYSTEM_PRINT(
         "vs '%s': %s (hp diff: %d - turn count: %d - heal: %d - weapon: '%s' - helmet: '%s' body_armor: '%s' leg_armor: '%s' boots: "
         "'%s' shield: '%s' ring1: '%s' ring2: '%s' amulet: '%s' utility1: '%s' x%d utility2: '%s' x%d artifact1: '%s' artifact2: '%s' "
-        "artifact3: '%s'",
+        "artifact3: '%s')",
         monster, (l_Chararcter_Max_Life > 0) ? "win" : "loose", l_Chararcter_Max_Life - l_Monster_Life, context.turn_count,
         context.should_heal, context.weapon.c_str(), context.helmet.c_str(), context.body_armor.c_str(), context.leg_armor.c_str(),
         context.boots.c_str(), context.shield.c_str(), context.ring1.c_str(), context.ring2.c_str(), context.amulet.c_str(),

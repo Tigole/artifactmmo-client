@@ -56,7 +56,6 @@ void LogicApplication::Run(int argc, char** argv)
         l_Pipeline[idx].Add_System(&TaskSystemMonster::singleton);
         {
             {
-                l_Pipeline[idx].Add_System(&ToolCraftSystem::singleton);
                 l_Pipeline[idx].Add_System(&WeaponCraftSystem::singleton);
                 l_Pipeline[idx].Add_System(&GearcraftingSystem::singleton);
                 l_Pipeline[idx].Add_System(&JewerlyCraftSystem::singleton);

@@ -51,6 +51,7 @@ struct Keywords
             KEYWORD(gold_sword);
             KEYWORD(elderwood_staff);
             KEYWORD(enchanted_bow);
+            KEYWORD(obsidian_battleaxe);
             KEYWORD(magic_bow);
             KEYWORD(cursed_sceptre);
             KEYWORD(strangold_sword);
