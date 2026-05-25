@@ -144,8 +144,8 @@ MiningLevelSystem::MiningLevelSystem() : LevelGatherSystem("MiningLevelSystem")
     m_Default_Spot_Coord = { Keywords::MapLayers::overworld, 2, 0 };
     m_GT_10_Spot_Coord   = { Keywords::MapLayers::overworld, 1, 7 };
     m_GT_20_Spot_Coord   = { Keywords::MapLayers::overworld, 1, 6 };
-    m_GT_30_Spot_Coord   = m_Default_Spot_Coord;
-    m_GT_40_Spot_Coord   = m_Default_Spot_Coord;
+    m_GT_30_Spot_Coord   = { Keywords::MapLayers::underground, 5, -4 };
+    m_GT_40_Spot_Coord   = { Keywords::MapLayers::underground, -2, 5 };
 }
 
 WoodcuttingLevelSystem::WoodcuttingLevelSystem() : LevelGatherSystem("WoodcuttingLevelSystem")
