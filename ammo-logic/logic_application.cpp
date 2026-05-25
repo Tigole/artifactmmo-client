@@ -80,7 +80,7 @@ void LogicApplication::Run(int argc, char** argv)
             l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&AlchemyGatherLevelSystem::singleton);
+            l_Pipeline[idx].Add_System(&AlchemyLevelSystem::singleton);
         }
         l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
     }
@@ -109,7 +109,7 @@ void LogicApplication::Run(int argc, char** argv)
             l_Pipeline[idx].Add_System(&AlchemyCraftLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&AlchemyGatherLevelSystem::singleton);
+            l_Pipeline[idx].Add_System(&AlchemyLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
         }
         l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
@@ -138,7 +138,7 @@ void LogicApplication::Run(int argc, char** argv)
         {
             l_Pipeline[idx].Add_System(&GearcraftingLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&AlchemyGatherLevelSystem::singleton);
+            l_Pipeline[idx].Add_System(&AlchemyLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
         }
@@ -168,7 +168,7 @@ void LogicApplication::Run(int argc, char** argv)
         {
             l_Pipeline[idx].Add_System(&CookingLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&AlchemyCraftLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&AlchemyGatherLevelSystem::singleton);
+            l_Pipeline[idx].Add_System(&AlchemyLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
@@ -198,7 +198,7 @@ void LogicApplication::Run(int argc, char** argv)
         {
             l_Pipeline[idx].Add_System(&JewelrycraftingLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&AlchemyGatherLevelSystem::singleton);
+            l_Pipeline[idx].Add_System(&AlchemyLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
         }

@@ -170,18 +170,53 @@ FishingLevelSystem::FishingLevelSystem() : LevelGatherSystem("FishingLevelSystem
     m_GT_40_Spot_Coord   = { Keywords::MapLayers::overworld, -2, -4 };
 }
 
-AlchemyGatherLevelSystem::AlchemyGatherLevelSystem() : LevelGatherSystem("AlchemyGatherLevelSystem")
+AlchemyLevelSystem::AlchemyLevelSystem() : System("AlchemyLevelSystem")
 {
-    m_Skill_Name         = Keywords::Skills::alchemy;
-    m_Equipements        = &AlchemyGatheringSystem::singleton.Get_Equipements();
-    m_Default_Spot_Coord = { Keywords::MapLayers::overworld, 2, 2 };
-    m_GT_10_Spot_Coord   = m_Default_Spot_Coord;
-    m_GT_20_Spot_Coord   = { Keywords::MapLayers::overworld, 7, 14 };
-    m_GT_30_Spot_Coord   = m_Default_Spot_Coord;
-    m_GT_40_Spot_Coord   = { Keywords::MapLayers::overworld, 1, 10 };
+    m_Equipements = &AlchemyGatheringSystem::singleton.Get_Equipements();
+}
+
+void AlchemyLevelSystem::Fill_Pipeline(Character& character)
+{
+    const char* skill          = Keywords::Skills::alchemy;
+    const int character_level  = character.Get_Skill_Level(skill);
+    const MapCoord craft_coord = { Keywords::MapLayers::overworld, 2, 3 };
+    const int craft_count      = std::numeric_limits<int>::max();
+
+    if (character_level >= 50)
+    {
+        return;
+    }
+    if (character_level >= 45)
+    {
+        Make_Craft(character, craft_coord, Keywords::Items::Utilities::enchanted_health_potion, craft_count);
+    }
+    if (character_level >= 40)
+    {
+        Make_Gather(character, { Keywords::MapLayers::overworld, 1, 10 }, skill, *m_Equipements);
+    }
+    if (character_level >= 30)
+    {
+        Make_Craft(character, craft_coord, Keywords::Items::Utilities::health_potion, craft_count);
+    }
+    if (character_level >= 20)
+    {
+        Make_Gather(character, { Keywords::MapLayers::overworld, 7, 14 }, skill, *m_Equipements);
+    }
+    if (character_level >= 10)
+    {
+        Make_Craft(character, craft_coord, Keywords::Items::Utilities::earth_boost_potion, craft_count);
+    }
+    else if (character_level >= 5)
+    {
+        Make_Craft(character, craft_coord, Keywords::Items::Utilities::small_health_potion, craft_count);
+    }
+    else
+    {
+        Make_Gather(character, { Keywords::MapLayers::overworld, 2, 2 }, skill, *m_Equipements);
+    }
 }
 
 MiningLevelSystem MiningLevelSystem::singleton;
 WoodcuttingLevelSystem WoodcuttingLevelSystem::singleton;
 FishingLevelSystem FishingLevelSystem::singleton;
-AlchemyGatherLevelSystem AlchemyGatherLevelSystem::singleton;
+AlchemyLevelSystem AlchemyLevelSystem::singleton;

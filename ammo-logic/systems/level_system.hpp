@@ -106,12 +106,17 @@ public:
     static FishingLevelSystem singleton;
 };
 
-class AlchemyGatherLevelSystem: public LevelGatherSystem
+class AlchemyLevelSystem: public System
 {
-    AlchemyGatherLevelSystem();
+    AlchemyLevelSystem();
 
 public:
-    static AlchemyGatherLevelSystem singleton;
+    static AlchemyLevelSystem singleton;
+
+    void Fill_Pipeline(Character& character) override;
+
+private:
+    const std::vector<const char*>* m_Equipements;
 };
 
 #endif  // _LEVEL_SYSTEM_HPP
