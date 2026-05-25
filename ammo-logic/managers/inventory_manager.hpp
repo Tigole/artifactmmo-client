@@ -36,7 +36,10 @@ public:
                          std::vector<InventoryArmorPart>& boots, std::vector<InventoryArmorPart>& shields,
                          std::vector<InventoryArmorPart>& rings, std::vector<InventoryArmorPart>& amulets) const;
 
-    void Update_Cache(void);
+    void OnBankDepositItem(const char* item_code, int item_quantity);
+    void OnBankWithdrawItem(const char* item_code, int item_quantity);
+    void OnBankDepositGold(int gold_amount);
+    void OnBankWithdrawGold(int gold_amount);
 
 private:
     MapCoord m_Bank_Coord_1 = { Keywords::MapLayers::overworld, 4, 1 };
@@ -46,6 +49,8 @@ private:
 
     int m_Max_Slot_Count      = 0;
     int m_Next_Expansion_Cost = 0;
+
+    void Update_Cache(void);
 };
 
 #endif  // _INVENTORY_MANAGER_HPP

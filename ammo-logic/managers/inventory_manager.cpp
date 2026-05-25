@@ -87,6 +87,35 @@ void InventoryManager::Get_Fight_Items(int level, std::vector<InventoryWeapons>&
     }
 }
 
+void InventoryManager::OnBankDepositItem(const char* item_code, int item_quantity)
+{
+    m_Bank_Content[item_code] += item_quantity;
+}
+
+void InventoryManager::OnBankWithdrawItem(const char* item_code, int item_quantity)
+{
+    auto it = m_Bank_Content.find(item_code);
+    if (it != m_Bank_Content.end())
+    {
+        it->second -= item_quantity;
+
+        if (it->second <= 0)
+        {
+            m_Bank_Content.erase(item_code);
+        }
+    }
+}
+
+void InventoryManager::OnBankDepositGold(int gold_amount)
+{
+    m_Gold_Amount += gold_amount;
+}
+
+void InventoryManager::OnBankWithdrawGold(int gold_amount)
+{
+    m_Gold_Amount -= gold_amount;
+}
+
 void InventoryManager::Update_Cache(void)
 {
     nlohmann::json tmp;
