@@ -49,6 +49,7 @@ private:
 
     int m_Max_Slot_Count      = 0;
     int m_Next_Expansion_Cost = 0;
+    int m_Cache_Counter       = 0;
 
     void Update_Cache(void);
 };

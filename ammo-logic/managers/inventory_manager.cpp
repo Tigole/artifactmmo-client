@@ -90,6 +90,7 @@ void InventoryManager::Get_Fight_Items(int level, std::vector<InventoryWeapons>&
 void InventoryManager::OnBankDepositItem(const char* item_code, int item_quantity)
 {
     m_Bank_Content[item_code] += item_quantity;
+    Update_Cache();
 }
 
 void InventoryManager::OnBankWithdrawItem(const char* item_code, int item_quantity)
@@ -104,32 +105,42 @@ void InventoryManager::OnBankWithdrawItem(const char* item_code, int item_quanti
             m_Bank_Content.erase(item_code);
         }
     }
+    Update_Cache();
 }
 
 void InventoryManager::OnBankDepositGold(int gold_amount)
 {
     m_Gold_Amount += gold_amount;
+    Update_Cache();
 }
 
 void InventoryManager::OnBankWithdrawGold(int gold_amount)
 {
     m_Gold_Amount -= gold_amount;
+    Update_Cache();
 }
 
 void InventoryManager::Update_Cache(void)
 {
-    nlohmann::json tmp;
-    Client::singleton.mt_Get_Bank_Items(tmp);
+    m_Cache_Counter--;
 
-    m_Bank_Content.clear();
-    for (auto& d: tmp["data"])
+    if (m_Cache_Counter < 0)
     {
-        m_Bank_Content.emplace(d["code"], d["quantity"].get<int>());
+        m_Cache_Counter = 20;
+
+        nlohmann::json tmp;
+        Client::singleton.mt_Get_Bank_Items(tmp);
+
+        m_Bank_Content.clear();
+        for (auto& d: tmp["data"])
+        {
+            m_Bank_Content.emplace(d["code"], d["quantity"].get<int>());
+        }
+
+        Client::singleton.Get_Bank_Detail(tmp);
+
+        m_Gold_Amount         = tmp["data"]["gold"].get<int>();
+        m_Max_Slot_Count      = tmp["data"]["slots"].get<int>();
+        m_Next_Expansion_Cost = tmp["data"]["next_expansion_cost"].get<int>();
     }
-
-    Client::singleton.Get_Bank_Detail(tmp);
-
-    m_Gold_Amount         = tmp["data"]["gold"].get<int>();
-    m_Max_Slot_Count      = tmp["data"]["slots"].get<int>();
-    m_Next_Expansion_Cost = tmp["data"]["next_expansion_cost"].get<int>();
 }
