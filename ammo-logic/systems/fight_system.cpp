@@ -100,12 +100,14 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             Handle_Equipment(sys, character, bank_pos, context.amulet.c_str(), 1, Keywords::ItemSlot::amulet);
             return;
         }
-        if (character.Get_Equiped_Utility1() != context.utility1 && character.Get_Equiped_Utility1_Quantity() < context.utility1_quantity)
+        if (context.utility1.size() > 0 && character.Get_Equiped_Utility1() != context.utility1 &&
+            character.Get_Equiped_Utility1_Quantity() < context.utility1_quantity)
         {
             Handle_Equipment(sys, character, bank_pos, context.utility1.c_str(), context.utility1_quantity, Keywords::ItemSlot::utility1);
             return;
         }
-        if (character.Get_Equiped_Utility2() != context.utility2 && character.Get_Equiped_Utility2_Quantity() < context.utility2_quantity)
+        if (context.utility2.size() > 0 && character.Get_Equiped_Utility2() != context.utility2 &&
+            character.Get_Equiped_Utility2_Quantity() < context.utility2_quantity)
         {
             Handle_Equipment(sys, character, bank_pos, context.utility2.c_str(), context.utility2_quantity, Keywords::ItemSlot::utility2);
             return;
