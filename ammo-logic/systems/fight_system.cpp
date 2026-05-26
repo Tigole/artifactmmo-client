@@ -410,7 +410,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
             const int hp_to_win             = abs(l_Chararcter_Max_Life) + 1;
             const int required_potion_count = ceil((float)hp_to_win / hi.heal);
             SYSTEM_PRINT("may win using '%s' x%d", hi.code, required_potion_count);
-            if ((required_potion_count < max_potion_count) && (required_potion_count < 5))
+            if ((required_potion_count < max_potion_count) && (required_potion_count < 10))
             {
                 context.utility1          = hi.code;
                 context.utility1_quantity = required_potion_count;
