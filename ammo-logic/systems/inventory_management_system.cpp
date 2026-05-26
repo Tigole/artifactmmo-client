@@ -64,6 +64,9 @@ void InventoryManagementSystem::Fill_Pipeline(Character& character)
             {
                 SYSTEM_PRINT("will buy expansion for %d", expansion_cost);
                 character.Add_Withdraw_Gold(this, expansion_cost);
+            }
+            if (character.Get_Gold_Amount() >= expansion_cost)
+            {
                 character.Add_Buy_Bank_Expasion(this);
             }
         }
