@@ -342,34 +342,36 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
         const int water = l_Monster_Resistance[1];
         const int earth = l_Monster_Resistance[2];
         const int air   = l_Monster_Resistance[3];
+        std::size_t idx;
 
         const char* item_code = nullptr;
 
         if (fire < 0 && fire <= water && fire <= earth && fire <= air)
         {
             item_code = Keywords::Items::Utilities::fire_boost_potion;
-            l_Character_Damages[0] += 12;
+            idx       = 0;
         }
         else if (water < 0 && water <= earth && water <= air)
         {
             item_code = Keywords::Items::Utilities::water_boost_potion;
-            l_Character_Damages[1] += 12;
+            idx       = 1;
         }
         else if (earth < 0 && earth <= air)
         {
             item_code = Keywords::Items::Utilities::earth_boost_potion;
-            l_Character_Damages[2] += 12;
+            idx       = 2;
         }
         else if (air < 0)
         {
             item_code = Keywords::Items::Utilities::air_boost_potion;
-            l_Character_Damages[3] += 12;
+            idx       = 3;
         }
 
-        if (item_code != nullptr)
+        if (item_code != nullptr && (InventoryManager::singleton.Get_Bank_Item_Count(item_code) > 0))
         {
             context.utility2          = item_code;
             context.utility2_quantity = std::min(5, InventoryManager::singleton.Get_Bank_Item_Count(item_code));
+            l_Character_Damages[idx] += 12;
         }
     }
 
@@ -444,6 +446,17 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
             {
                 SYSTEM_PRINT("no '%s' in bank", hi.code);
                 continue;
+            }
+
+            {
+                const int l_Monster_Dmg =
+                    Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, l_Character_Resistance, l_Monster_Critical_Strike) +
+                    l_Poison;
+                if (hi.heal < (l_Monster_Dmg / 2))
+                {
+                    SYSTEM_PRINT("'%s' is not powerful enough", hi.code);
+                    continue;
+                }
             }
 
             const int max_potion_count      = std::min(bank_item_count, character.Get_Inventory_Remaining_Space() - 1);
