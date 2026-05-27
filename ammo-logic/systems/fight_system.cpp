@@ -210,8 +210,8 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
     const int l_Monster_Critical_Strike = MonsterManager::singleton.Get_Monster_Critical_Strike(monster);
     int l_Monster_Dmg = Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, l_Character_Resistance, l_Monster_Critical_Strike);
 
-    int l_Monster_Life        = MonsterManager::singleton.Get_Monster_Hp(monster);
-    int l_Chararcter_Max_Life = character.Get_Life_Max();
+    int l_Monster_Life       = MonsterManager::singleton.Get_Monster_Hp(monster);
+    int l_Character_Max_Life = character.Get_Life_Max();
 
     HealItem l_Equiped_Healing_Potion;
 
@@ -355,10 +355,11 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
         }
 
         if (l_Chararcter_Max_Life < character.Get_Life_Max() / 2)
+        if (l_Character_Max_Life < character.Get_Life_Max() / 2)
         {
             if (l_Equiped_Healing_Potion.inventory_target_count > 0)
             {
-                l_Chararcter_Max_Life += l_Equiped_Healing_Potion.heal;
+                l_Character_Max_Life += l_Equiped_Healing_Potion.heal;
                 l_Equiped_Healing_Potion.inventory_target_count--;
             }
         }
@@ -370,7 +371,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
         }
         else
         {
-            l_Chararcter_Max_Life -= l_Monster_Dmg;
+            l_Character_Max_Life -= l_Monster_Dmg;
             l_Player_Turn = true;
         }
         context.turn_count++;
@@ -378,14 +379,14 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
         if (strcmp(character.Get_Character(), "Niva") == 0 && strcmp(monster, "spider") == 0)
         {
             SYSTEM_PRINT("turn %d '%s' %d/%d (monster dmg %d) vs '%s' %d/%d (character dmg %d)", context.turn_count,
-                         character.Get_Character(), l_Chararcter_Max_Life, character.Get_Life_Max(), l_Monster_Dmg, monster, l_Monster_Life,
+                         character.Get_Character(), l_Character_Max_Life, character.Get_Life_Max(), l_Monster_Dmg, monster, l_Monster_Life,
                          MonsterManager::singleton.Get_Monster_Hp(monster), l_Character_Dmg);
         }
 #endif
     }
 
     const int level_diff = l_Character_Combat_Level - l_Monster_Level;
-    if (may_use_potion && l_Chararcter_Max_Life <= 0 && (level_diff < 10))
+    if (may_use_potion && l_Character_Max_Life <= 0 && (level_diff < 10))
     {
         SYSTEM_PRINT("may win using potions?");
         /// Even while healing potions character failed
@@ -407,33 +408,33 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
             }
 
             const int max_potion_count      = std::min(bank_item_count, character.Get_Inventory_Remaining_Space() - 1);
-            const int hp_to_win             = abs(l_Chararcter_Max_Life) + 1;
+            const int hp_to_win             = abs(l_Character_Max_Life) + 1;
             const int required_potion_count = ceil((float)hp_to_win / hi.heal);
             SYSTEM_PRINT("may win using '%s' x%d", hi.code, required_potion_count);
             if ((required_potion_count < max_potion_count) && (required_potion_count < 10))
             {
                 context.utility1          = hi.code;
                 context.utility1_quantity = required_potion_count;
-                l_Chararcter_Max_Life += required_potion_count * hi.heal;
-                SYSTEM_PRINT("will equip with '%s' x%d (l_Chararcter_Max_Life: %d)", hi.code, required_potion_count, l_Chararcter_Max_Life);
+                l_Character_Max_Life += required_potion_count * hi.heal;
+                SYSTEM_PRINT("will equip with '%s' x%d (l_Character_Max_Life: %d)", hi.code, required_potion_count, l_Character_Max_Life);
                 break;
             }
         }
     }
 
-    context.should_heal = character.Get_Life_Current() < (character.Get_Life_Max() - l_Chararcter_Max_Life);
+    context.should_heal = character.Get_Life_Current() < (character.Get_Life_Max() - l_Character_Max_Life);
 
     SYSTEM_PRINT(
         "vs '%s': %s (hp diff: %d - turn count: %d - heal: %d - weapon: '%s' - helmet: '%s' body_armor: '%s' leg_armor: '%s' boots: "
         "'%s' shield: '%s' ring1: '%s' ring2: '%s' amulet: '%s' utility1: '%s' x%d utility2: '%s' x%d artifact1: '%s' artifact2: '%s' "
         "artifact3: '%s')",
-        monster, (l_Chararcter_Max_Life > 0) ? "win" : "loose", l_Chararcter_Max_Life - l_Monster_Life, context.turn_count,
+        monster, (l_Character_Max_Life > 0) ? "win" : "loose", l_Character_Max_Life - l_Monster_Life, context.turn_count,
         context.should_heal, context.weapon.c_str(), context.helmet.c_str(), context.body_armor.c_str(), context.leg_armor.c_str(),
         context.boots.c_str(), context.shield.c_str(), context.ring1.c_str(), context.ring2.c_str(), context.amulet.c_str(),
         context.utility1.c_str(), context.utility1_quantity, context.utility2.c_str(), context.utility2_quantity, context.artifact1.c_str(),
         context.artifact2.c_str(), context.artifact3.c_str());
 
-    return l_Chararcter_Max_Life > 0;
+    return l_Character_Max_Life > 0;
 }
 
 int FightSystem::Calculate_Effective_Damages(const std::array<int, 4>& attack, const std::array<int, 4>& damages,
