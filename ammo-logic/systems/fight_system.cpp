@@ -332,7 +332,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
         if (inventory_count > 0)
         {
             context.utility2          = item_code;
-            context.utility2_quantity = 1;  // InventoryManager::singleton.Get_Bank_Item_Count(item_code);
+            context.utility2_quantity = std::min(5, inventory_count);
             l_Poison                  = 0;
         }
     }
