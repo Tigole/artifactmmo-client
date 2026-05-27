@@ -100,14 +100,14 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             Handle_Equipment(sys, character, bank_pos, context.amulet.c_str(), 1, Keywords::ItemSlot::amulet);
             return;
         }
-        if (context.utility1.size() > 0 && character.Get_Equiped_Utility1() != context.utility1 &&
-            character.Get_Equiped_Utility1_Quantity() < context.utility1_quantity)
+        if (context.utility1.size() > 0 &&
+            (character.Get_Equiped_Utility1() != context.utility1 || character.Get_Equiped_Utility1_Quantity() < context.utility1_quantity))
         {
             Handle_Equipment(sys, character, bank_pos, context.utility1.c_str(), context.utility1_quantity, Keywords::ItemSlot::utility1);
             return;
         }
-        if (context.utility2.size() > 0 && character.Get_Equiped_Utility2() != context.utility2 &&
-            character.Get_Equiped_Utility2_Quantity() < context.utility2_quantity)
+        if (context.utility2.size() > 0 &&
+            (character.Get_Equiped_Utility2() != context.utility2 || character.Get_Equiped_Utility2_Quantity() < context.utility2_quantity))
         {
             Handle_Equipment(sys, character, bank_pos, context.utility2.c_str(), context.utility2_quantity, Keywords::ItemSlot::utility2);
             return;
@@ -475,14 +475,12 @@ void FightSystem::Handle_Equipment(const System* sys, Character& character, cons
                                                      : */
                     equipement_count - character.Get_Item_Count(equipment_name);
                 character.Add_Withdraw_Item(sys, { equipment_name, item_count_to_withdraw });
-                if (character.Get_Equiped_Item(equipmenet_type).size())
+                if (character.Get_Equiped_Item(equipmenet_type).size() && character.Get_Equiped_Item(equipmenet_type) != equipment_name)
                 {
                     const char* equiped_item = character.Get_Equiped_Item(equipmenet_type).c_str();
                     character.Add_Unequip_Item(sys, equipmenet_type, 1);  /// "1": has to be updated with utilities
                     character.Add_Deposit_Item(sys, { equiped_item, character.Get_Item_Count(equiped_item) + 1 });
-                    return;
                 }
-                character.Add_Equip_Item(sys, equipmenet_type, equipment_name, equipement_count - character.Get_Item_Count(equipment_name));
             }
         }
         else
