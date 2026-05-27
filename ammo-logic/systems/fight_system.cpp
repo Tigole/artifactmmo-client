@@ -390,7 +390,9 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
             }
         }
 
-        if (l_Chararcter_Max_Life < character.Get_Life_Max() / 2)
+// #error "Handle properly healing during fight ?"
+// #error "Make multiple time the same fight but with potions ?"
+#if 0
         if (l_Character_Max_Life < character.Get_Life_Max() / 2)
         {
             if (l_Equiped_Healing_Potion.inventory_target_count > 0)
@@ -399,6 +401,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
                 l_Equiped_Healing_Potion.inventory_target_count--;
             }
         }
+#endif
 
         if (l_Player_Turn == true)
         {
