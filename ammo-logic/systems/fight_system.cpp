@@ -336,6 +336,42 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
             l_Poison                  = 0;
         }
     }
+    else
+    {
+        const int fire  = l_Monster_Resistance[0];
+        const int water = l_Monster_Resistance[1];
+        const int earth = l_Monster_Resistance[2];
+        const int air   = l_Monster_Resistance[3];
+
+        const char* item_code = nullptr;
+
+        if (fire < 0 && fire <= water && fire <= earth && fire <= air)
+        {
+            item_code = Keywords::Items::Utilities::fire_boost_potion;
+            l_Character_Damages[0] += 12;
+        }
+        else if (water < 0 && water <= earth && water <= air)
+        {
+            item_code = Keywords::Items::Utilities::water_boost_potion;
+            l_Character_Damages[1] += 12;
+        }
+        else if (earth < 0 && earth <= air)
+        {
+            item_code = Keywords::Items::Utilities::earth_boost_potion;
+            l_Character_Damages[2] += 12;
+        }
+        else if (air < 0)
+        {
+            item_code = Keywords::Items::Utilities::air_boost_potion;
+            l_Character_Damages[3] += 12;
+        }
+
+        if (item_code != nullptr)
+        {
+            context.utility2          = item_code;
+            context.utility2_quantity = std::min(5, InventoryManager::singleton.Get_Bank_Item_Count(item_code));
+        }
+    }
 
     context.turn_count = 0;
     bool l_Player_Turn = character.Get_Initiative() > MonsterManager::singleton.Get_Monster_Initiative(monster);
