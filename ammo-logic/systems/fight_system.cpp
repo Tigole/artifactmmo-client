@@ -23,7 +23,7 @@ FightSystem::FightSystem() : System("FightSystem")
     m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_gudgeon, 75, 0, 20 });
     m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::apple, 50, 0, 20 });
 
-    m_Healing_Potions.push_back({ Keywords::Items::Utilities::health_splash_potion, 150, 30, 0 });
+    m_Healing_Potions.push_back({ Keywords::Items::Utilities::health_potion, 100, 30, 0 });
     m_Healing_Potions.push_back({ Keywords::Items::Utilities::minor_health_potion, 70, 20, 0 });
     m_Healing_Potions.push_back({ Keywords::Items::Utilities::small_health_potion, 30, 5, 0 });
 }
