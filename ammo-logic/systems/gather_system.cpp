@@ -143,23 +143,24 @@ FishingGatherSystem::FishingGatherSystem() : GatherSystem("FishingGatherSystem")
 
 MobGatherSystem::MobGatherSystem() : System("MobGatherSystem")
 {
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::spider_leg, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::pig_skin, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::skeleton_skull, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::skeleton_bone, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_wolf_meat, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::wolf_bone, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::wolf_hair, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::snake_hide, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::flying_wing, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::mushroom, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_beef, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::red_slimeball, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::blue_slimeball, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::wool, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::green_slimeball, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::yellow_slimeball, 10 });
-    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_chicken, 10 });
+    static constexpr const int item_amount = 20;
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::spider_leg, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::pig_skin, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::skeleton_skull, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::skeleton_bone, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_wolf_meat, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::wolf_bone, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::wolf_hair, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::snake_hide, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::flying_wing, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::mushroom, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_beef, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::red_slimeball, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::blue_slimeball, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::wool, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::green_slimeball, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::yellow_slimeball, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_chicken, item_amount });
 }
 
 #include "fight_system.hpp"
