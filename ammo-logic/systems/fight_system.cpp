@@ -12,16 +12,19 @@ FightSystem FightSystem::singleton;
 
 FightSystem::FightSystem() : System("FightSystem")
 {
+    constexpr const int target_amount = 3;
+
     m_Monsters.push_back("");
 
-    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::mushroom_soup, 240, 15, 20 });
-    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_wolf_meat, 200, 15, 20 });
-    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_shrimp, 150, 10, 20 });
-    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_beef, 150, 5, 20 });
-    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::fried_eggs, 150, 4, 20 });
-    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_chicken, 80, 0, 20 });
-    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_gudgeon, 75, 0, 20 });
-    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::apple, 50, 0, 20 });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::mushroom_soup, 240, 15, target_amount });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_trout, 225, 20, target_amount });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_wolf_meat, 200, 15, target_amount });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_shrimp, 150, 10, target_amount });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_beef, 150, 5, target_amount });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::fried_eggs, 150, 4, target_amount });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_chicken, 80, 0, target_amount });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_gudgeon, 75, 0, target_amount });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::apple, 50, 0, target_amount });
 
     m_Healing_Potions.push_back({ Keywords::Items::Utilities::health_potion, 100, 30, 0 });
     m_Healing_Potions.push_back({ Keywords::Items::Utilities::minor_health_potion, 70, 20, 0 });
@@ -127,13 +130,22 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             Handle_Equipment(sys, character, bank_pos, context.artifact1.c_str(), 1, Keywords::ItemSlot::artifact3);
             return;
         }
-        if (Equip_Healing_Stuff(sys, character, bank_pos) == true)
-        {
-            return;
-        }
         if (context.should_heal == true)
         {
-            Add_Healing(sys, character);
+            const int levelDiff = character.Get_Skill_Level(Keywords::Skills::combat) - context.monster_level;
+            if (levelDiff < 5)
+            {
+                if (Equip_Healing_Stuff(sys, character, bank_pos) == true)
+                {
+                    return;
+                }
+                Add_Healing(sys, character);
+            }
+            else
+            {
+                character.Add_Rest(sys);
+            }
+            return;
         }
         character.Add_Fight(sys, monster);
     }
@@ -328,40 +340,54 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
     {
         SYSTEM_PRINT("Must use antidote");
         const char* item_code     = Keywords::Items::Utilities::small_antidote;
-        const int inventory_count = InventoryManager::singleton.Get_Bank_Item_Count(item_code);
-        if (inventory_count > 0)
+        const int bank_count      = InventoryManager::singleton.Get_Bank_Item_Count(item_code);
+        const int inventory_count = character.Get_Item_Count(item_code);
+        if (bank_count > 0)
         {
             context.utility2          = item_code;
-            context.utility2_quantity = std::min(5, inventory_count);
+            context.utility2_quantity = std::min(5, bank_count);
+            l_Poison                  = 0;
+        }
+        else if (inventory_count > 0)
+        {
+            context.utility2          = item_code;
+            context.utility2_quantity = inventory_count;
             l_Poison                  = 0;
         }
     }
-    else
+    else if (may_use_potion)
     {
-        const int fire  = l_Monster_Resistance[0];
-        const int water = l_Monster_Resistance[1];
-        const int earth = l_Monster_Resistance[2];
-        const int air   = l_Monster_Resistance[3];
+        const int fire      = l_Monster_Resistance[0];
+        const int water     = l_Monster_Resistance[1];
+        const int earth     = l_Monster_Resistance[2];
+        const int air       = l_Monster_Resistance[3];
+        const int fire_att  = l_Character_Attack[0];
+        const int water_att = l_Character_Attack[1];
+        const int earth_att = l_Character_Attack[2];
+        const int air_att   = l_Character_Attack[3];
         std::size_t idx;
 
         const char* item_code = nullptr;
 
-        if (fire < 0 && fire <= water && fire <= earth && fire <= air)
+        SYSTEM_PRINT("res [fire: %d water: %d earth: %d air: %d]", fire, water, earth, air);
+        SYSTEM_PRINT("att [fire: %d water: %d earth: %d air: %d]", fire_att, water_att, earth_att, air_att);
+
+        if (fire < 0 && fire_att > 0 && fire <= water && fire <= earth && fire <= air)
         {
             item_code = Keywords::Items::Utilities::fire_boost_potion;
             idx       = 0;
         }
-        else if (water < 0 && water <= earth && water <= air)
+        else if (water < 0 && water_att > 0 && water <= earth && water <= air)
         {
             item_code = Keywords::Items::Utilities::water_boost_potion;
             idx       = 1;
         }
-        else if (earth < 0 && earth <= air)
+        else if (earth < 0 && earth_att > 0 && earth <= air)
         {
             item_code = Keywords::Items::Utilities::earth_boost_potion;
             idx       = 2;
         }
-        else if (air < 0)
+        else if (air < 0 && air_att > 0)
         {
             item_code = Keywords::Items::Utilities::air_boost_potion;
             idx       = 3;
@@ -372,6 +398,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
             context.utility2          = item_code;
             context.utility2_quantity = std::min(5, InventoryManager::singleton.Get_Bank_Item_Count(item_code));
             l_Character_Damages[idx] += 12;
+            SYSTEM_PRINT("will equip '%s' x%d", item_code, context.utility2_quantity);
         }
     }
 
@@ -532,12 +559,13 @@ void FightSystem::Handle_Equipment(const System* sys, Character& character, cons
                     const char* equiped_item = character.Get_Equiped_Item(equipmenet_type).c_str();
                     character.Add_Unequip_Item(sys, equipmenet_type, 1);  /// "1": has to be updated with utilities
                     character.Add_Deposit_Item(sys, { equiped_item, character.Get_Item_Count(equiped_item) + 1 });
+                    // character.Add_Equip_Item(sys, equipmenet_type, equipment_name, equipement_count);
                 }
             }
         }
         else
         {
-            character.Add_Equip_Item(sys, equipmenet_type, equipment_name, equipement_count);
+            character.Add_Equip_Item(sys, equipmenet_type, equipment_name, character.Get_Item_Count(equipment_name));
         }
     }
 }
