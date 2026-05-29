@@ -292,6 +292,8 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
 
     SYSTEM_PRINT("try to fight against '%s'", monster);
 
+    context.monster_level = MonsterManager::singleton.Get_Monster_Level(monster);
+
     SYSTEM_PRINT("equipped weapon: '%s'", context.weapon.c_str());
     for (std::size_t ii = 0; ii < l_Weapons.size(); ii++)
     {
