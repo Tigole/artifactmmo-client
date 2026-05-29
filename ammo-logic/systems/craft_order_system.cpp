@@ -14,9 +14,11 @@ void CraftOrderSystem::Fill_Pipeline(Character& character)
     for (std::size_t ii = 0; ii < m_Items.size(); ii++)
     {
         const CraftOrder order = m_Items[ii];
+        const int amountCraft  = Make_Craft(character, m_Workshop_Coord, order.item_code, order.target_amount);
 
-        if (Make_Craft(character, m_Workshop_Coord, order.item_code, order.target_amount) != 0)
+        if (amountCraft != 0)
         {
+            character.Set_Global_Order(order.item_code, amountCraft);
             character.Make_Clear_Inventory(this, nullptr);
             break;
         }
@@ -297,6 +299,7 @@ void TasksTradingSystem::Fill_Pipeline(Character& character)
             character.Add_Buy_Item(this, { item_to_buy, 1 });
             character.Add_Move(this, InventoryManager::singleton.Get_Bank_Nearest_Coord(trader_coord));
             character.Make_Clear_Inventory(this, nullptr);
+            character.Set_Global_Order(item_to_buy, 1);
             return;
         }
     }

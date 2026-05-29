@@ -45,6 +45,23 @@ const CharacterOrder* Character::Get_Current_Order(void) const
     return nullptr;
 }
 
+void Character::Set_Global_Order(const char* target, int count)
+{
+    if (count != 0)
+    {
+        m_Global_Order = fmt::format("{} x{}", target, count);
+    }
+    else
+    {
+        m_Global_Order = target;
+    }
+}
+
+const std::string& Character::Get_Global_Order(void) const
+{
+    return m_Global_Order;
+}
+
 void Character::Add_Move(const System* sys, const MapCoord& coords)
 {
     m_Orders.push_back(CharacterOrder::CreateMove(sys, coords));

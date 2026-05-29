@@ -35,6 +35,7 @@ void GatherSystem::Fill_Pipeline(Character& character)
                 continue;
             }
 
+            character.Set_Global_Order(order.item_code, order.target_amount - bank_item_count - character.Get_Item_Count(order.item_code));
             if (character.Get_Item_Count(order.item_code) + bank_item_count >= order.target_amount)
             {
                 SYSTEM_PRINT("has enough in inventory");
@@ -184,6 +185,8 @@ void MobGatherSystem::Fill_Pipeline(Character& character)
 
             if (FightSystem::singleton.MayWin(character, l_Monster_Name, false, fight_context) == true)
             {
+                character.Set_Global_Order(order.item_code,
+                                           order.target_amount - bank_inventory_amount - character.Get_Item_Count(order.item_code));
                 const int required_inventory_space = 10;
                 if (character.Get_Inventory_Remaining_Space() < required_inventory_space)
                 {

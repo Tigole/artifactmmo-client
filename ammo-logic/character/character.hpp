@@ -165,6 +165,8 @@ public:
     void Set_Character(const char* character_name);
     const char* Get_Character(void) const;
     const CharacterOrder* Get_Current_Order(void) const;
+    void Set_Global_Order(const char* target, int count);
+    const std::string& Get_Global_Order(void) const;
 
     void Add_Move(const System* sys, const MapCoord& coords);
     void Add_Fight(const System* sys, const char* monster);
@@ -249,6 +251,7 @@ private:
     float m_Remaining_Timeout            = 0.0f;
     std::size_t m_Current_Index          = 0;
     MapCoord m_Position;
+    std::string m_Global_Order;
 
     nlohmann::json m_Character_Cache;
 
