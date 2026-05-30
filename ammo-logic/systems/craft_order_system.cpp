@@ -220,6 +220,19 @@ GearcraftingSystem::GearcraftingSystem() : CraftOrderSystem("GearcraftingSystem"
     m_Items.push_back({ Keywords::Items::Helmets::copper_helmet, target_amount, 10 });
     m_Items.push_back({ Keywords::Items::Boots::copper_boots, target_amount, 10 });
     m_Items.push_back({ Keywords::Items::LegArmors::copper_legs_armor, target_amount, 10 });
+    m_Items.push_back({ Keywords::Items::Shields::earth_shield, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Shields::magic_shield, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Shields::adamantite_shield, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Shields::darkforged_shield, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Shields::demoniac_shield, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Shields::white_knight_shield, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Shields::mithril_shield, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Shields::air_shield, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Shields::fire_shield, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Shields::water_shield, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Shields::dreadful_shield, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Shields::gold_shield, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Shields::iron_shield, target_amount, 50 });
     m_Items.push_back({ Keywords::Items::Shields::wooden_shield, target_amount, 50 });
     m_Items.push_back({ Keywords::Items::BodyArmors::feather_coat, target_amount, 50 });
     m_Items.push_back({ Keywords::Items::Boots::leather_boots, target_amount, 50 });
@@ -241,6 +254,14 @@ JewerlyCraftSystem::JewerlyCraftSystem() : CraftOrderSystem("JewerlyCraftSystem"
 
     m_Items.push_back({ Keywords::Items::Rings::iron_ring, target_amount, 50 });
     m_Items.push_back({ Keywords::Items::Rings::copper_ring, target_amount, 10 });
+    m_Items.push_back({ Keywords::Items::Amulets::prospecting_amulet, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Amulets::ruby_amulet, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Amulets::sapphire_amulet, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Amulets::emerald_amulet, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Amulets::topaz_amulet, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Amulets::skull_amulet, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Amulets::dreadful_amulet, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Amulets::wisdom_amulet, target_amount, 50 });
     m_Items.push_back({ Keywords::Items::Amulets::life_amulet, target_amount, 50 });
     m_Items.push_back({ Keywords::Items::Rings::life_ring, target_amount, 50 });
     m_Items.push_back({ Keywords::Items::Rings::fire_ring, target_amount, 50 });
