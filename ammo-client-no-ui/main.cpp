@@ -5,7 +5,7 @@
 
 int main(int argc, char** argv)
 {
-    LogicApplication logic_application;
+    LogicApplication& logic_application = LogicApplication::singleton;
 
     while (true)
     {

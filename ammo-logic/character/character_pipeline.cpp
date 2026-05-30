@@ -97,3 +97,8 @@ float CharacterPipeline::Get_Remaining_Timeout(void) const
 {
     return m_Character.Get_Remaining_Timeout();
 }
+
+const Character& CharacterPipeline::Get_Character_Obj(void) const
+{
+    return m_Character;
+}

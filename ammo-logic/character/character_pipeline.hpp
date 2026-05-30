@@ -21,6 +21,8 @@ public:
     std::string Get_Current_Order(void) const;
     float Get_Remaining_Timeout(void) const;
 
+    const Character& Get_Character_Obj(void) const;
+
 private:
     Character m_Character;
     std::vector<System*> m_Systems;

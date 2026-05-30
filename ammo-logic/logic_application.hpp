@@ -6,7 +6,11 @@
 
 class LogicApplication
 {
+    LogicApplication() = default;
+
 public:
+    static LogicApplication singleton;
+
     void Run(int argc, char** argv);
 
     const std::array<CharacterPipeline, 5>& Get_Pipelines(void) const;

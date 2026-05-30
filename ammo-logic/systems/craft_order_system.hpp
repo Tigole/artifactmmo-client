@@ -10,6 +10,7 @@ struct CraftOrder
 {
     const char* item_code;
     int target_amount;
+    int min_combat_level_stop;
 };
 
 class CraftOrderSystem: public System

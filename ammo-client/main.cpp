@@ -7,8 +7,8 @@
 
 int main(int argc, char** argv)
 {
-    auto clk = std::chrono::high_resolution_clock::now();
-    LogicApplication logic_application;
+    auto clk                            = std::chrono::high_resolution_clock::now();
+    LogicApplication& logic_application = LogicApplication::singleton;
     std::thread logic_thread([&logic_application, argc, argv]() { logic_application.Run(argc, argv); });
 
     printf("sleep for logic init\n");

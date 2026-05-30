@@ -22,6 +22,8 @@
 #include "systems/stuff_system.hpp"
 #include "systems/task_system.hpp"
 
+LogicApplication LogicApplication::singleton;
+
 void LogicApplication::Run(int argc, char** argv)
 {
     auto clk                                     = std::chrono::high_resolution_clock::now();
