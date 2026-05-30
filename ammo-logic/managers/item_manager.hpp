@@ -35,6 +35,7 @@ public:
     std::array<int, 4> Get_Armor_Damage(const char* item_code) const;
     int Get_Armor_Hp(const char* item_code) const;
     int Get_Required_Level(const char* item_code) const;
+    int Get_Item_Effect_Prospecting(const char* item_code) const;
 
     int Get_Item_Level(const char* item_code) const;
 

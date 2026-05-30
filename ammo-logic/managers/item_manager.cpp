@@ -119,30 +119,30 @@ bool ItemManager::Is_Weapon(const char* item_code) const
 std::array<int, 4> ItemManager::Get_Weapon_Attack(const char* item_code) const
 {
     return {
-        { Get_Effect_Value(item_code, "attack_fire"), Get_Effect_Value(item_code, "attack_water"),
-         Get_Effect_Value(item_code, "attack_earth"), Get_Effect_Value(item_code, "attack_air") }
+        { Get_Effect_Value(item_code, Keywords::Effects::attack_fire), Get_Effect_Value(item_code, Keywords::Effects::attack_water),
+         Get_Effect_Value(item_code, Keywords::Effects::attack_earth), Get_Effect_Value(item_code, Keywords::Effects::attack_air) }
     };
 }
 
 std::array<int, 4> ItemManager::Get_Armor_Resistance(const char* item_code) const
 {
     return {
-        { Get_Effect_Value(item_code, "res_fire"), Get_Effect_Value(item_code, "res_water"), Get_Effect_Value(item_code, "res_earth"),
-         Get_Effect_Value(item_code, "res_air") }
+        { Get_Effect_Value(item_code, Keywords::Effects::res_fire), Get_Effect_Value(item_code, Keywords::Effects::res_water),
+         Get_Effect_Value(item_code, Keywords::Effects::res_earth), Get_Effect_Value(item_code, Keywords::Effects::res_air) }
     };
 }
 
 std::array<int, 4> ItemManager::Get_Armor_Damage(const char* item_code) const
 {
     return {
-        { Get_Effect_Value(item_code, "dmg_fire"), Get_Effect_Value(item_code, "dmg_water"), Get_Effect_Value(item_code, "dmg_earth"),
-         Get_Effect_Value(item_code, "dmg_air") }
+        { Get_Effect_Value(item_code, Keywords::Effects::dmg_fire), Get_Effect_Value(item_code, Keywords::Effects::dmg_water),
+         Get_Effect_Value(item_code, Keywords::Effects::dmg_earth), Get_Effect_Value(item_code, Keywords::Effects::dmg_air) }
     };
 }
 
 int ItemManager::Get_Armor_Hp(const char* item_code) const
 {
-    return Get_Effect_Value(item_code, "hp");
+    return Get_Effect_Value(item_code, Keywords::Effects::hp);
 }
 
 int ItemManager::Get_Required_Level(const char* item_code) const
@@ -153,6 +153,11 @@ int ItemManager::Get_Required_Level(const char* item_code) const
         return it->second;
     }
     return 0;
+}
+
+int ItemManager::Get_Item_Effect_Prospecting(const char* item_code) const
+{
+    return Get_Effect_Value(item_code, Keywords::Effects::prospecting);
 }
 
 int ItemManager::Get_Item_Level(const char* item_code) const
