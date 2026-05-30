@@ -35,8 +35,8 @@ void CharacterPipeline::Update(float elapsed_time)
 
 std::string CharacterPipeline::Get_Current_Order(void) const
 {
+    static std::string str      = "???";
     const CharacterOrder* order = m_Character.Get_Current_Order();
-    std::string str             = "???";
     if (order != nullptr)
     {
         const ItemOrder& item          = order->item_order;
