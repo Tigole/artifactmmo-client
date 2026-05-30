@@ -30,6 +30,17 @@ struct FightContext
     bool should_heal;
 };
 
+struct FightConfig
+{
+    bool may_use_potion;
+    bool focus_on_prospecting;
+    bool focus_on_wisdom;
+
+    static FightConfig DefaultConfig(void);
+    static FightConfig MonsterTaskConfig(void);
+    static FightConfig GatherResourcesConfig(void);
+};
+
 class FightSystem: public System
 {
     FightSystem();
@@ -45,7 +56,7 @@ public:
 
     void Add_Healing(const System* sys, Character& character);
 
-    bool MayWin(const Character& character, const char* monster, bool may_use_potion, FightContext& context);
+    bool MayWin(const Character& character, const char* monster, FightConfig config, FightContext& context);
 
     int Calculate_Effective_Damages(const std::array<int, 4>& attack, const std::array<int, 4>& damages,
                                     const std::array<int, 4>& resistance, int critical_strike);

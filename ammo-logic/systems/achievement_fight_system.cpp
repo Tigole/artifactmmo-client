@@ -44,7 +44,8 @@ void AchievementFightSystem::Fill_Pipeline(Character& pipeline)
         const char* l_Monster   = m_Target_Monsters[l_Indices[ii]].c_str();
         const MapCoord* l_Coord = MonsterManager::singleton.Get_Monster_Coord(l_Monster, pipeline.Get_Map_Coord());
         FightContext fight_context;
-        if ((l_Coord != nullptr) && (FightSystem::singleton.MayWin(pipeline, l_Monster, true, fight_context) == true))
+        if ((l_Coord != nullptr) &&
+            (FightSystem::singleton.MayWin(pipeline, l_Monster, FightConfig::MonsterTaskConfig(), fight_context) == true))
         {
             pipeline.Add_Move(this, *l_Coord);
             if (fight_context.should_heal == true)

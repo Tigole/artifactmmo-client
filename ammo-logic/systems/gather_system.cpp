@@ -1,5 +1,6 @@
 #include "gather_system.hpp"
 
+#include "fight_system.hpp"
 #include "keywords.hpp"
 #include "managers/inventory_manager.hpp"
 #include "managers/item_manager.hpp"
@@ -183,7 +184,7 @@ void MobGatherSystem::Fill_Pipeline(Character& character)
             const char* l_Monster_Name = ItemManager::singleton.Get_Loot_Monster_Name(order.item_code);
             FightContext fight_context;
 
-            if (FightSystem::singleton.MayWin(character, l_Monster_Name, false, fight_context) == true)
+            if (FightSystem::singleton.MayWin(character, l_Monster_Name, FightConfig::GatherResourcesConfig(), fight_context) == true)
             {
                 character.Set_Global_Order(order.item_code,
                                            order.target_amount - bank_inventory_amount - character.Get_Item_Count(order.item_code));

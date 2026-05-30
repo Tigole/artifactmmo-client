@@ -8,6 +8,21 @@
 #include "managers/item_manager.hpp"
 #include "managers/monster_manager.hpp"
 
+FightConfig FightConfig::DefaultConfig(void)
+{
+    return { false, false, false };
+}
+
+FightConfig FightConfig::MonsterTaskConfig(void)
+{
+    return { true, false, false };
+}
+
+FightConfig FightConfig::GatherResourcesConfig(void)
+{
+    return { false, true, false };
+}
+
 FightSystem FightSystem::singleton;
 
 FightSystem::FightSystem() : System("FightSystem")
@@ -44,7 +59,7 @@ void FightSystem::Fill_Pipeline(Character& character)
     {
         const char* l_Monster   = m_Monsters[ii].c_str();
         const MapCoord* l_Coord = MonsterManager::singleton.Get_Monster_Coord(l_Monster, character.Get_Map_Coord());
-        if ((l_Coord != nullptr) && (MayWin(character, l_Monster, false, l_Context) == true))
+        if ((l_Coord != nullptr) && (MayWin(character, l_Monster, FightConfig::DefaultConfig(), l_Context) == true))
         {
             Fight_Against(this, character, l_Monster, l_Context);
             return;
@@ -107,6 +122,12 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             (character.Get_Equiped_Utility1() != context.utility1 || character.Get_Equiped_Utility1_Quantity() < context.utility1_quantity))
         {
             Handle_Equipment(sys, character, bank_pos, context.utility1.c_str(), context.utility1_quantity, Keywords::ItemSlot::utility1);
+            printf(
+                "context.utility1: '%s' character.Get_Equiped_Utility1(): '%s' context.utility1_quantity: %d "
+                "character.Get_Equiped_Utility1_Quantity(): %d\n",
+                context.utility1.c_str(), character.Get_Equiped_Utility1().c_str(), context.utility1_quantity,
+                character.Get_Equiped_Utility1_Quantity());
+            // exit(0);
             return;
         }
         if (context.utility2.size() > 0 &&
@@ -188,7 +209,7 @@ void FightSystem::Add_Healing(const System* sys, Character& character)
 
 #define FIGHT_SYSTEM_DEBUG
 
-bool FightSystem::MayWin(const Character& character, const char* monster, bool may_use_potion, FightContext& context)
+bool FightSystem::MayWin(const Character& character, const char* monster, FightConfig config, FightContext& context)
 {
     static const std::array<const char*, 4> attck_names = {
         { "attack_fire", "attack_water", "attack_earth", "attack_air" }
@@ -357,7 +378,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
             l_Poison                  = 0;
         }
     }
-    else if (may_use_potion)
+    else if (config.may_use_potion)
     {
         const int fire      = l_Monster_Resistance[0];
         const int water     = l_Monster_Resistance[1];
@@ -456,7 +477,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, bool m
     }
 
     const int level_diff = l_Character_Combat_Level - l_Monster_Level;
-    if (may_use_potion && l_Character_Max_Life <= 0 && (level_diff < 10))
+    if (config.may_use_potion && l_Character_Max_Life <= 0 && (level_diff < 10))
     {
         SYSTEM_PRINT("may win using potions?");
         /// Even while healing potions character failed
