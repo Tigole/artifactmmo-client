@@ -23,11 +23,11 @@ struct FightContext
     std::string artifact1;
     std::string artifact2;
     std::string artifact3;
-    int utility1_quantity = 0;
-    int utility2_quantity = 0;
+    int utility1_quantity  = 0;
+    int utility2_quantity  = 0;
+    int utility1_inventory = 0;
 
-    int monster_level = 0;
-    int turn_count    = 0;
+    int turn_count = 0;
     bool should_heal;
     bool may_use_consumables;
 };
@@ -38,12 +38,13 @@ private:
     friend FightSystem;
     bool may_use_potion;
     bool may_use_consumables;
+    int kill_count;
 
-    FightConfig(bool potion, bool consumables);
+    FightConfig(bool potion, bool consumables, int kills);
 
 public:
     static FightConfig DefaultConfig(void);
-    static FightConfig MonsterTaskConfig(void);
+    static FightConfig MonsterTaskConfig(int kill_count);
     static FightConfig GatherResourcesConfig(void);
 };
 

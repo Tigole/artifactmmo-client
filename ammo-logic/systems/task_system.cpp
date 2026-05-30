@@ -37,7 +37,8 @@ void TaskSystemMonster::Fill_Pipeline(Character& character)
         if (character.Get_Task_Remaining() > 0)
         {
             FightContext context;
-            if (FightSystem::singleton.MayWin(character, character.Get_Task().c_str(), FightConfig::MonsterTaskConfig(), context) == true)
+            if (FightSystem::singleton.MayWin(character, character.Get_Task().c_str(),
+                                              FightConfig::MonsterTaskConfig(character.Get_Task_Remaining()), context) == true)
             {
                 FightSystem::singleton.Fight_Against(this, character, character.Get_Task().c_str(), context);
             }

@@ -9,21 +9,23 @@
 #include "managers/item_manager.hpp"
 #include "managers/monster_manager.hpp"
 
-FightConfig::FightConfig(bool potion, bool consumables) : may_use_potion(potion), may_use_consumables(consumables) {}
+FightConfig::FightConfig(bool potion, bool consumables, int kills) :
+    may_use_potion(potion), may_use_consumables(consumables), kill_count(kills)
+{}
 
 FightConfig FightConfig::DefaultConfig(void)
 {
-    return { false, false };
+    return { false, false, 0 };
 }
 
-FightConfig FightConfig::MonsterTaskConfig(void)
+FightConfig FightConfig::MonsterTaskConfig(int kills)
 {
-    return { true, true };
+    return { true, true, kills };
 }
 
 FightConfig FightConfig::GatherResourcesConfig(void)
 {
-    return { false, false };
+    return { false, false, 0 };
 }
 
 FightSystem FightSystem::singleton;
@@ -121,6 +123,11 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             Handle_Equipment(sys, character, bank_pos, context.amulet.c_str(), 1, Keywords::ItemSlot::amulet);
             return;
         }
+        if (context.utility1.empty() && character.Get_Equiped_Utility1().size() > 0)
+        {
+            character.Add_Unequip_Item(sys, Keywords::ItemSlot::utility1, character.Get_Equiped_Utility1_Quantity());
+            return;
+        }
         if (context.utility1.size() > 0 &&
             (character.Get_Equiped_Utility1() != context.utility1 || character.Get_Equiped_Utility1_Quantity() < context.utility1_quantity))
         {
@@ -131,6 +138,24 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
                 context.utility1.c_str(), character.Get_Equiped_Utility1().c_str(), context.utility1_quantity,
                 character.Get_Equiped_Utility1_Quantity());
             // exit(0);
+            return;
+        }
+        if (character.Get_Item_Count(context.utility1.c_str()) < context.utility1_inventory)
+        {
+            if (character.Should_Move(bank_pos) == true)
+            {
+                character.Add_Move(sys, bank_pos);
+            }
+            else
+            {
+                character.Add_Withdraw_Item(
+                    sys, { context.utility1, context.utility1_inventory - character.Get_Item_Count(context.utility1.c_str()) });
+            }
+            return;
+        }
+        if (context.utility2.empty() && character.Get_Equiped_Utility2().size() > 0)
+        {
+            character.Add_Unequip_Item(sys, Keywords::ItemSlot::utility2, character.Get_Equiped_Utility2_Quantity());
             return;
         }
         if (context.utility2.size() > 0 &&
@@ -156,7 +181,6 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
         }
         if (context.should_heal == true)
         {
-            const int levelDiff = character.Get_Skill_Level(Keywords::Skills::combat) - context.monster_level;
             if (context.may_use_consumables)
             {
                 if (Equip_Healing_Stuff(sys, character, bank_pos) == true)
@@ -294,17 +318,17 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
         }
     };
 
-    context.weapon            = character.Get_Equiped_Weapon();
-    context.helmet            = character.Get_Equiped_Helmet();
-    context.body_armor        = character.Get_Equiped_Body_Armor();
-    context.leg_armor         = character.Get_Equiped_Leg_Armor();
-    context.boots             = character.Get_Equiped_Boots();
-    context.ring1             = character.Get_Equiped_Ring1();
-    context.ring2             = character.Get_Equiped_Ring2();
-    context.shield            = character.Get_Equiped_Shield();
-    context.amulet            = character.Get_Equiped_Amulet();
-    context.utility1          = character.Get_Equiped_Utility1();
-    context.utility1_quantity = character.Get_Equiped_Utility1_Quantity();
+    context.weapon     = character.Get_Equiped_Weapon();
+    context.helmet     = character.Get_Equiped_Helmet();
+    context.body_armor = character.Get_Equiped_Body_Armor();
+    context.leg_armor  = character.Get_Equiped_Leg_Armor();
+    context.boots      = character.Get_Equiped_Boots();
+    context.ring1      = character.Get_Equiped_Ring1();
+    context.ring2      = character.Get_Equiped_Ring2();
+    context.shield     = character.Get_Equiped_Shield();
+    context.amulet     = character.Get_Equiped_Amulet();
+    // context.utility1          = character.Get_Equiped_Utility1();
+    // context.utility1_quantity = character.Get_Equiped_Utility1_Quantity();
     if (l_Character_Combat_Level > 9)
     {
         context.artifact1 = "novice_guide";
@@ -316,8 +340,6 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
                                                 l_Shields, l_Rings, l_Amulets);
 
     SYSTEM_PRINT("try to fight against '%s'", monster);
-
-    context.monster_level = MonsterManager::singleton.Get_Monster_Level(monster);
 
     SYSTEM_PRINT("equipped weapon: '%s'", context.weapon.c_str());
     for (std::size_t ii = 0; ii < l_Weapons.size(); ii++)
@@ -480,8 +502,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
 #endif
     }
 
-    const int level_diff = l_Character_Combat_Level - l_Monster_Level;
-    if (config.may_use_potion && l_Character_Max_Life <= 0 && (level_diff < 10))
+    if (config.may_use_potion && l_Character_Max_Life <= 0)
     {
         SYSTEM_PRINT("may win using potions?");
         /// Even while healing potions character failed
@@ -521,6 +542,8 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
             {
                 context.utility1          = hi.code;
                 context.utility1_quantity = required_potion_count;
+                context.utility1_inventory =
+                    std::min(required_potion_count * config.kill_count, max_potion_count) - context.utility1_quantity;
                 l_Character_Max_Life += required_potion_count * hi.heal;
                 SYSTEM_PRINT("will equip with '%s' x%d (l_Character_Max_Life: %d)", hi.code, required_potion_count, l_Character_Max_Life);
                 break;
@@ -587,7 +610,7 @@ void FightSystem::Handle_Equipment(const System* sys, Character& character, cons
                     const char* equiped_item = character.Get_Equiped_Item(equipmenet_type).c_str();
                     character.Add_Unequip_Item(sys, equipmenet_type, 1);  /// "1": has to be updated with utilities
                     character.Add_Deposit_Item(sys, { equiped_item, character.Get_Item_Count(equiped_item) + 1 });
-                    // character.Add_Equip_Item(sys, equipmenet_type, equipment_name, equipement_count);
+                    character.Add_Equip_Item(sys, equipmenet_type, equipment_name, equipement_count);
                 }
             }
         }
