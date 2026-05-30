@@ -578,12 +578,12 @@ void Character::Get_Fight_Items(const ItemManager& item_manager, int level, std:
         }
     }
 
-    Get_Inventory_Armor(item_manager, level, "helmet", helmets);
-    Get_Inventory_Armor(item_manager, level, "body_armor", body_armors);
-    Get_Inventory_Armor(item_manager, level, "leg_armor", leg_armors);
-    Get_Inventory_Armor(item_manager, level, "shield", shields);
-    Get_Inventory_Armor(item_manager, level, "ring", rings);
-    Get_Inventory_Armor(item_manager, level, "amulet", amulets);
+    Get_Inventory_Armor(item_manager, level, Keywords::ItemSlot::helmet, helmets);
+    Get_Inventory_Armor(item_manager, level, Keywords::ItemSlot::body_armor, body_armors);
+    Get_Inventory_Armor(item_manager, level, Keywords::ItemSlot::leg_armor, leg_armors);
+    Get_Inventory_Armor(item_manager, level, Keywords::ItemSlot::shield, shields);
+    Get_Inventory_Armor(item_manager, level, Keywords::ItemSlot::ring1, rings);
+    Get_Inventory_Armor(item_manager, level, Keywords::ItemSlot::amulet, amulets);
 }
 
 void Character::Get_Inventory_Armor(const ItemManager& item_manager, int level, const char* armor_type,
