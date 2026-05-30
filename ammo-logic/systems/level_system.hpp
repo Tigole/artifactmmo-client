@@ -4,7 +4,6 @@
 #include "keywords.hpp"
 #include "system.hpp"
 
-class ItemCraftingManager;
 class TrainingManager;
 
 class LevelCraftSystem: public System

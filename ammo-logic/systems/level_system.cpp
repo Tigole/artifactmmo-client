@@ -2,7 +2,6 @@
 
 #include "keywords.hpp"
 #include "managers/item_manager.hpp"
-#include "managers/training_manager.hpp"
 
 LevelCraftSystem::LevelCraftSystem(const char* name) : System(name) {}
 

@@ -6,7 +6,6 @@
 #include "types.hpp"
 
 class InventoryManager;
-class ItemCraftingManager;
 class FightSystem;
 class Character;
 
