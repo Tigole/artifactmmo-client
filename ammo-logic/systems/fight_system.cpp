@@ -279,6 +279,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
                 continue;
             }
 
+            /// l_Hp > current_armor_hp
             if (armors[ii].code != context_armor)
             {
                 current_armor_hp       = l_Hp;
