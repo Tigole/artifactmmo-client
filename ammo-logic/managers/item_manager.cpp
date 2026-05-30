@@ -214,7 +214,17 @@ const char* ItemManager::Get_Loot_Monster_Name(const char* item_code) const
     auto it = m_Looting.find(item_code);
     if (it != m_Looting.end())
     {
-        std::size_t idx = 0;
+        std::size_t idx         = 0;
+        int currentMonsterLevel = MonsterManager::singleton.Get_Monster_Level(it->second[idx].c_str());
+        for (std::size_t ii = 1; ii < it->second.size(); ii++)
+        {
+            const int newMonsterLevel = MonsterManager::singleton.Get_Monster_Level(it->second[ii].c_str());
+            if (newMonsterLevel < currentMonsterLevel)
+            {
+                idx                 = ii;
+                currentMonsterLevel = newMonsterLevel;
+            }
+        }
         return it->second[idx].c_str();
     }
     return nullptr;
