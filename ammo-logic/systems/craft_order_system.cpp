@@ -67,15 +67,15 @@ ToolCraftSystem::ToolCraftSystem() : CraftOrderSystem("ToolCraftSystem")
     m_Items.push_back({ Keywords::Items::Weapons::Tools::Gloves::steel_gloves, target_amount, 50 });
     m_Items.push_back({ Keywords::Items::Weapons::Tools::FishingRods::steel_fishing_rod, target_amount, 50 });
 
-    m_Items.push_back({ Keywords::Items::Weapons::Tools::Axes::iron_axe, target_amount, 50 });
-    m_Items.push_back({ Keywords::Items::Weapons::Tools::Pickaxes::iron_pickaxe, target_amount, 50 });
-    m_Items.push_back({ Keywords::Items::Weapons::Tools::Gloves::leather_gloves, target_amount, 50 });
-    m_Items.push_back({ Keywords::Items::Weapons::Tools::FishingRods::spruce_fishing_rod, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Axes::iron_axe, target_amount, 20 });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Pickaxes::iron_pickaxe, target_amount, 20 });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Gloves::leather_gloves, target_amount, 20 });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::FishingRods::spruce_fishing_rod, target_amount, 20 });
 
-    m_Items.push_back({ Keywords::Items::Weapons::Tools::Axes::copper_axe, target_amount, 50 });
-    m_Items.push_back({ Keywords::Items::Weapons::Tools::Pickaxes::copper_pickaxe, target_amount, 50 });
-    m_Items.push_back({ Keywords::Items::Weapons::Tools::Gloves::apprentice_gloves, target_amount, 50 });
-    m_Items.push_back({ Keywords::Items::Weapons::Tools::FishingRods::fishing_net, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Axes::copper_axe, target_amount, 10 });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Pickaxes::copper_pickaxe, target_amount, 10 });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::Gloves::apprentice_gloves, target_amount, 10 });
+    m_Items.push_back({ Keywords::Items::Weapons::Tools::FishingRods::fishing_net, target_amount, 10 });
 
     m_Workshop_Coord = { Keywords::MapLayers::overworld, 2, 1 };
 }
