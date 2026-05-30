@@ -3,7 +3,7 @@
 #include "managers/resource_manager.hpp"
 #include "systems/system.hpp"
 
-CharacterPipeline::CharacterPipeline() : m_Character(), m_Systems() {}
+CharacterPipeline::CharacterPipeline() : m_Character(), m_Systems(), m_Current_Order("???") {}
 
 void CharacterPipeline::Set_Character(const char* character_name)
 {
@@ -33,9 +33,8 @@ void CharacterPipeline::Update(float elapsed_time)
     m_Character.Update(elapsed_time);
 }
 
-std::string CharacterPipeline::Get_Current_Order(void) const
+const std::string& CharacterPipeline::Get_Current_Order(void) const
 {
-    static std::string str      = "???";
     const CharacterOrder* order = m_Character.Get_Current_Order();
     if (order != nullptr)
     {
@@ -46,51 +45,53 @@ std::string CharacterPipeline::Get_Current_Order(void) const
         switch (order->type)
         {
         case CharacterOrderType::Move:
-            str = fmt::format("{} - {} - Move - [{} {}]", system_name, globalOrder, order->coord.x, order->coord.y);
+            m_Current_Order = fmt::format("{} - {} - Move - [{} {}]", system_name, globalOrder, order->coord.x, order->coord.y);
             break;
-        case CharacterOrderType::Fight: str = fmt::format("{} - {} - Fight", system_name, globalOrder); break;
-        case CharacterOrderType::Rest:  str = fmt::format("{} - {} - Rest", system_name, globalOrder); break;
+        case CharacterOrderType::Fight: m_Current_Order = fmt::format("{} - {} - Fight", system_name, globalOrder); break;
+        case CharacterOrderType::Rest:  m_Current_Order = fmt::format("{} - {} - Rest", system_name, globalOrder); break;
         case CharacterOrderType::Craft:
-            str = fmt::format("{} - {} - Craft - {} x{}", system_name, globalOrder, item.code, item.quantity);
+            m_Current_Order = fmt::format("{} - {} - Craft - {} x{}", system_name, globalOrder, item.code, item.quantity);
             break;
         case CharacterOrderType::UseItem:
-            str = fmt::format("{} - {} - UseItem - {} x{}", system_name, globalOrder, item.code, item.quantity);
+            m_Current_Order = fmt::format("{} - {} - UseItem - {} x{}", system_name, globalOrder, item.code, item.quantity);
             break;
-        case CharacterOrderType::UnequipItem: str = fmt::format("{} - {} - UnequipItem - {}", system_name, globalOrder, order->slot); break;
+        case CharacterOrderType::UnequipItem:
+            m_Current_Order = fmt::format("{} - {} - UnequipItem - {}", system_name, globalOrder, order->slot);
+            break;
         case CharacterOrderType::EquipItem:
-            str = fmt::format("{} - {} - EquipItem - {} {}", system_name, globalOrder, order->slot, item.code);
+            m_Current_Order = fmt::format("{} - {} - EquipItem - {} {}", system_name, globalOrder, order->slot, item.code);
             break;
         case CharacterOrderType::Gathering:
-            str = fmt::format("{} - Gathering - {} - {} - [{} {}]", system_name, globalOrder,
-                              ResourceManager::singleton.Get_Spot_Name(map_coord), map_coord.x, map_coord.y);
+            m_Current_Order = fmt::format("{} - Gathering - {} - {} - [{} {}]", system_name, globalOrder,
+                                          ResourceManager::singleton.Get_Spot_Name(map_coord), map_coord.x, map_coord.y);
             break;
         case CharacterOrderType::Recycling:
-            str = fmt::format("{} - {} - Recycling - {} x{}", system_name, globalOrder, item.code, item.quantity);
+            m_Current_Order = fmt::format("{} - {} - Recycling - {} x{}", system_name, globalOrder, item.code, item.quantity);
             break;
-        case CharacterOrderType::TaskNew: str = fmt::format("{} - {} - TaskNew", system_name, globalOrder); break;
+        case CharacterOrderType::TaskNew: m_Current_Order = fmt::format("{} - {} - TaskNew", system_name, globalOrder); break;
         case CharacterOrderType::TaskTrade:
-            str = fmt::format("{} - {} - TaskTrade - {} x{}", system_name, globalOrder, item.code, item.quantity);
+            m_Current_Order = fmt::format("{} - {} - TaskTrade - {} x{}", system_name, globalOrder, item.code, item.quantity);
             break;
-        case CharacterOrderType::TaskComplete: str = fmt::format("{} - {} - TaskComplete", system_name, globalOrder); break;
+        case CharacterOrderType::TaskComplete: m_Current_Order = fmt::format("{} - {} - TaskComplete", system_name, globalOrder); break;
         case CharacterOrderType::DepositItem:
-            str = fmt::format("{} - {} - DepositItem - {} x{}", system_name, globalOrder, item.code, item.quantity);
+            m_Current_Order = fmt::format("{} - {} - DepositItem - {} x{}", system_name, globalOrder, item.code, item.quantity);
             break;
         case CharacterOrderType::WithdrawItem:
-            str = fmt::format("{} - {} - WithdrawItem - {} x{}", system_name, globalOrder, item.code, item.quantity);
+            m_Current_Order = fmt::format("{} - {} - WithdrawItem - {} x{}", system_name, globalOrder, item.code, item.quantity);
             break;
         case CharacterOrderType::DepositGold:
-            str = fmt::format("{} - {} - DepositGold - {}", system_name, globalOrder, item.quantity);
+            m_Current_Order = fmt::format("{} - {} - DepositGold - {}", system_name, globalOrder, item.quantity);
             break;
         case CharacterOrderType::WithdrawGold:
-            str = fmt::format("{} - {} - WithdrawGold - {}", system_name, globalOrder, item.quantity);
+            m_Current_Order = fmt::format("{} - {} - WithdrawGold - {}", system_name, globalOrder, item.quantity);
             break;
         case CharacterOrderType::BuyItem:
-            str = fmt::format("{} - {} - BuyItem - {} x{}", system_name, globalOrder, item.code, item.quantity);
+            m_Current_Order = fmt::format("{} - {} - BuyItem - {} x{}", system_name, globalOrder, item.code, item.quantity);
             break;
-        case CharacterOrderType::ClearInventory: str = fmt::format("{} - Clear inventory", globalOrder); break;
+        case CharacterOrderType::ClearInventory: m_Current_Order = fmt::format("{} - Clear inventory", globalOrder); break;
         }
     }
-    return str;
+    return m_Current_Order;
 }
 
 float CharacterPipeline::Get_Remaining_Timeout(void) const

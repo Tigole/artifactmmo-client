@@ -18,7 +18,7 @@ public:
 
     void Update(float elapsed_time);
 
-    std::string Get_Current_Order(void) const;
+    const std::string& Get_Current_Order(void) const;
     float Get_Remaining_Timeout(void) const;
 
     const Character& Get_Character_Obj(void) const;
@@ -26,6 +26,7 @@ public:
 private:
     Character m_Character;
     std::vector<System*> m_Systems;
+    mutable std::string m_Current_Order;
 };
 
 #endif  // _CHARACTER_PIPELINE_HPP
