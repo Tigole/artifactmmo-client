@@ -9,7 +9,6 @@
 #include "managers/monster_manager.hpp"
 #include "managers/npc_manager.hpp"
 #include "managers/resource_manager.hpp"
-#include "managers/training_manager.hpp"
 #include "net/client.hpp"
 #include "net/token.hpp"
 #include "systems/achievement_fight_system.hpp"
@@ -19,7 +18,6 @@
 #include "systems/gather_system.hpp"
 #include "systems/inventory_management_system.hpp"
 #include "systems/level_system.hpp"
-#include "systems/stuff_system.hpp"
 #include "systems/task_system.hpp"
 
 LogicApplication LogicApplication::singleton;
@@ -37,7 +35,6 @@ void LogicApplication::Run(int argc, char** argv)
 
         MonsterManager::singleton.Initialize();
         NPCManager::singleton.Initialize();
-        ItemCraftingManager::singleton.Initialize();
         MapManager::singleton.Initialize();
         ResourceManager::singleton.Initialize();
         MonsterManager::singleton.Initialize();

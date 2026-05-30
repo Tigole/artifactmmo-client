@@ -57,37 +57,4 @@ private:
     int Get_Effect_Value(const char* item_code, const char* effect_code) const;
 };
 
-class ResourceManager;
-class InventoryManager;
-class NPCManager;
-class FightSystem;
-class Character;
-class System;
-
-struct ItemRequiredSkill
-{
-    std::vector<std::pair<std::string, int>> requirements;
-};
-
-class ItemCraftingManager
-{
-    ItemCraftingManager() = default;
-
-public:
-    static ItemCraftingManager singleton;
-
-    void Initialize(void);
-
-    void Make_Craft_Item(const System* sys, Character& character, const ItemOrder& item);
-    void Make_Recycle_Item(const System* sys, Character& character, const ItemOrder& item);
-    bool May_Craft(Character& character, const char* item_code) const;
-
-    ItemRequiredSkill Get_Required_Skill(const char* item_code) const;
-
-private:
-    std::map<std::string, MapCoord> m_Workshop_Coords;
-
-    void Get_Item(const System* sys, Character& character, const ItemOrder& item);
-};
-
 #endif  // _ITEM_MANAGER_HPP

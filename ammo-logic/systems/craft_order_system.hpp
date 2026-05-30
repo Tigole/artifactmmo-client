@@ -3,7 +3,6 @@
 
 #include "system.hpp"
 
-class ItemCraftingManager;
 class InventoryManager;
 
 struct CraftOrder
