@@ -159,7 +159,10 @@ void System::Make_Gather(Character& character, MapCoord spot_coord, const char* 
         }
     }
 
-    Make_Unequip_Fight(character);
+    if (Make_Unequip_Fight(character))
+    {
+        return;
+    }
 
     if (character.Should_Move(spot_coord) == true)
     {
