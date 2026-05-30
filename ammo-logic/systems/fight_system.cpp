@@ -2,25 +2,28 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 
 #include "keywords.hpp"
 #include "managers/inventory_manager.hpp"
 #include "managers/item_manager.hpp"
 #include "managers/monster_manager.hpp"
 
+FightConfig::FightConfig(bool potion, bool consumables) : may_use_potion(potion), may_use_consumables(consumables) {}
+
 FightConfig FightConfig::DefaultConfig(void)
 {
-    return { false, false, false };
+    return { false, false };
 }
 
 FightConfig FightConfig::MonsterTaskConfig(void)
 {
-    return { true, false, false };
+    return { true, true };
 }
 
 FightConfig FightConfig::GatherResourcesConfig(void)
 {
-    return { false, true, false };
+    return { false, false };
 }
 
 FightSystem FightSystem::singleton;
@@ -154,7 +157,7 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
         if (context.should_heal == true)
         {
             const int levelDiff = character.Get_Skill_Level(Keywords::Skills::combat) - context.monster_level;
-            if (levelDiff < 5)
+            if (context.may_use_consumables)
             {
                 if (Equip_Healing_Stuff(sys, character, bank_pos) == true)
                 {
@@ -525,7 +528,8 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
         }
     }
 
-    context.should_heal = character.Get_Life_Current() < (character.Get_Life_Max() - l_Character_Max_Life);
+    context.should_heal         = character.Get_Life_Current() < (character.Get_Life_Max() - l_Character_Max_Life);
+    context.may_use_consumables = config.may_use_consumables;
 
     SYSTEM_PRINT(
         "vs '%s': %s (hp diff: %d - turn count: %d - heal: %d - weapon: '%s' - helmet: '%s' body_armor: '%s' leg_armor: '%s' boots: "

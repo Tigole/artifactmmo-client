@@ -5,6 +5,7 @@
 
 class MonsterManager;
 class ItemManager;
+class FightSystem;
 
 struct FightContext
 {
@@ -28,14 +29,19 @@ struct FightContext
     int monster_level = 0;
     int turn_count    = 0;
     bool should_heal;
+    bool may_use_consumables;
 };
 
-struct FightConfig
+class FightConfig
 {
+private:
+    friend FightSystem;
     bool may_use_potion;
-    bool focus_on_prospecting;
-    bool focus_on_wisdom;
+    bool may_use_consumables;
 
+    FightConfig(bool potion, bool consumables);
+
+public:
     static FightConfig DefaultConfig(void);
     static FightConfig MonsterTaskConfig(void);
     static FightConfig GatherResourcesConfig(void);
