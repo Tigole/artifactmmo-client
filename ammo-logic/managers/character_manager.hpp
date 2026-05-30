@@ -9,6 +9,7 @@ public:
     static CharacterManager singleton;
 
     int GetMinCombatLevel(void);
+    int GetItemCount(const char* item_code);
 
 private:
 };

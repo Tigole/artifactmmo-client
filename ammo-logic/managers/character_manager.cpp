@@ -17,3 +17,15 @@ int CharacterManager::GetMinCombatLevel(void)
     }
     return minLevel;
 }
+
+int CharacterManager::GetItemCount(const char* item_code)
+{
+    int itemCount = 0;
+    auto& p       = LogicApplication::singleton.Get_Pipelines();
+    for (auto& c: p)
+    {
+        const Character& ch = c.Get_Character_Obj();
+        itemCount += ch.Get_Item_Count(item_code);
+    }
+    return itemCount;
+}

@@ -214,7 +214,8 @@ const char* ItemManager::Get_Loot_Monster_Name(const char* item_code) const
     auto it = m_Looting.find(item_code);
     if (it != m_Looting.end())
     {
-        return it->second.begin()->c_str();
+        std::size_t idx = 0;
+        return it->second[idx].c_str();
     }
     return nullptr;
 }
