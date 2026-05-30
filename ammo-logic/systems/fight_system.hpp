@@ -26,6 +26,7 @@ struct FightContext
     int utility1_quantity  = 0;
     int utility2_quantity  = 0;
     int utility1_inventory = 0;
+    int utility2_inventory = 0;
 
     int turn_count = 0;
     bool should_heal;

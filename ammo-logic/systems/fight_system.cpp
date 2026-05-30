@@ -140,7 +140,7 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             // exit(0);
             return;
         }
-        if (character.Get_Item_Count(context.utility1.c_str()) < context.utility1_inventory)
+        if (character.Get_Item_Count(context.utility1.c_str()) == 0 && context.utility1_inventory != 0)
         {
             if (character.Should_Move(bank_pos) == true)
             {
@@ -148,8 +148,7 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             }
             else
             {
-                character.Add_Withdraw_Item(
-                    sys, { context.utility1, context.utility1_inventory - character.Get_Item_Count(context.utility1.c_str()) });
+                character.Add_Withdraw_Item(sys, { context.utility1, context.utility1_inventory });
             }
             return;
         }
@@ -162,6 +161,18 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             (character.Get_Equiped_Utility2() != context.utility2 || character.Get_Equiped_Utility2_Quantity() < context.utility2_quantity))
         {
             Handle_Equipment(sys, character, bank_pos, context.utility2.c_str(), context.utility2_quantity, Keywords::ItemSlot::utility2);
+            return;
+        }
+        if (character.Get_Item_Count(context.utility2.c_str()) == 0 && context.utility2_inventory != 0)
+        {
+            if (character.Should_Move(bank_pos) == true)
+            {
+                character.Add_Move(sys, bank_pos);
+            }
+            else
+            {
+                character.Add_Withdraw_Item(sys, { context.utility2, context.utility2_inventory });
+            }
             return;
         }
         if (character.Get_Equiped_Artifact1() != context.artifact1)
@@ -193,7 +204,6 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             {
                 character.Add_Rest(sys);
             }
-            return;
         }
         character.Add_Fight(sys, monster);
     }
@@ -280,7 +290,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     auto armor_handler = [&](const std::vector<InventoryArmorPart>& armors, std::string& context_armor)
     {
         int current_armor_hp = ItemManager::singleton.Get_Armor_Hp(context_armor.c_str());
-        SYSTEM_PRINT("current armor '%s'", context_armor.c_str());
+        SYSTEM_PRINT("current armor '%s' armors count: %zu", context_armor.c_str(), armors.size());
         for (std::size_t ii = 0; ii < armors.size(); ii++)
         {
             const int l_Hp = ItemManager::singleton.Get_Armor_Hp(armors[ii].code.c_str());
@@ -309,6 +319,8 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
             /// l_Hp > current_armor_hp
             if (armors[ii].code != context_armor)
             {
+                l_Character_Max_Life -= current_armor_hp;
+                l_Character_Max_Life += l_Hp;
                 current_armor_hp       = l_Hp;
                 l_Character_Resistance = armors[ii].resistances;
                 context_armor          = armors[ii].code;
@@ -444,8 +456,9 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
 
         if (item_code != nullptr && (InventoryManager::singleton.Get_Bank_Item_Count(item_code) > 0))
         {
-            context.utility2          = item_code;
-            context.utility2_quantity = std::min(5, InventoryManager::singleton.Get_Bank_Item_Count(item_code));
+            context.utility2           = item_code;
+            context.utility2_quantity  = 1;
+            context.utility2_inventory = std::min(5, InventoryManager::singleton.Get_Bank_Item_Count(item_code));
             l_Character_Damages[idx] += 12;
             SYSTEM_PRINT("will equip '%s' x%d", item_code, context.utility2_quantity);
         }
@@ -515,11 +528,12 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
                 continue;
             }
             // #error "Have to count exactly how many are required and get all but equip what is needed"
-            const int bank_item_count = InventoryManager::singleton.Get_Bank_Item_Count(hi.code);
+            const int bank_item_count      = InventoryManager::singleton.Get_Bank_Item_Count(hi.code);
+            const int inventory_item_count = character.Get_Item_Count(hi.code);
 
-            if (bank_item_count <= 0)
+            if (bank_item_count <= 0 || inventory_item_count <= 0)
             {
-                SYSTEM_PRINT("no '%s' in bank", hi.code);
+                SYSTEM_PRINT("no '%s' in bank nor in inventory", hi.code);
                 continue;
             }
 
@@ -534,8 +548,8 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
                 }
             }
 
-            const int max_potion_count      = std::min(bank_item_count, character.Get_Inventory_Remaining_Space() - 1);
-            const int hp_to_win             = abs(l_Character_Max_Life) + 1;
+            const int max_potion_count = std::min(bank_item_count, character.Get_Inventory_Remaining_Space() - 1) + inventory_item_count;
+            const int hp_to_win        = abs(l_Character_Max_Life) + 1;
             const int required_potion_count = ceil((float)hp_to_win / hi.heal);
             SYSTEM_PRINT("may win using '%s' x%d", hi.code, required_potion_count);
             if ((required_potion_count < max_potion_count) && (required_potion_count < 10))
@@ -616,18 +630,18 @@ void FightSystem::Handle_Equipment(const System* sys, Character& character, cons
         }
         else
         {
-            character.Add_Equip_Item(sys, equipmenet_type, equipment_name, character.Get_Item_Count(equipment_name));
+            character.Add_Equip_Item(sys, equipmenet_type, equipment_name, equipement_count);
         }
     }
 }
 
 bool FightSystem::Equip_Healing_Stuff(const System* sys, Character& character, const MapCoord& bank_pos) const
 {
-    bool inventory_has_healing_item = true;
+    bool inventory_has_healing_item = false;
 
     for (const HealItem& hi: m_Healing_Items)
     {
-        inventory_has_healing_item &= character.Get_Item_Count(hi.code) > 0;
+        inventory_has_healing_item |= character.Get_Item_Count(hi.code) > 0;
     }
 
     if (inventory_has_healing_item == true)
@@ -642,6 +656,7 @@ bool FightSystem::Equip_Healing_Stuff(const System* sys, Character& character, c
         return false;
     }
 
+    SYSTEM_PRINT("has to take items");
     for (const HealItem& hi: m_Healing_Items)
     {
         const char* item_code          = hi.code;
