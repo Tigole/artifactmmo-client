@@ -60,6 +60,15 @@ int System::Make_Craft(Character& character, MapCoord workshop_coord, const char
         }
 
         craft_count = character.Get_Inventory_Remaining_Space() / character_inventory_space_required;
+
+        if (craft_count > 0)
+        {
+            if (Make_Unequip_Fight(character))
+            {
+                return -1;
+            }
+        }
+
         for (std::size_t ii = 0; ii < r->required_items.size(); ii++)
         {
             craft_count = std::min(craft_count, InventoryManager::singleton.Get_Bank_Item_Count(r->required_items[ii].code.c_str()) /
@@ -150,10 +159,74 @@ void System::Make_Gather(Character& character, MapCoord spot_coord, const char* 
         }
     }
 
+    Make_Unequip_Fight(character);
+
     if (character.Should_Move(spot_coord) == true)
     {
         character.Add_Move(this, spot_coord);
         return;
     }
     character.Add_Gathering(this);
+}
+
+bool System::Make_Unequip_Fight(Character& character) const
+{
+    auto Unequip = [this, &character](const char* item_slot, int item_quantity)
+    {
+        std::string item = character.Get_Equiped_Item(item_slot);
+        if (item.size() > 0)
+        {
+            if (character.Get_Life_Current() < ItemManager::singleton.Get_Armor_Hp(item.c_str()))
+            {
+                character.Add_Rest(this);
+            }
+            character.Add_Unequip_Item(this, item_slot, item_quantity);
+            character.Make_Clear_Inventory(this, nullptr);
+            return true;
+        }
+        return false;
+    };
+
+    if (Unequip(Keywords::ItemSlot::helmet, 1))
+    {
+        return true;
+    }
+    if (Unequip(Keywords::ItemSlot::body_armor, 1))
+    {
+        return true;
+    }
+    if (Unequip(Keywords::ItemSlot::leg_armor, 1))
+    {
+        return true;
+    }
+    if (Unequip(Keywords::ItemSlot::boots, 1))
+    {
+        return true;
+    }
+    if (Unequip(Keywords::ItemSlot::shield, 1))
+    {
+        return true;
+    }
+    if (Unequip(Keywords::ItemSlot::amulet, 1))
+    {
+        return true;
+    }
+    if (Unequip(Keywords::ItemSlot::ring1, 1))
+    {
+        return true;
+    }
+    if (Unequip(Keywords::ItemSlot::ring2, 1))
+    {
+        return true;
+    }
+    if (Unequip(Keywords::ItemSlot::utility1, 1))
+    {
+        return true;
+    }
+    if (Unequip(Keywords::ItemSlot::utility2, 1))
+    {
+        return true;
+    }
+
+    return false;
 }

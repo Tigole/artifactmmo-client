@@ -23,6 +23,7 @@ public:
 protected:
     int Make_Craft(Character& character, MapCoord workshop_coord, const char* item_code, int item_count) const;
     void Make_Gather(Character& character, MapCoord spot_coord, const char* skill_name, const std::vector<const char*>& equipements) const;
+    bool Make_Unequip_Fight(Character& character) const;
 
 private:
     const char* m_System_Name;
