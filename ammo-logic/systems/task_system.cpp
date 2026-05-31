@@ -27,7 +27,7 @@ TaskSystemMonster::TaskSystemMonster() : TaskSystem("TaskSystemMonster") {}
 
 void TaskSystemMonster::Fill_Pipeline(Character& character)
 {
-    character.Set_Global_Order(character.Get_Task().c_str(), 0);
+    character.Set_Global_Order(character.Get_Task().c_str(), character.Get_Task_Remaining());
     if (character.Is_Task_Item() == true)
     {
         // Drop
@@ -65,7 +65,7 @@ TaskSystemItem::TaskSystemItem() : TaskSystem("TaskSystemItem") {}
 
 void TaskSystemItem::Fill_Pipeline(Character& character)
 {
-    character.Set_Global_Order(character.Get_Task().c_str(), 0);
+    character.Set_Global_Order(character.Get_Task().c_str(), character.Get_Task_Remaining());
     if (character.Is_Task_Item() == true)
     {
         const std::string l_Item              = character.Get_Task();
