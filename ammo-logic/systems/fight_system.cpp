@@ -32,12 +32,12 @@ FightSystem FightSystem::singleton;
 
 FightSystem::FightSystem() : System("FightSystem")
 {
-    constexpr const int target_amount = 3;
+    constexpr const int target_amount = 10;
 
     m_Monsters.push_back("");
 
-    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::mushroom_soup, 240, 15, target_amount });
     m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_trout, 225, 20, target_amount });
+    m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::mushroom_soup, 240, 15, target_amount });
     m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_wolf_meat, 200, 15, target_amount });
     m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_shrimp, 150, 10, target_amount });
     m_Healing_Items.push_back({ Keywords::Items::Consumables::Food::cooked_beef, 150, 5, target_amount });
@@ -405,15 +405,10 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
         const int inventory_count = character.Get_Item_Count(item_code);
         if (bank_count > 0)
         {
-            context.utility2          = item_code;
-            context.utility2_quantity = std::min(5, bank_count);
-            l_Poison                  = 0;
-        }
-        else if (inventory_count > 0)
-        {
-            context.utility2          = item_code;
-            context.utility2_quantity = inventory_count;
-            l_Poison                  = 0;
+            context.utility2           = item_code;
+            context.utility2_quantity  = 1;
+            context.utility2_inventory = std::min(config.kill_count - 1, bank_count);
+            l_Poison                   = 0;
         }
     }
     else if (config.may_use_potion)
@@ -458,7 +453,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
         {
             context.utility2           = item_code;
             context.utility2_quantity  = 1;
-            context.utility2_inventory = std::min(5, InventoryManager::singleton.Get_Bank_Item_Count(item_code));
+            context.utility2_inventory = std::min(config.kill_count - 1, InventoryManager::singleton.Get_Bank_Item_Count(item_code));
             l_Character_Damages[idx] += 12;
             SYSTEM_PRINT("will equip '%s' x%d", item_code, context.utility2_quantity);
         }
@@ -646,8 +641,11 @@ bool FightSystem::Equip_Healing_Stuff(const System* sys, Character& character, c
 
     if (inventory_has_healing_item == true)
     {
-        SYSTEM_PRINT("has healing item in inventory");
-        return false;
+        if (character.Should_Move(bank_pos))
+        {
+            SYSTEM_PRINT("has healing item in inventory");
+            return false;
+        }
     }
 
     if (character.Get_Inventory_Remaining_Slot_Count() < 5)
