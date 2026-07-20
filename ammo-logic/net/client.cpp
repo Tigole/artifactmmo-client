@@ -26,6 +26,14 @@ void Client::Initialize(void)
     }
 }
 
+void Client::Create_Character(const char* character_name, const char* character_skin)
+{
+    mt_Post("/characters/create", {
+                                      { "name", character_name },
+                                      { "skin", character_skin }
+    });
+}
+
 void Client::Get_Items(std::map<std::string, nlohmann::json>& items)
 {
     Get_All_Data("/items", items);

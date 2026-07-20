@@ -48,7 +48,7 @@ void LogicApplication::Run(int argc, char** argv)
 
     {
         static constexpr int idx = 0;
-        l_Pipeline[idx].Set_Character("Niva");
+        l_Pipeline[idx].Set_Character("Niva", "men1");
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
         l_Pipeline[idx].Add_System(&ToolCraftSystem::singleton);
         l_Pipeline[idx].Add_System(&WeaponCraftSystem::singleton);
@@ -85,7 +85,7 @@ void LogicApplication::Run(int argc, char** argv)
 
     {
         static constexpr int idx = 1;
-        l_Pipeline[idx].Set_Character("Jackie");
+        l_Pipeline[idx].Set_Character("Jackie", "women1");
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
         l_Pipeline[idx].Add_System(&CookingSystem::singleton);
         l_Pipeline[idx].Add_System(&TaskSystemItem::singleton);
@@ -115,7 +115,7 @@ void LogicApplication::Run(int argc, char** argv)
 
     {
         static constexpr int idx = 2;
-        l_Pipeline[idx].Set_Character("Eldra");
+        l_Pipeline[idx].Set_Character("Eldra", "women2");
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
         l_Pipeline[idx].Add_System(&TasksTradingSystem::singleton);
         l_Pipeline[idx].Add_System(&TaskSystemItem::singleton);
@@ -145,7 +145,7 @@ void LogicApplication::Run(int argc, char** argv)
 
     {
         static constexpr int idx = 3;
-        l_Pipeline[idx].Set_Character("Randy");
+        l_Pipeline[idx].Set_Character("Randy", "men2");
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
         l_Pipeline[idx].Add_System(&CookingSystem::singleton);
         l_Pipeline[idx].Add_System(&WeaponCraftSystem::singleton);
@@ -176,7 +176,7 @@ void LogicApplication::Run(int argc, char** argv)
 
     {
         static constexpr int idx = 4;
-        l_Pipeline[idx].Set_Character("Helen");
+        l_Pipeline[idx].Set_Character("Helen", "women3");
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
         l_Pipeline[idx].Add_System(&TaskSystemItem::singleton);
         {

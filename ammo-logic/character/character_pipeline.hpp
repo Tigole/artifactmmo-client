@@ -12,7 +12,7 @@ class CharacterPipeline
 public:
     CharacterPipeline();
 
-    void Set_Character(const char* character_name);
+    void Set_Character(const char* character_name, const char* character_skin);
     const char* Get_Character(void) const;
     void Add_System(System* system);
 
@@ -27,6 +27,8 @@ private:
     Character m_Character;
     std::vector<System*> m_Systems;
     mutable std::string m_Current_Order;
+
+    void EnsureExits(const char* character_skin);
 };
 
 #endif  // _CHARACTER_PIPELINE_HPP

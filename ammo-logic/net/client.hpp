@@ -14,6 +14,8 @@ public:
 
     void Initialize(void);
 
+    void Create_Character(const char* character_name, const char* character_skin);
+
     void Get_Items(std::map<std::string, nlohmann::json>& items);
     void Get_Monsters(std::map<std::string, nlohmann::json>& monsters);
     void Get_Maps(std::vector<nlohmann::json>& maps);

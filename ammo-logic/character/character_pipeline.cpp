@@ -1,12 +1,22 @@
 #include "character_pipeline.hpp"
 
 #include "managers/resource_manager.hpp"
+#include "net/client.hpp"
 #include "systems/system.hpp"
 
 CharacterPipeline::CharacterPipeline() : m_Character(), m_Systems(), m_Current_Order("???") {}
 
-void CharacterPipeline::Set_Character(const char* character_name)
+void CharacterPipeline::Set_Character(const char* character_name, const char* character_skin)
 {
+    try
+    {
+        m_Character.Set_Character(character_name);
+    }
+    catch (const std::exception& e)
+    {
+        EnsureExits(character_skin);
+    }
+
     m_Character.Set_Character(character_name);
 }
 
@@ -102,4 +112,9 @@ float CharacterPipeline::Get_Remaining_Timeout(void) const
 const Character& CharacterPipeline::Get_Character_Obj(void) const
 {
     return m_Character;
+}
+
+void CharacterPipeline::EnsureExits(const char* character_skin)
+{
+    Client::singleton.Create_Character(m_Character.Get_Character(), character_skin);
 }
