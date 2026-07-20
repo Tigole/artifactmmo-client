@@ -13,15 +13,18 @@ void ResourceManager::Initialize(void)
     Client::singleton.Get_Resource_Spots(spots);
     for (const auto& s: spots)
     {
-        std::string spot_code          = s["code"];
-        const MapCoord* resource_coord = MapManager::singleton.Get_Spot_Coord(spot_code.c_str());
-        int level                      = s["level"];
+        std::string spot_code                       = s["code"];
+        const std::vector<MapCoord>* resource_coord = MapManager::singleton.Get_Spot_Coord(spot_code.c_str());
+        int level                                   = s["level"];
         if (resource_coord != nullptr)
         {
             for (auto& d: s["drops"])
             {
                 std::string resource_code = d["code"];
-                m_Spots[resource_code].push_back({ *resource_coord, d["rate"].get<int>(), level });
+                for (auto mc: *resource_coord)
+                {
+                    m_Spots[resource_code].push_back({ mc, d["rate"].get<int>(), level });
+                }
             }
         }
     }

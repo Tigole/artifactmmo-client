@@ -31,14 +31,34 @@ void MapManager::Initialize(void)
 
 const MapCoord* MapManager::Get_Monster_Coord(const char* monster, MapCoord current_pos) const
 {
-    return Get(monster, current_pos, m_Monsters_Coords);
+    auto it = m_Monsters_Coords.find(monster);
+    if (it != m_Monsters_Coords.end())
+    {
+        std::size_t idx = 0;
+        int distance    = current_pos.Get_Distance(it->second[0]);
+        for (std::size_t ii = 1; ii < it->second.size(); ii++)
+        {
+            if (current_pos.Get_Distance(it->second[ii]) < distance)
+            {
+                idx = ii;
+            }
+        }
+        return &it->second[idx];
+    }
+    return nullptr;
 }
 
-const MapCoord* MapManager::Get_Spot_Coord(const char* resource) const
+const std::vector<MapCoord>* MapManager::Get_Spot_Coord(const char* resource) const
 {
-    return Get(resource, { "", 0, 0 }, m_Spots_Coords);
+    auto it = m_Spots_Coords.find(resource);
+    if (it != m_Spots_Coords.end())
+    {
+        return &it->second;
+    }
+    return nullptr;
 }
 
+#if 0
 const MapCoord* MapManager::Get(const char* key, MapCoord current_pos, const std::map<std::string, std::vector<MapCoord>>& c) const
 {
     auto it = c.find(key);
@@ -57,3 +77,4 @@ const MapCoord* MapManager::Get(const char* key, MapCoord current_pos, const std
     }
     return nullptr;
 }
+#endif
