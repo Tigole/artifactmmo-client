@@ -316,7 +316,9 @@ int Client::mt_Character_Unequip_Item(const char* character_name, const char* sl
     l_Path += character_name;
     l_Path += "/action/unequip";
 
-    nlohmann::json body = mt_Post(l_Path.c_str(), UnequipOrder { slot, 1 });
+    nlohmann::json body = mt_Post(l_Path.c_str(), {
+                                                      UnequipOrder { slot, 1 }
+    });
 
     character_cache = body["data"]["character"];
 
@@ -330,7 +332,9 @@ int Client::mt_Character_Equip_Item(const char* character_name, const char* slot
     l_Path += character_name;
     l_Path += "/action/equip";
 
-    nlohmann::json body = mt_Post(l_Path.c_str(), EquipOrder { item_code, slot, item_quantity });
+    nlohmann::json body = mt_Post(l_Path.c_str(), {
+                                                      EquipOrder { item_code, slot, item_quantity }
+    });
 
     character_cache = body["data"]["character"];
 
