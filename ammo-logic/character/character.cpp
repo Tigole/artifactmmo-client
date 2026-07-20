@@ -260,9 +260,14 @@ void Character::Update(float elapsed_time)
                     }
                     break;
                 case CharacterOrderType::WithdrawItem:
-                    m_Remaining_Timeout =
-                        Client::singleton.mt_Character_Withdraw_Item(m_Character_Name, l_Order.item_order, m_Character_Cache);
-                    InventoryManager::singleton.OnBankWithdrawItem(l_Order.item_order.code.c_str(), l_Order.item_order.quantity);
+                    {
+                        const ItemOrder order = { .code     = l_Order.item_order.code,
+                                                  .quantity = std::min(
+                                                      l_Order.item_order.quantity,
+                                                      InventoryManager::singleton.Get_Bank_Item_Count(l_Order.item_order.code.c_str())) };
+                        m_Remaining_Timeout   = Client::singleton.mt_Character_Withdraw_Item(m_Character_Name, order, m_Character_Cache);
+                        InventoryManager::singleton.OnBankWithdrawItem(order.code.c_str(), order.quantity);
+                    }
                     break;
                 case CharacterOrderType::DepositGold:
                     if (Get_Gold_Amount() > 0)
