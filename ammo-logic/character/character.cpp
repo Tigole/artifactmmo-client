@@ -602,7 +602,7 @@ void Character::Get_Fight_Items(const ItemManager& item_manager, int level, std:
     Get_Inventory_Armor(item_manager, level, Keywords::ItemSlot::body_armor, body_armors);
     Get_Inventory_Armor(item_manager, level, Keywords::ItemSlot::leg_armor, leg_armors);
     Get_Inventory_Armor(item_manager, level, Keywords::ItemSlot::shield, shields);
-    Get_Inventory_Armor(item_manager, level, Keywords::ItemSlot::ring1, rings);
+    Get_Inventory_Armor(item_manager, level, Keywords::ItemSlot::ring, rings);
     Get_Inventory_Armor(item_manager, level, Keywords::ItemSlot::amulet, amulets);
 }
 

@@ -645,6 +645,7 @@ struct Keywords
         KEYWORD(body_armor);
         KEYWORD(leg_armor);
         KEYWORD(boots);
+        KEYWORD(ring);  /// For generic ring
         KEYWORD(ring1);
         KEYWORD(ring2);
         KEYWORD(amulet);
