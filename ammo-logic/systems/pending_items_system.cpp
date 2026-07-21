@@ -6,16 +6,25 @@ PendingItemsSystem::PendingItemsSystem() : System("PendingItemsSystem"), m_Pendi
 
 void PendingItemsSystem::Fill_Pipeline(Character& character)
 {
-    for (const auto& i: m_Pending_Items)
+    if (m_Pending_Items.size() > 0)
     {
-        character.Add_Claim_Pending_Item(this, i.c_str());
+        if (character.Get_Inventory_Remaining_Space() < 10)
+        {
+            character.Make_Clear_Inventory(this, nullptr);
+            return;
+        }
+        for (const auto& i: m_Pending_Items)
+        {
+            character.Add_Claim_Pending_Item(this, i.c_str());
+        }
+        character.Make_Clear_Inventory(this, nullptr);
+        m_Pending_Items.clear();
     }
-    m_Pending_Items.clear();
 }
 
 void PendingItemsSystem::OnAchievementChanged(void)
 {
-    if (m_Pending_Items.size() > 0)
+    if (m_Pending_Items.size() == 0)
     {
         Client::singleton.Get_Pending_Items(m_Pending_Items);
     }

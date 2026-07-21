@@ -180,10 +180,7 @@ void Client::Get_Pending_Items(std::vector<std::string>& pending_items)
 
     for (auto& pi: tmp)
     {
-        for (auto i: pi["items"])
-        {
-            pending_items.push_back(i["code"].get<std::string>());
-        }
+        pending_items.push_back(pi["id"].get<std::string>());
     }
 }
 
