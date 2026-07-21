@@ -168,7 +168,7 @@ MiningCraftingSystem::MiningCraftingSystem() : CraftOrderSystem("MiningCraftingS
     m_Items.push_back({ Keywords::Items::Resources::Bar::gold_bar, target_amount, 50 });
     m_Items.push_back({ Keywords::Items::Resources::Bar::steel_bar, target_amount, 50 });
     m_Items.push_back({ Keywords::Items::Resources::Bar::iron_bar, target_amount, 50 });
-    m_Items.push_back({ Keywords::Items::Resources::Bar::copper_bar, target_amount, 50 });
+    m_Items.push_back({ Keywords::Items::Resources::Bar::copper_bar, target_amount /*8*/, 50 });
 
     m_Workshop_Coord = { Keywords::MapLayers::overworld, 1, 5 };
 }
