@@ -265,8 +265,11 @@ void Character::Update(float elapsed_time)
                                                   .quantity = std::min(
                                                       l_Order.item_order.quantity,
                                                       InventoryManager::singleton.Get_Bank_Item_Count(l_Order.item_order.code.c_str())) };
-                        m_Remaining_Timeout   = Client::singleton.mt_Character_Withdraw_Item(m_Character_Name, order, m_Character_Cache);
-                        InventoryManager::singleton.OnBankWithdrawItem(order.code.c_str(), order.quantity);
+                        if (order.quantity > 0)
+                        {
+                            m_Remaining_Timeout = Client::singleton.mt_Character_Withdraw_Item(m_Character_Name, order, m_Character_Cache);
+                            InventoryManager::singleton.OnBankWithdrawItem(order.code.c_str(), order.quantity);
+                        }
                     }
                     break;
                 case CharacterOrderType::DepositGold:
