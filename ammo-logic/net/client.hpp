@@ -25,6 +25,7 @@ public:
     void Get_Bank_Detail(nlohmann::json& detail);
     void Get_NPC_Items(std::vector<nlohmann::json>& items);
     void Get_Account_Achievements(std::vector<nlohmann::json>& achievements);
+    void Get_Pending_Items(std::vector<std::string>& pending_items);
 
     MapCoord mt_Get_Map_With_Content_Code(const char* content_code);
 
@@ -48,6 +49,7 @@ public:
     int mt_Character_Withdraw_Gold(const char* character_name, int gold_amount, nlohmann::json& character_cache);
     int mt_Character_Buy_Item(const char* character_name, const ItemOrder& buy, nlohmann::json& character_cache);
     int mt_Character_Buy_Bank_Expansion(const char* character_name, nlohmann::json& character_cache);
+    int mt_Character_Claim_Pending_Item(const char* character_name, const char* item, nlohmann::json& character_cache);
 
     void mt_Get_Character_Cache(const char* character_name, nlohmann::json& character_cache);
 

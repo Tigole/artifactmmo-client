@@ -18,6 +18,7 @@
 #include "systems/gather_system.hpp"
 #include "systems/inventory_management_system.hpp"
 #include "systems/level_system.hpp"
+#include "systems/pending_items_system.hpp"
 #include "systems/task_system.hpp"
 
 LogicApplication LogicApplication::singleton;
@@ -49,6 +50,7 @@ void LogicApplication::Run(int argc, char** argv)
     {
         static constexpr int idx = 0;
         l_Pipeline[idx].Set_Character("Niva", "men1");
+        l_Pipeline[idx].Add_System(&PendingItemsSystem::singleton);
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
         l_Pipeline[idx].Add_System(&ToolCraftSystem::singleton);
         l_Pipeline[idx].Add_System(&WeaponCraftSystem::singleton);

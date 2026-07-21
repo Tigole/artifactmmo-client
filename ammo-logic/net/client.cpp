@@ -171,6 +171,22 @@ void Client::Get_Account_Achievements(std::vector<nlohmann::json>& achievements)
     Get_All_Data(path.c_str(), achievements);
 }
 
+void Client::Get_Pending_Items(std::vector<std::string>& pending_items)
+{
+    std::vector<nlohmann::json> tmp;
+    Get_All_Data("/my/pending_items", tmp);
+
+    pending_items.clear();
+
+    for (auto& pi: tmp)
+    {
+        for (auto i: pi["items"])
+        {
+            pending_items.push_back(i["code"].get<std::string>());
+        }
+    }
+}
+
 MapCoord Client::mt_Get_Map_With_Content_Code(const char* content_code)
 {
     auto json = mt_Get_JSON("/maps", {
@@ -434,6 +450,14 @@ int Client::mt_Character_Buy_Bank_Expansion(const char* character_name, nlohmann
 
     character_cache = body["data"]["character"];
 
+    return body["data"]["cooldown"]["remaining_seconds"].get<int>();
+}
+
+int Client::mt_Character_Claim_Pending_Item(const char* character_name, const char* item, nlohmann::json& character_cache)
+{
+    const std::string path = fmt::format("/my/{}/action/claim_item/{}", character_name, item);
+    nlohmann::json body    = mt_Post(path.c_str());
+    character_cache        = body["data"]["character"];
     return body["data"]["cooldown"]["remaining_seconds"].get<int>();
 }
 

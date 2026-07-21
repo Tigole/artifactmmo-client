@@ -157,6 +157,11 @@ void Character::Make_Clear_Inventory(const System* sys, const char* keep)
     m_Orders.push_back(CharacterOrder::CreateClearInventory(sys, keep == nullptr ? "" : keep));
 }
 
+void Character::Add_Claim_Pending_Item(const System* sys, const char* item)
+{
+    m_Orders.push_back(CharacterOrder::CreateClaimPendingItem(sys, item));
+}
+
 void Character::Update(float elapsed_time)
 {
     m_Remaining_Timeout -= elapsed_time;
@@ -317,6 +322,10 @@ void Character::Update(float elapsed_time)
                             }
                         }
                     }
+                    break;
+                case CharacterOrderType::ClaimPendingItem:
+                    m_Remaining_Timeout =
+                        Client::singleton.mt_Character_Claim_Pending_Item(m_Character_Name, l_Order.slot.c_str(), m_Character_Cache);
                     break;
                 default: break;
                 }

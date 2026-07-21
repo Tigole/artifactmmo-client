@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "net/client.hpp"
+#include "systems/pending_items_system.hpp"
 
 AchivementManager AchivementManager::singleton;
 
@@ -19,6 +20,7 @@ bool AchivementManager::Is_Completed(const char* achivement_name) const
 
 void AchivementManager::Update_Cache(void)
 {
+    bool countChanged = false;
     std::vector<nlohmann::json> achivements;
 
     Client::singleton.Get_Account_Achievements(achivements);
@@ -31,6 +33,12 @@ void AchivementManager::Update_Cache(void)
         {
             m_Achived.push_back(achivements[ii]["code"]);
             printf("completed: '%s'\n", achivements[ii]["code"].get<std::string>().c_str());
+            countChanged = true;
         }
+    }
+
+    if (countChanged == true)
+    {
+        PendingItemsSystem::singleton.OnAchievementChanged();
     }
 }
