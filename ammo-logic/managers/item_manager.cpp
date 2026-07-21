@@ -48,7 +48,10 @@ void ItemManager::Initialize_Recipes()
         m_Levels[i.first] = i.second["level"];
         for (const auto& condition: i.second["conditions"])
         {
-            printf("%s\n", condition.dump().c_str());
+            if (false)
+            {
+                printf("%s\n", condition.dump().c_str());
+            }
             m_Required_Levels[i.first] = condition["value"].get<int>();
         }
     }
