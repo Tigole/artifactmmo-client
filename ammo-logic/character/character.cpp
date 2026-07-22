@@ -295,6 +295,7 @@ void Character::Update(float elapsed_time)
                     break;
                 case CharacterOrderType::BuyBankExpansion:
                     m_Remaining_Timeout = Client::singleton.mt_Character_Buy_Bank_Expansion(m_Character_Name, m_Character_Cache);
+                    InventoryManager::singleton.OnBankBuyExpansion();
                     break;
                 case CharacterOrderType::ClearInventory:
                     {

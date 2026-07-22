@@ -40,6 +40,7 @@ public:
     void OnBankWithdrawItem(const char* item_code, int item_quantity);
     void OnBankDepositGold(int gold_amount);
     void OnBankWithdrawGold(int gold_amount);
+    void OnBankBuyExpansion(void);
 
 private:
     MapCoord m_Bank_Coord_1 = { Keywords::MapLayers::overworld, 4, 1 };

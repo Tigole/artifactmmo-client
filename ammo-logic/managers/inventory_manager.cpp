@@ -120,6 +120,11 @@ void InventoryManager::OnBankWithdrawGold(int gold_amount)
     Update_Cache();
 }
 
+void InventoryManager::OnBankBuyExpansion(void)
+{
+    Update_Cache();
+}
+
 void InventoryManager::Update_Cache(void)
 {
     m_Cache_Counter--;
