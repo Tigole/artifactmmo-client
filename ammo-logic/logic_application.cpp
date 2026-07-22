@@ -183,6 +183,7 @@ void LogicApplication::Run(int argc, char** argv)
         l_Pipeline[idx].Add_System(&TaskSystemItem::singleton);
         {
             {
+                l_Pipeline[idx].Add_System(&AlchemyCraftingSystem::singleton);
                 l_Pipeline[idx].Add_System(&MiningCraftingSystem::singleton);
                 l_Pipeline[idx].Add_System(&JewerlyCraftSystem::singleton);
                 l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
