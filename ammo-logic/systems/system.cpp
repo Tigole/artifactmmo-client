@@ -179,7 +179,7 @@ bool System::Make_Unequip_Fight(Character& character) const
         std::string item = character.Get_Equiped_Item(item_slot);
         if (item.size() > 0)
         {
-            if (character.Get_Life_Current() < ItemManager::singleton.Get_Armor_Hp(item.c_str()))
+            if (character.Get_Life_Current() <= ItemManager::singleton.Get_Armor_Hp(item.c_str()))
             {
                 character.Add_Rest(this);
             }
