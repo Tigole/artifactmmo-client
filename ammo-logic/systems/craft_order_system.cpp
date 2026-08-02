@@ -160,7 +160,7 @@ MiningCraftingSystem::MiningCraftingSystem() : CraftOrderSystem("MiningCraftingS
     m_Items.push_back({ Keywords::Items::Resources::PreciousStone::topaz, infinite_amount, 50 });
     m_Items.push_back({ Keywords::Items::Resources::PreciousStone::ruby, infinite_amount, 50 });
 
-    constexpr const int target_amount = 10;
+    constexpr const int target_amount = 12;
 
     m_Items.push_back({ Keywords::Items::Resources::Bar::adamantite_bar, target_amount, 50 });
     m_Items.push_back({ Keywords::Items::Resources::Bar::mithril_bar, target_amount, 50 });
