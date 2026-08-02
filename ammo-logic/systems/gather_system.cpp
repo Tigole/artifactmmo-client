@@ -163,6 +163,7 @@ MobGatherSystem::MobGatherSystem() : System("MobGatherSystem")
     m_Resources.push_back({ Keywords::Items::Resources::Mob::green_slimeball, item_amount });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::yellow_slimeball, item_amount });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_chicken, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::feather, item_amount });
 }
 
 #include "fight_system.hpp"
