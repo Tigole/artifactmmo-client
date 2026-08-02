@@ -154,7 +154,7 @@ WoodcuttingLevelSystem::WoodcuttingLevelSystem() : LevelGatherSystem("Woodcuttin
     m_Default_Spot_Coord = { Keywords::MapLayers::overworld, 6, 1 };
     m_GT_10_Spot_Coord   = { Keywords::MapLayers::overworld, 2, 6 };
     m_GT_20_Spot_Coord   = { Keywords::MapLayers::overworld, 3, 5 };
-    m_GT_30_Spot_Coord   = { Keywords::MapLayers::overworld, 9, 6 };
+    m_GT_30_Spot_Coord   = { Keywords::MapLayers::overworld, 9, 8 };
     m_GT_40_Spot_Coord   = { Keywords::MapLayers::overworld, 4, 14 };
 }
 
