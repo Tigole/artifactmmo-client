@@ -179,13 +179,25 @@ void Character::Update(float elapsed_time)
                     {
                         if (l_Order.coord.layer != m_Position.layer)
                         {
+                            int x, y;
                             printf("'%s' has to transition from '%s' to '%s'\n", m_Character_Name, m_Position.layer.c_str(),
                                    l_Order.coord.layer.c_str());
-                            if (m_Position.x != 5 || m_Position.y != -3)
+                            if (l_Order.coord.y < -1)
                             {
-                                printf("'%s' move to [5 -3]\n", m_Character_Name);
+                                x = 5;
+                                y = -3;
+                            }
+                            else
+                            {
+                                x = -2;
+                                y = 6;
+                            }
+
+                            if (m_Position.x != x || m_Position.y != y)
+                            {
+                                printf("'%s' move to [%d %d]\n", m_Character_Name, x);
                                 m_Remaining_Timeout =
-                                    Client::singleton.mt_Character_Move(m_Character_Name, { m_Position.layer, 5, -3 }, m_Character_Cache);
+                                    Client::singleton.mt_Character_Move(m_Character_Name, { m_Position.layer, x, y }, m_Character_Cache);
                             }
                             else
                             {
