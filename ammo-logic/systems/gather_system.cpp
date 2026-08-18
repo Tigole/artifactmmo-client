@@ -146,8 +146,11 @@ FishingGatherSystem::FishingGatherSystem() : GatherSystem("FishingGatherSystem")
 MobGatherSystem::MobGatherSystem() : System("MobGatherSystem")
 {
     static constexpr const int item_amount = 20;
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::ogre_eye, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::ogre_skin, item_amount });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::spider_leg, item_amount });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::pig_skin, item_amount });
+    m_Resources.push_back({ Keywords::Items::Resources::Mob::cowhide, item_amount });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::skeleton_skull, item_amount });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::skeleton_bone, item_amount });
     m_Resources.push_back({ Keywords::Items::Resources::Mob::raw_wolf_meat, item_amount });
