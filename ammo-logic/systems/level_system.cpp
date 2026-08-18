@@ -219,3 +219,45 @@ MiningLevelSystem MiningLevelSystem::singleton;
 WoodcuttingLevelSystem WoodcuttingLevelSystem::singleton;
 FishingLevelSystem FishingLevelSystem::singleton;
 AlchemyLevelSystem AlchemyLevelSystem::singleton;
+
+#include "fight_system.hpp"
+#include "managers/monster_manager.hpp"
+
+struct Context
+{
+    std::string monster;
+    FightContext context;
+};
+
+CombatLevelSystem::CombatLevelSystem(int target_level) : System("CombatLevelSystem"), m_Target_Level(target_level) {}
+
+void CombatLevelSystem::Fill_Pipeline(Character& character)
+{
+    if (monsters.empty())
+    {
+        MonsterManager::singleton.Get_Monster_List(monsters);
+    }
+
+    if (character.Get_Skill_Level(Keywords::Skills::combat) < m_Target_Level)
+    {
+        FightContext context;
+        FightConfig config = FightConfig::DefaultConfig();  // Training();
+
+        for (std::string m: monsters)
+        {
+            if (FightSystem::singleton.MayWin(character, m.c_str(), config, context))
+            {
+                SYSTEM_PRINT("will fight against '%s'", m.c_str());
+                FightSystem::singleton.Fight_Against(this, character, m.c_str(), context);
+                return;
+            }
+        }
+    }
+}
+
+CombatLevelSystem CombatLevelSystem::singleton_10(10);
+CombatLevelSystem CombatLevelSystem::singleton_20(20);
+CombatLevelSystem CombatLevelSystem::singleton_30(30);
+CombatLevelSystem CombatLevelSystem::singleton_40(40);
+CombatLevelSystem CombatLevelSystem::singleton_50(50);
+std::vector<std::string> CombatLevelSystem::monsters;

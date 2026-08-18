@@ -47,6 +47,7 @@ public:
     static FightConfig DefaultConfig(void);
     static FightConfig MonsterTaskConfig(int kill_count);
     static FightConfig GatherResourcesConfig(void);
+    static FightConfig Training(void);
 };
 
 class FightSystem: public System

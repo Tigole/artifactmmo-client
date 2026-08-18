@@ -28,6 +28,11 @@ FightConfig FightConfig::GatherResourcesConfig(void)
     return { false, false, 0 };
 }
 
+FightConfig FightConfig::Training(void)
+{
+    return { false, true, 0 };
+}
+
 FightSystem FightSystem::singleton;
 
 FightSystem::FightSystem() : System("FightSystem")
@@ -307,8 +312,8 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
                     Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, armors[ii].resistances, l_Monster_Critical_Strike);
                 if (l_Damages < l_Monster_Dmg)
                 {
-                    /*SYSTEM_PRINT("will try using armor '%s' l_Monster_Dmg: %d l_Damages: %d", armors[ii].code.c_str(), l_Monster_Dmg,
-                                 l_Damages);*/
+                    SYSTEM_PRINT("will try using armor '%s' l_Monster_Dmg: %d l_Damages: %d", armors[ii].code.c_str(), l_Monster_Dmg,
+                                 l_Damages);
                     l_Monster_Dmg          = l_Damages;
                     l_Character_Resistance = armors[ii].resistances;
                     context_armor          = armors[ii].code;
@@ -325,7 +330,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
                 l_Character_Resistance = armors[ii].resistances;
                 context_armor          = armors[ii].code;
                 l_Monster_Dmg          = Calculate_Effective_Damages(l_Monster_Attack, l_Monster_Damages, armors[ii].resistances, 0);
-                // SYSTEM_PRINT("will try using armor '%s'", armors[ii].code.c_str());
+                SYSTEM_PRINT("will try using armor '%s'", armors[ii].code.c_str());
             }
         }
     };
@@ -458,6 +463,8 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
             SYSTEM_PRINT("will equip '%s' x%d", item_code, context.utility2_quantity);
         }
     }
+
+    SYSTEM_PRINT("max hp: %d", l_Character_Max_Life);
 
     context.turn_count = 0;
     bool l_Player_Turn = character.Get_Initiative() > MonsterManager::singleton.Get_Monster_Initiative(monster);

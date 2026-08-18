@@ -77,6 +77,9 @@ void LogicApplication::Run(int argc, char** argv)
         }
         {
             l_Pipeline[idx].Add_System(&WeaponcraftingLevelSystem::singleton);
+            l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_10);
+            l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_20);
+            l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_30);
             l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
@@ -190,7 +193,7 @@ void LogicApplication::Run(int argc, char** argv)
             }
             {
                 l_Pipeline[idx].Add_System(&AlchemyGatheringSystem::singleton);
-                l_Pipeline[idx].Add_System(&MobGatherSystem::singleton);
+                // l_Pipeline[idx].Add_System(&MobGatherSystem::singleton);
                 l_Pipeline[idx].Add_System(&MiningGatheringSystem::singleton);
                 l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
                 l_Pipeline[idx].Add_System(&FishingGatherSystem::singleton);

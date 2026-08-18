@@ -118,4 +118,22 @@ private:
     const std::vector<const char*>* m_Equipements;
 };
 
+class CombatLevelSystem: public System
+{
+    CombatLevelSystem(int target_level);
+
+public:
+    static CombatLevelSystem singleton_10;
+    static CombatLevelSystem singleton_20;
+    static CombatLevelSystem singleton_30;
+    static CombatLevelSystem singleton_40;
+    static CombatLevelSystem singleton_50;
+
+    void Fill_Pipeline(Character& character) override;
+
+private:
+    static std::vector<std::string> monsters;
+    int m_Target_Level;
+};
+
 #endif  // _LEVEL_SYSTEM_HPP
