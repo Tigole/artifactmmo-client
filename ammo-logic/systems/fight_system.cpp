@@ -388,6 +388,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     }
     armor_handler(l_Rings, context.ring2);
     armor_handler(l_Amulets, context.amulet);
+    SYSTEM_PRINT("config.may_use_potion: %d", config.may_use_potion);
     {
         if (context.utility1.size())
         {
@@ -533,7 +534,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
             const int bank_item_count      = InventoryManager::singleton.Get_Bank_Item_Count(hi.code);
             const int inventory_item_count = character.Get_Item_Count(hi.code);
 
-            if (bank_item_count <= 0 || inventory_item_count <= 0)
+            if (bank_item_count <= 0 && inventory_item_count <= 0)
             {
                 SYSTEM_PRINT("no '%s' in bank nor in inventory", hi.code);
                 continue;
