@@ -509,7 +509,8 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
         }
         context.turn_count++;
 #ifdef FIGHT_SYSTEM_DEBUG
-        if (strcmp(character.Get_Character(), "Niva") == 0 && strcmp(monster, "spider") == 0)
+        if ((strcmp(character.Get_Character(), "Niva") == 0 || strcmp(character.Get_Character(), "Randy") == 0) &&
+            strcmp(monster, "mushmush") == 0)
         {
             SYSTEM_PRINT("turn %d '%s' %d/%d (monster dmg %d) vs '%s' %d/%d (character dmg %d)", context.turn_count,
                          character.Get_Character(), l_Character_Max_Life, character.Get_Life_Max(), l_Monster_Dmg, monster, l_Monster_Life,
@@ -572,14 +573,15 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     context.may_use_consumables = config.may_use_consumables;
 
     SYSTEM_PRINT(
-        "vs '%s': %s (hp diff: %d - turn count: %d - heal: %d - weapon: '%s' - helmet: '%s' body_armor: '%s' leg_armor: '%s' boots: "
+        "vs '%s': %s (hp '%s': %d '%s': %d diff: %d - turn count: %d - heal: %d - weapon: '%s' - helmet: '%s' body_armor: '%s' leg_armor: "
+        "'%s' boots: "
         "'%s' shield: '%s' ring1: '%s' ring2: '%s' amulet: '%s' utility1: '%s' x%d utility2: '%s' x%d artifact1: '%s' artifact2: '%s' "
         "artifact3: '%s')",
-        monster, (l_Character_Max_Life > 0) ? "win" : "loose", l_Character_Max_Life - l_Monster_Life, context.turn_count,
-        context.should_heal, context.weapon.c_str(), context.helmet.c_str(), context.body_armor.c_str(), context.leg_armor.c_str(),
-        context.boots.c_str(), context.shield.c_str(), context.ring1.c_str(), context.ring2.c_str(), context.amulet.c_str(),
-        context.utility1.c_str(), context.utility1_quantity, context.utility2.c_str(), context.utility2_quantity, context.artifact1.c_str(),
-        context.artifact2.c_str(), context.artifact3.c_str());
+        monster, (l_Character_Max_Life > 0) ? "win" : "loose", character.Get_Character(), l_Character_Max_Life, monster, l_Monster_Life,
+        l_Character_Max_Life - l_Monster_Life, context.turn_count, context.should_heal, context.weapon.c_str(), context.helmet.c_str(),
+        context.body_armor.c_str(), context.leg_armor.c_str(), context.boots.c_str(), context.shield.c_str(), context.ring1.c_str(),
+        context.ring2.c_str(), context.amulet.c_str(), context.utility1.c_str(), context.utility1_quantity, context.utility2.c_str(),
+        context.utility2_quantity, context.artifact1.c_str(), context.artifact2.c_str(), context.artifact3.c_str());
 
     return l_Character_Max_Life > 0;
 }
