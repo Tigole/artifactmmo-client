@@ -195,7 +195,7 @@ void Character::Update(float elapsed_time)
 
                             if (m_Position.x != x || m_Position.y != y)
                             {
-                                printf("'%s' move to [%d %d]\n", m_Character_Name, x);
+                                printf("'%s' move to [%d %d]\n", m_Character_Name, x, y);
                                 m_Remaining_Timeout =
                                     Client::singleton.mt_Character_Move(m_Character_Name, { m_Position.layer, x, y }, m_Character_Cache);
                             }
