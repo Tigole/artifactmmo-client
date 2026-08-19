@@ -335,17 +335,17 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
         }
     };
 
-    context.weapon     = character.Get_Equiped_Weapon();
-    context.helmet     = character.Get_Equiped_Helmet();
-    context.body_armor = character.Get_Equiped_Body_Armor();
-    context.leg_armor  = character.Get_Equiped_Leg_Armor();
-    context.boots      = character.Get_Equiped_Boots();
-    context.ring1      = character.Get_Equiped_Ring1();
-    context.ring2      = character.Get_Equiped_Ring2();
-    context.shield     = character.Get_Equiped_Shield();
-    context.amulet     = character.Get_Equiped_Amulet();
-    // context.utility1          = character.Get_Equiped_Utility1();
-    // context.utility1_quantity = character.Get_Equiped_Utility1_Quantity();
+    context.weapon            = character.Get_Equiped_Weapon();
+    context.helmet            = character.Get_Equiped_Helmet();
+    context.body_armor        = character.Get_Equiped_Body_Armor();
+    context.leg_armor         = character.Get_Equiped_Leg_Armor();
+    context.boots             = character.Get_Equiped_Boots();
+    context.ring1             = character.Get_Equiped_Ring1();
+    context.ring2             = character.Get_Equiped_Ring2();
+    context.shield            = character.Get_Equiped_Shield();
+    context.amulet            = character.Get_Equiped_Amulet();
+    context.utility1          = character.Get_Equiped_Utility1();
+    context.utility1_quantity = character.Get_Equiped_Utility1_Quantity();
     if (l_Character_Combat_Level > 9)
     {
         context.artifact1 = "novice_guide";
@@ -485,7 +485,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
 
 // #error "Handle properly healing during fight ?"
 // #error "Make multiple time the same fight but with potions ?"
-#if 0
+#if 1
         if (l_Character_Max_Life < character.Get_Life_Max() / 2)
         {
             if (l_Equiped_Healing_Potion.inventory_target_count > 0)
