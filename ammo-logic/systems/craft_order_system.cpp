@@ -100,6 +100,7 @@ WeaponCraftSystem::WeaponCraftSystem() : CraftOrderSystem("WeaponCraftSystem")
     m_Items.push_back({ Keywords::Items::Weapons::battlestaff, 1, 50 });
     m_Items.push_back({ Keywords::Items::Weapons::mushmush_bow, 1, 50 });
     m_Items.push_back({ Keywords::Items::Weapons::mushstaff, 1, 50 });
+    m_Items.push_back({ Keywords::Items::Weapons::greater_wooden_staff, 1, 50 });
     m_Items.push_back({ Keywords::Items::Weapons::iron_sword, 1, 50 });
     m_Items.push_back({ Keywords::Items::Weapons::fire_staff, 1, 50 });
     m_Items.push_back({ Keywords::Items::Weapons::water_bow, 1, 50 });

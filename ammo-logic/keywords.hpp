@@ -32,6 +32,7 @@ struct Keywords
 
             KEYWORD(iron_dagger);
             KEYWORD(fire_bow);
+            KEYWORD(greater_wooden_staff);
             KEYWORD(king_slime_sword);
             KEYWORD(mushstaff);
             KEYWORD(mushmush_bow);
