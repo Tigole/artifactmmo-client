@@ -86,4 +86,11 @@ struct Loot
     NLOHMANN_DEFINE_TYPE_INTRUSIVE(Loot, code, rate, min_quantity, max_quantity);
 };
 
+struct AchievementProgress
+{
+    int progress;
+    int total;
+    std::string target;
+};
+
 #endif  // _TYPES_HPP

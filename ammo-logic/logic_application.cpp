@@ -43,6 +43,8 @@ void LogicApplication::Run(int argc, char** argv)
         NPCManager::singleton.Initialize();
         AchivementManager::singleton.Initialize();
 
+        AchievementFightSystem::singleton.Initialize();
+
         FightSystem::singleton.Initialize();
         // CraftSystem::sin l_Craft_System.Initialize();
     }
@@ -55,65 +57,66 @@ void LogicApplication::Run(int argc, char** argv)
         l_Pipeline[idx].Add_System(&ToolCraftSystem::singleton);
         l_Pipeline[idx].Add_System(&WeaponCraftSystem::singleton);
         l_Pipeline[idx].Add_System(&TaskSystemMonster::singleton);
+        l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
         {
             {
-                l_Pipeline[idx].Add_System(&WeaponCraftSystem::singleton);
-                l_Pipeline[idx].Add_System(&GearcraftingSystem::singleton);
-                l_Pipeline[idx].Add_System(&JewerlyCraftSystem::singleton);
+                // l_Pipeline[idx].Add_System(&WeaponCraftSystem::singleton);
+                //  l_Pipeline[idx].Add_System(&GearcraftingSystem::singleton);
+                //  l_Pipeline[idx].Add_System(&JewerlyCraftSystem::singleton);
             }
             {
-                l_Pipeline[idx].Add_System(&MiningCraftingSystem ::singleton);
-                l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
-                l_Pipeline[idx].Add_System(&CookingSystem::singleton);
-                l_Pipeline[idx].Add_System(&AlchemyCraftingSystem::singleton);
+                // l_Pipeline[idx].Add_System(&MiningCraftingSystem ::singleton);
+                // l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
+                // l_Pipeline[idx].Add_System(&CookingSystem::singleton);
+                // l_Pipeline[idx].Add_System(&AlchemyCraftingSystem::singleton);
             }
             {
-                l_Pipeline[idx].Add_System(&MobGatherSystem::singleton);
-                l_Pipeline[idx].Add_System(&MiningGatheringSystem::singleton);
-                l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
-                l_Pipeline[idx].Add_System(&FishingGatherSystem::singleton);
-                l_Pipeline[idx].Add_System(&AlchemyGatheringSystem::singleton);
+                // l_Pipeline[idx].Add_System(&MobGatherSystem::singleton);
+                // l_Pipeline[idx].Add_System(&MiningGatheringSystem::singleton);
+                // l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
+                // l_Pipeline[idx].Add_System(&FishingGatherSystem::singleton);
+                // l_Pipeline[idx].Add_System(&AlchemyGatheringSystem::singleton);
             }
         }
         {
             l_Pipeline[idx].Add_System(&WeaponcraftingLevelSystem::singleton);
+            l_Pipeline[idx].Add_System(&MobGatherSystem::singleton);
             l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_10);
             l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_20);
             l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_30);
-            l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&AlchemyLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&AlchemyLevelSystem::singleton);
         }
-        l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
     }
 
     {
         static constexpr int idx = 1;
         l_Pipeline[idx].Set_Character("Jackie", "women1");
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
-        l_Pipeline[idx].Add_System(&CookingSystem::singleton);
+        // l_Pipeline[idx].Add_System(&CookingSystem::singleton);
         l_Pipeline[idx].Add_System(&TaskSystemItem::singleton);
         {
             {
-                l_Pipeline[idx].Add_System(&AlchemyCraftingSystem::singleton);
+                // l_Pipeline[idx].Add_System(&AlchemyCraftingSystem::singleton);
                 l_Pipeline[idx].Add_System(&MiningCraftingSystem::singleton);
-                l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
+                // l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
             }
             {
                 l_Pipeline[idx].Add_System(&MiningGatheringSystem::singleton);
-                l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
-                l_Pipeline[idx].Add_System(&FishingGatherSystem::singleton);
-                l_Pipeline[idx].Add_System(&AlchemyGatheringSystem::singleton);
-                l_Pipeline[idx].Add_System(&MobGatherSystem::singleton);
+                // l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
+                // l_Pipeline[idx].Add_System(&FishingGatherSystem::singleton);
+                // l_Pipeline[idx].Add_System(&AlchemyGatheringSystem::singleton);
+                // l_Pipeline[idx].Add_System(&MobGatherSystem::singleton);
             }
         }
         {
-            l_Pipeline[idx].Add_System(&AlchemyCraftLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&AlchemyCraftLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&AlchemyLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&AlchemyLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
         }
         l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
     }
@@ -126,24 +129,25 @@ void LogicApplication::Run(int argc, char** argv)
         l_Pipeline[idx].Add_System(&TaskSystemItem::singleton);
         {
             {
-                l_Pipeline[idx].Add_System(&GearcraftingSystem::singleton);
-                l_Pipeline[idx].Add_System(&MiningCraftingSystem::singleton);
-                l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
+                // l_Pipeline[idx].Add_System(&GearcraftingSystem::singleton);
+                // l_Pipeline[idx].Add_System(&MiningCraftingSystem::singleton);
+                // l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
+                l_Pipeline[idx].Add_System(&CookingSystem ::singleton);
             }
             {
-                l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
+                // l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
                 l_Pipeline[idx].Add_System(&FishingGatherSystem::singleton);
-                l_Pipeline[idx].Add_System(&AlchemyGatheringSystem::singleton);
+                // l_Pipeline[idx].Add_System(&AlchemyGatheringSystem::singleton);
                 l_Pipeline[idx].Add_System(&MobGatherSystem::singleton);
-                l_Pipeline[idx].Add_System(&MiningGatheringSystem::singleton);
+                // l_Pipeline[idx].Add_System(&MiningGatheringSystem::singleton);
             }
         }
         {
-            l_Pipeline[idx].Add_System(&GearcraftingLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&GearcraftingLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&AlchemyLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&AlchemyLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
         }
         l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
     }
@@ -152,29 +156,29 @@ void LogicApplication::Run(int argc, char** argv)
         static constexpr int idx = 3;
         l_Pipeline[idx].Set_Character("Randy", "men2");
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
-        l_Pipeline[idx].Add_System(&CookingSystem::singleton);
-        l_Pipeline[idx].Add_System(&WeaponCraftSystem::singleton);
+        // l_Pipeline[idx].Add_System(&CookingSystem::singleton);
+        // l_Pipeline[idx].Add_System(&WeaponCraftSystem::singleton);
         l_Pipeline[idx].Add_System(&TaskSystemMonster::singleton);
         {
             {
-                l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
-                l_Pipeline[idx].Add_System(&MiningCraftingSystem::singleton);
+                // l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
+                // l_Pipeline[idx].Add_System(&MiningCraftingSystem::singleton);
             }
             {
-                l_Pipeline[idx].Add_System(&FishingGatherSystem::singleton);
+                // l_Pipeline[idx].Add_System(&FishingGatherSystem::singleton);
                 l_Pipeline[idx].Add_System(&AlchemyGatheringSystem::singleton);
                 l_Pipeline[idx].Add_System(&MobGatherSystem::singleton);
-                l_Pipeline[idx].Add_System(&MiningGatheringSystem::singleton);
-                l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
+                // l_Pipeline[idx].Add_System(&MiningGatheringSystem::singleton);
+                // l_Pipeline[idx].Add_System(&WoodcuttingGatheringSystem::singleton);
             }
         }
         {
-            l_Pipeline[idx].Add_System(&CookingLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&CookingLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&AlchemyCraftLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&AlchemyLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
+            // l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
         }
         l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
     }

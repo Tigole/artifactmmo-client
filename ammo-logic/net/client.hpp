@@ -25,6 +25,7 @@ public:
     void Get_Bank_Detail(nlohmann::json& detail);
     void Get_NPC_Items(std::vector<nlohmann::json>& items);
     void Get_Account_Achievements(std::vector<nlohmann::json>& achievements);
+    void Get_Achievement_Kill(std::vector<AchievementProgress>& achievements);
     void Get_Pending_Items(std::vector<std::string>& pending_items);
 
     MapCoord mt_Get_Map_With_Content_Code(const char* content_code);

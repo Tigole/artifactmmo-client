@@ -133,18 +133,6 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             character.Add_Unequip_Item(sys, Keywords::ItemSlot::utility1, character.Get_Equiped_Utility1_Quantity());
             return;
         }
-        if (context.utility1.size() > 0 &&
-            (character.Get_Equiped_Utility1() != context.utility1 || character.Get_Equiped_Utility1_Quantity() < context.utility1_quantity))
-        {
-            Handle_Equipment(sys, character, bank_pos, context.utility1.c_str(), context.utility1_quantity, Keywords::ItemSlot::utility1);
-            printf(
-                "context.utility1: '%s' character.Get_Equiped_Utility1(): '%s' context.utility1_quantity: %d "
-                "character.Get_Equiped_Utility1_Quantity(): %d\n",
-                context.utility1.c_str(), character.Get_Equiped_Utility1().c_str(), context.utility1_quantity,
-                character.Get_Equiped_Utility1_Quantity());
-            // exit(0);
-            return;
-        }
         if (character.Get_Item_Count(context.utility1.c_str()) == 0 && context.utility1_inventory != 0)
         {
             if (character.Should_Move(bank_pos) == true)
@@ -157,15 +145,20 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             }
             return;
         }
+        if (context.utility1.size() > 0 &&
+            (character.Get_Equiped_Utility1() != context.utility1 || character.Get_Equiped_Utility1_Quantity() < context.utility1_quantity))
+        {
+            Handle_Equipment(sys, character, bank_pos, context.utility1.c_str(), context.utility1_quantity, Keywords::ItemSlot::utility1);
+            SYSTEM_PRINT(
+                "context.utility1: '%s' character.Get_Equiped_Utility1(): '%s' context.utility1_quantity: %d "
+                "character.Get_Equiped_Utility1_Quantity(): %d\n",
+                context.utility1.c_str(), character.Get_Equiped_Utility1().c_str(), context.utility1_quantity,
+                character.Get_Equiped_Utility1_Quantity());
+            return;
+        }
         if (context.utility2.empty() && character.Get_Equiped_Utility2().size() > 0)
         {
             character.Add_Unequip_Item(sys, Keywords::ItemSlot::utility2, character.Get_Equiped_Utility2_Quantity());
-            return;
-        }
-        if (context.utility2.size() > 0 &&
-            (character.Get_Equiped_Utility2() != context.utility2 || character.Get_Equiped_Utility2_Quantity() < context.utility2_quantity))
-        {
-            Handle_Equipment(sys, character, bank_pos, context.utility2.c_str(), context.utility2_quantity, Keywords::ItemSlot::utility2);
             return;
         }
         if (character.Get_Item_Count(context.utility2.c_str()) == 0 && context.utility2_inventory != 0)
@@ -178,6 +171,12 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             {
                 character.Add_Withdraw_Item(sys, { context.utility2, context.utility2_inventory });
             }
+            return;
+        }
+        if (context.utility2.size() > 0 &&
+            (character.Get_Equiped_Utility2() != context.utility2 || character.Get_Equiped_Utility2_Quantity() < context.utility2_quantity))
+        {
+            Handle_Equipment(sys, character, bank_pos, context.utility2.c_str(), context.utility2_quantity, Keywords::ItemSlot::utility2);
             return;
         }
         if (character.Get_Equiped_Artifact1() != context.artifact1)
@@ -411,10 +410,16 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
         const int inventory_count = character.Get_Item_Count(item_code);
         if (bank_count > 0)
         {
-            context.utility2           = item_code;
-            context.utility2_quantity  = 1;
-            context.utility2_inventory = std::min(config.kill_count - 1, bank_count);
-            l_Poison                   = 0;
+            context.utility2          = item_code;
+            context.utility2_quantity = 1;
+            context.utility2_inventory =
+                std::min(20, std::min(character.Get_Inventory_Remaining_Space() - 10, std::min(config.kill_count, bank_count)));
+            l_Poison = 0;
+        }
+        else
+        {
+            SYSTEM_PRINT("No antidote...");
+            return false;
         }
     }
     else if (config.may_use_potion)
@@ -457,9 +462,11 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
 
         if (item_code != nullptr && (InventoryManager::singleton.Get_Bank_Item_Count(item_code) > 0))
         {
-            context.utility2           = item_code;
-            context.utility2_quantity  = 1;
-            context.utility2_inventory = std::min(config.kill_count - 1, InventoryManager::singleton.Get_Bank_Item_Count(item_code));
+            context.utility2          = item_code;
+            context.utility2_quantity = 1;
+            context.utility2_inventory =
+                std::min(20, std::min(character.Get_Inventory_Remaining_Space() - 10,
+                                      std::min(config.kill_count, InventoryManager::singleton.Get_Bank_Item_Count(item_code))));
             l_Character_Damages[idx] += 12;
             SYSTEM_PRINT("will equip '%s' x%d", item_code, context.utility2_quantity);
         }
@@ -510,7 +517,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
         context.turn_count++;
 #ifdef FIGHT_SYSTEM_DEBUG
         if ((strcmp(character.Get_Character(), "Niva") == 0 || strcmp(character.Get_Character(), "Randy") == 0) &&
-            strcmp(monster, "mushmush") == 0)
+            strcmp(monster, "spider") == 0)
         {
             SYSTEM_PRINT("turn %d '%s' %d/%d (monster dmg %d) vs '%s' %d/%d (character dmg %d)", context.turn_count,
                          character.Get_Character(), l_Character_Max_Life, character.Get_Life_Max(), l_Monster_Dmg, monster, l_Monster_Life,
@@ -564,6 +571,10 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
                     std::min(required_potion_count * config.kill_count, max_potion_count) - context.utility1_quantity;
                 l_Character_Max_Life += required_potion_count * hi.heal;
                 SYSTEM_PRINT("will equip with '%s' x%d (l_Character_Max_Life: %d)", hi.code, required_potion_count, l_Character_Max_Life);
+                SYSTEM_PRINT(
+                    "max_potion_count: %d required_potion_count: %d (required_potion_count * config.kill_count): %d "
+                    "context.utility1_inventory: %d",
+                    max_potion_count, required_potion_count, required_potion_count * config.kill_count, context.utility1_inventory);
                 break;
             }
         }
@@ -575,13 +586,15 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     SYSTEM_PRINT(
         "vs '%s': %s (hp '%s': %d '%s': %d diff: %d - turn count: %d - heal: %d - weapon: '%s' - helmet: '%s' body_armor: '%s' leg_armor: "
         "'%s' boots: "
-        "'%s' shield: '%s' ring1: '%s' ring2: '%s' amulet: '%s' utility1: '%s' x%d utility2: '%s' x%d artifact1: '%s' artifact2: '%s' "
+        "'%s' shield: '%s' ring1: '%s' ring2: '%s' amulet: '%s' utility1: '%s' x%d/%d utility2: '%s' x%d/%d artifact1: '%s' artifact2: "
+        "'%s' "
         "artifact3: '%s')",
         monster, (l_Character_Max_Life > 0) ? "win" : "loose", character.Get_Character(), l_Character_Max_Life, monster, l_Monster_Life,
         l_Character_Max_Life - l_Monster_Life, context.turn_count, context.should_heal, context.weapon.c_str(), context.helmet.c_str(),
         context.body_armor.c_str(), context.leg_armor.c_str(), context.boots.c_str(), context.shield.c_str(), context.ring1.c_str(),
-        context.ring2.c_str(), context.amulet.c_str(), context.utility1.c_str(), context.utility1_quantity, context.utility2.c_str(),
-        context.utility2_quantity, context.artifact1.c_str(), context.artifact2.c_str(), context.artifact3.c_str());
+        context.ring2.c_str(), context.amulet.c_str(), context.utility1.c_str(), context.utility1_quantity, context.utility1_inventory,
+        context.utility2.c_str(), context.utility2_quantity, context.utility2_inventory, context.artifact1.c_str(),
+        context.artifact2.c_str(), context.artifact3.c_str());
 
     return l_Character_Max_Life > 0;
 }

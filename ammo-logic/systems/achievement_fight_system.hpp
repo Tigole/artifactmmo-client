@@ -12,10 +12,12 @@ class AchievementFightSystem: public System
 public:
     static AchievementFightSystem singleton;
 
+    void Initialize(void);
+
     void Fill_Pipeline(Character& pipeline) override;
 
 private:
-    std::vector<std::string> m_Target_Monsters;
+    std::vector<AchievementProgress> m_Target_Monsters;
 };
 
 #endif  // _ACHIEVEMENT_FIGHT_SYSTEM_HPP

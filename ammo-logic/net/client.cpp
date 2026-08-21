@@ -171,6 +171,28 @@ void Client::Get_Account_Achievements(std::vector<nlohmann::json>& achievements)
     Get_All_Data(path.c_str(), achievements);
 }
 
+void Client::Get_Achievement_Kill(std::vector<AchievementProgress>& achievements)
+{
+    std::vector<nlohmann::json> tmp;
+    Get_All_Data(fmt::format("/accounts/{}/achievements", Token::account).c_str(), tmp);
+
+    achievements.clear();
+    for (std::size_t ii = 0; ii < tmp.size(); ii++)
+    {
+        for (auto obj: tmp[ii]["objectives"])
+        {
+            AchievementProgress ap;
+            if (obj["type"] == "combat_kill")
+            {
+                ap.progress = obj["progress"].get<int>();
+                ap.total    = obj["total"].get<int>();
+                ap.target   = obj["target"].get<std::string>();
+                achievements.push_back(ap);
+            }
+        }
+    }
+}
+
 void Client::Get_Pending_Items(std::vector<std::string>& pending_items)
 {
     std::vector<nlohmann::json> tmp;

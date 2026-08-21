@@ -4,55 +4,50 @@
 
 #include "fight_system.hpp"
 #include "managers/monster_manager.hpp"
+#include "net/client.hpp"
 
 AchievementFightSystem AchievementFightSystem::singleton;
 
 AchievementFightSystem::AchievementFightSystem() : System("AchievementFightSystem")
 {
-    m_Target_Monsters.push_back("orc");
-    // m_Target_Monsters.push_back("chicken");
-    m_Target_Monsters.push_back("bandit_lizard");
-    m_Target_Monsters.push_back("wolf");
-    m_Target_Monsters.push_back("pig");
-    m_Target_Monsters.push_back("cultist_emperor");
-    m_Target_Monsters.push_back("spider");
-    m_Target_Monsters.push_back("highwayman");
-    m_Target_Monsters.push_back("rosenblood");
-    m_Target_Monsters.push_back("demon");
-    m_Target_Monsters.push_back("lich");
-    m_Target_Monsters.push_back("goblin_wolfrider");
-    m_Target_Monsters.push_back("cultist_acolyte");
-    m_Target_Monsters.push_back("efreet_sultan");
-    m_Target_Monsters.push_back("grimlet");
+    // m_Target_Monsters.push_back({ 0, 100, "orc" });
+    // // m_Target_Monsters.push_back("chicken");
+    // m_Target_Monsters.push_back({ 0, 100, "bandit_lizard" });
+    // m_Target_Monsters.push_back({ 0, 100, "wolf" });
+    // m_Target_Monsters.push_back({ 0, 100, "pig" });
+    // m_Target_Monsters.push_back({ 0, 100, "cultist_emperor" });
+    // m_Target_Monsters.push_back({ 0, 100, "spider" });
+    // m_Target_Monsters.push_back({ 0, 100, "highwayman" });
+    // m_Target_Monsters.push_back({ 0, 100, "rosenblood" });
+    // m_Target_Monsters.push_back({ 0, 100, "demon" });
+    // m_Target_Monsters.push_back({ 0, 100, "lich" });
+    // m_Target_Monsters.push_back({ 0, 100, "goblin_wolfrider" });
+    // m_Target_Monsters.push_back({ 0, 100, "cultist_acolyte" });
+    // m_Target_Monsters.push_back({ 0, 100, "efreet_sultan" });
+    // m_Target_Monsters.push_back({ 0, 100, "grimlet" });
+}
+
+void AchievementFightSystem::Initialize(void)
+{
+    Client::singleton.Get_Achievement_Kill(m_Target_Monsters);
 }
 
 void AchievementFightSystem::Fill_Pipeline(Character& pipeline)
 {
     static auto rng    = std::default_random_engine {};
     bool l_Should_Heal = false;
-    std::vector<std::size_t> l_Indices;
 
-    l_Indices.resize(m_Target_Monsters.size());
     for (std::size_t ii = 0; ii < m_Target_Monsters.size(); ii++)
     {
-        l_Indices[ii] = ii;
-    }
-    std::shuffle(l_Indices.begin(), l_Indices.end(), rng);
-
-    for (std::size_t ii = 0; ii < l_Indices.size(); ii++)
-    {
-        const char* l_Monster   = m_Target_Monsters[l_Indices[ii]].c_str();
-        const MapCoord* l_Coord = MonsterManager::singleton.Get_Monster_Coord(l_Monster, pipeline.Get_Map_Coord());
+        const AchievementProgress ap = m_Target_Monsters[ii];
+        const char* l_Monster        = ap.target.c_str();
+        const MapCoord* l_Coord      = MonsterManager::singleton.Get_Monster_Coord(l_Monster, pipeline.Get_Map_Coord());
         FightContext fight_context;
-        if ((l_Coord != nullptr) &&
-            (FightSystem::singleton.MayWin(pipeline, l_Monster, FightConfig::MonsterTaskConfig(1), fight_context) == true))
+        if ((l_Coord != nullptr) && (ap.progress < ap.total) &&
+            (FightSystem::singleton.MayWin(pipeline, l_Monster, FightConfig::MonsterTaskConfig(ap.total - ap.progress), fight_context) ==
+             true))
         {
-            pipeline.Add_Move(this, *l_Coord);
-            if (fight_context.should_heal == true)
-            {
-                FightSystem::singleton.Add_Healing(this, pipeline);
-            }
-            pipeline.Add_Fight(this, l_Monster);
+            FightSystem::singleton.Fight_Against(this, pipeline, l_Monster, fight_context);
             return;
         }
     }
