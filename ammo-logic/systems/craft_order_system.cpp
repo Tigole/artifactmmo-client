@@ -19,6 +19,13 @@ void CraftOrderSystem::Fill_Pipeline(Character& character)
 
         if (minCombatLevel < order.min_combat_level_stop)
         {
+            const int bank_item_count = InventoryManager::singleton.Get_Bank_Item_Count(order.item_code);
+            if (bank_item_count - m_Craft_Threshold >= order.target_amount)
+            {
+                SYSTEM_PRINT("will not try to create '%s' as crafting threshold %d is not reached (bank: %d target: %d)", order.item_code,
+                             m_Craft_Threshold, bank_item_count, order.target_amount);
+                continue;
+            }
             const int amountCraft = Make_Craft(character, m_Workshop_Coord, order.item_code, order.target_amount);
 
             if (amountCraft != 0)
@@ -78,6 +85,8 @@ ToolCraftSystem::ToolCraftSystem() : CraftOrderSystem("ToolCraftSystem")
     m_Items.push_back({ Keywords::Items::Weapons::Tools::FishingRods::fishing_net, target_amount, 10 });
 
     m_Workshop_Coord = { Keywords::MapLayers::overworld, 2, 1 };
+
+    m_Craft_Threshold = 0;
 }
 
 WeaponCraftSystem WeaponCraftSystem::singleton;
@@ -110,6 +119,8 @@ WeaponCraftSystem::WeaponCraftSystem() : CraftOrderSystem("WeaponCraftSystem")
     m_Items.push_back({ Keywords::Items::Weapons::copper_dagger, 1, 50 });
 
     m_Workshop_Coord = { Keywords::MapLayers::overworld, 2, 1 };
+
+    m_Craft_Threshold = 0;
 }
 
 AlchemyCraftingSystem AlchemyCraftingSystem::singleton;
@@ -133,6 +144,8 @@ AlchemyCraftingSystem::AlchemyCraftingSystem() : CraftOrderSystem("AlchemyCrafti
     }
 
     m_Workshop_Coord = { Keywords::MapLayers::overworld, 2, 3 };
+
+    m_Craft_Threshold = 20;
 }
 
 CookingSystem CookingSystem::singleton;
@@ -148,6 +161,8 @@ CookingSystem::CookingSystem() : CraftOrderSystem("CookingSystem")
     m_Items.push_back({ Keywords::Items::Consumables::Food::mushroom_soup, 50, 50 });
 
     m_Workshop_Coord = { Keywords::MapLayers::overworld, 1, 1 };
+
+    m_Craft_Threshold = 20;
 }
 
 MiningCraftingSystem MiningCraftingSystem::singleton;
@@ -172,6 +187,8 @@ MiningCraftingSystem::MiningCraftingSystem() : CraftOrderSystem("MiningCraftingS
     m_Items.push_back({ Keywords::Items::Resources::Bar::copper_bar, target_amount /*8*/, 50 });
 
     m_Workshop_Coord = { Keywords::MapLayers::overworld, 1, 5 };
+
+    m_Craft_Threshold = 0;
 }
 
 WoodcuttingCraftingSystem WoodcuttingCraftingSystem::singleton;
@@ -189,6 +206,8 @@ WoodcuttingCraftingSystem::WoodcuttingCraftingSystem() : CraftOrderSystem("Woodc
     m_Items.push_back({ Keywords::Items::Resources::Plank::ash_plank, target_amount, 50 });
 
     m_Workshop_Coord = { Keywords::MapLayers::overworld, -2, -3 };
+
+    m_Craft_Threshold = 0;
 }
 
 GearcraftingSystem GearcraftingSystem::singleton;
@@ -247,6 +266,8 @@ GearcraftingSystem::GearcraftingSystem() : CraftOrderSystem("GearcraftingSystem"
     m_Items.push_back({ Keywords::Items::Bags::satchel, target_amount, 50 });
 
     m_Workshop_Coord = { Keywords::MapLayers::overworld, 3, 1 };
+
+    m_Craft_Threshold = 0;
 }
 
 JewerlyCraftSystem::JewerlyCraftSystem() : CraftOrderSystem("JewerlyCraftSystem")
@@ -271,6 +292,8 @@ JewerlyCraftSystem::JewerlyCraftSystem() : CraftOrderSystem("JewerlyCraftSystem"
     m_Items.push_back({ Keywords::Items::Rings::air_ring, target_amount, 50 });
 
     m_Workshop_Coord = { Keywords::MapLayers::overworld, 1, 3 };
+
+    m_Craft_Threshold = 0;
 }
 
 JewerlyCraftSystem JewerlyCraftSystem::singleton;

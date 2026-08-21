@@ -25,6 +25,7 @@ public:
 protected:
     std::vector<CraftOrder> m_Items;
     MapCoord m_Workshop_Coord;
+    int m_Craft_Threshold;
 };
 
 class AlchemyCraftingSystem: public CraftOrderSystem
