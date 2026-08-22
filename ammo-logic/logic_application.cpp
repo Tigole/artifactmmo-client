@@ -84,6 +84,8 @@ void LogicApplication::Run(int argc, char** argv)
             l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_10);
             l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_20);
             l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_30);
+            l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_40);
+            l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_50);
             // l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
             // l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
             // l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
@@ -112,7 +114,6 @@ void LogicApplication::Run(int argc, char** argv)
             }
         }
         {
-            // l_Pipeline[idx].Add_System(&AlchemyCraftLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
             // l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
             // l_Pipeline[idx].Add_System(&AlchemyLevelSystem::singleton);
@@ -156,9 +157,9 @@ void LogicApplication::Run(int argc, char** argv)
         static constexpr int idx = 3;
         l_Pipeline[idx].Set_Character("Randy", "men2");
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
-        // l_Pipeline[idx].Add_System(&CookingSystem::singleton);
-        // l_Pipeline[idx].Add_System(&WeaponCraftSystem::singleton);
+        l_Pipeline[idx].Add_System(&GearcraftingSystem::singleton);
         l_Pipeline[idx].Add_System(&TaskSystemMonster::singleton);
+        // l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton); Drops ?
         {
             {
                 // l_Pipeline[idx].Add_System(&WoodcuttingCraftingSystem::singleton);
@@ -174,13 +175,17 @@ void LogicApplication::Run(int argc, char** argv)
         }
         {
             // l_Pipeline[idx].Add_System(&CookingLevelSystem::singleton);
-            l_Pipeline[idx].Add_System(&AlchemyCraftLevelSystem::singleton);
+            l_Pipeline[idx].Add_System(&GearcraftingLevelSystem::singleton);
             l_Pipeline[idx].Add_System(&AlchemyLevelSystem::singleton);
+            l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_10);
+            l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_20);
+            l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_30);
+            l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_40);
+            l_Pipeline[idx].Add_System(&CombatLevelSystem::singleton_50);
             // l_Pipeline[idx].Add_System(&WoodcuttingLevelSystem::singleton);
             // l_Pipeline[idx].Add_System(&MiningLevelSystem::singleton);
             // l_Pipeline[idx].Add_System(&FishingLevelSystem::singleton);
         }
-        l_Pipeline[idx].Add_System(&AchievementFightSystem::singleton);
     }
 
     {

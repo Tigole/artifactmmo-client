@@ -56,14 +56,6 @@ public:
     static CookingLevelSystem singleton;
 };
 
-class AlchemyCraftLevelSystem: public LevelCraftSystem
-{
-    AlchemyCraftLevelSystem();
-
-public:
-    static AlchemyCraftLevelSystem singleton;
-};
-
 class LevelGatherSystem: public System
 {
 public:

@@ -614,6 +614,23 @@ struct Keywords
             KEYWORD(backpack);
             KEYWORD(sandwhisper_bag);
         };
+
+        struct Artifacts
+        {
+            KEYWORD(novice_guide);
+            KEYWORD(lich_race_medal);
+            KEYWORD(lich_race_trophy);
+            KEYWORD(lost_world_map);
+            KEYWORD(perfect_pearl);
+            KEYWORD(corrupted_skull);
+            KEYWORD(life_crystal);
+            KEYWORD(malefic_crystal);
+            KEYWORD(topaz_book);
+            KEYWORD(sapphire_book);
+            KEYWORD(emerald_book);
+            KEYWORD(ruby_book);
+            KEYWORD(sandwhisper_codex);
+        };
     };
 
     struct EquipementSlot

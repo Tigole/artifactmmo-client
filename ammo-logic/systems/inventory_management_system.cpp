@@ -51,27 +51,46 @@ void InventoryManagementSystem::Fill_Pipeline(Character& character)
             }
         }
 
-        if (InventoryManager::singleton.Get_Bank_Remaining_Slot_Count() < 5)
+        const std::array<std::pair<int, const char*>, 1> artifacts = { { std::make_pair(10, Keywords::Items::Artifacts::novice_guide) } };
+        for (const auto& a: artifacts)
         {
-            const int gold_amount    = InventoryManager::singleton.Get_Gold_Amount();
-            const int expansion_cost = InventoryManager::singleton.Get_Bank_Expansion_Cost();
-            SYSTEM_PRINT("may buy expansion");
-            if (gold_amount < expansion_cost)
+            if ((combat_level >= a.first) && (character.Get_Equiped_Artifact1() != a.second) &&
+                (InventoryManager::singleton.Get_Bank_Item_Count(a.second) > 0))
             {
-                SYSTEM_PRINT("not enough money (required: %d current: %d)", gold_amount, expansion_cost);
-            }
-            else
-            {
-                SYSTEM_PRINT("will buy expansion for %d", expansion_cost);
-                character.Add_Withdraw_Gold(this, expansion_cost);
-            }
-            if (character.Get_Gold_Amount() >= expansion_cost)
-            {
-                character.Add_Buy_Bank_Expasion(this);
+                if (character.Get_Item_Count(a.second) < 1)
+                {
+                    character.Add_Withdraw_Item(this, { a.second, 1 });
+                }
+                character.Add_Equip_Item(this, Keywords::ItemSlot::bag, a.second, 1);
             }
         }
     }
+
+    if (InventoryManager::singleton.Get_Bank_Remaining_Slot_Count() < 5)
+    {
+        const int gold_amount    = InventoryManager::singleton.Get_Gold_Amount();
+        const int expansion_cost = InventoryManager::singleton.Get_Bank_Expansion_Cost();
+        SYSTEM_PRINT("may buy expansion");
+        if (gold_amount < expansion_cost)
+        {
+            SYSTEM_PRINT("not enough money (required: %d current: %d)", gold_amount, expansion_cost);
+        }
+        else
+        {
+            SYSTEM_PRINT("will buy expansion for %d", expansion_cost);
+            character.Add_Withdraw_Gold(this, expansion_cost);
+        }
+        if (character.Get_Gold_Amount() >= expansion_cost)
+        {
+            character.Add_Buy_Bank_Expasion(this);
+        }
+    }
 }
+
+/*#error "handle low equipement deletion"
+#error \
+    "For each crafting item: look at all superior items (querying the item manager) in bank + character. if there are more than a threshol(5
+or 10), it may be recycled"*/
 
 bool InventoryManagementSystem::Has_Task_Item(Character& character)
 {

@@ -86,23 +86,10 @@ CookingLevelSystem::CookingLevelSystem() : LevelCraftSystem("CookingLevelSystem"
     m_Recycle           = false;
 }
 
-AlchemyCraftLevelSystem::AlchemyCraftLevelSystem() : LevelCraftSystem("AlchemyCraftLevelSystem")
-{
-    m_Skill_Name        = Keywords::Skills::alchemy;
-    m_Default_Item_Code = Keywords::Items::Utilities::small_health_potion;
-    m_GT_10_Item_Code   = Keywords::Items::Utilities::water_boost_potion;
-    m_GT_20_Item_Code   = Keywords::Items::Utilities::minor_health_potion;
-    m_GT_30_Item_Code   = Keywords::Items::Utilities::health_potion;
-    m_GT_40_Item_Code   = Keywords::Items::Utilities::greater_health_potion;
-    m_Workshop_Coord    = { Keywords::MapLayers::overworld, 2, 3 };
-    m_Recycle           = false;
-}
-
 GearcraftingLevelSystem GearcraftingLevelSystem::singleton;
 WeaponcraftingLevelSystem WeaponcraftingLevelSystem::singleton;
 JewelrycraftingLevelSystem JewelrycraftingLevelSystem::singleton;
 CookingLevelSystem CookingLevelSystem::singleton;
-AlchemyCraftLevelSystem AlchemyCraftLevelSystem::singleton;
 
 LevelGatherSystem::LevelGatherSystem(const char* name) : System(name) {}
 
