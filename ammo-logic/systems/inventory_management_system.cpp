@@ -73,7 +73,7 @@ void InventoryManagementSystem::Fill_Pipeline(Character& character)
         SYSTEM_PRINT("may buy expansion");
         if (gold_amount < expansion_cost)
         {
-            SYSTEM_PRINT("not enough money (required: %d current: %d)", gold_amount, expansion_cost);
+            SYSTEM_PRINT("not enough money (required: %d current: %d)", expansion_cost, gold_amount);
         }
         else
         {
