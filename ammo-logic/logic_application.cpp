@@ -52,8 +52,8 @@ void LogicApplication::Run(int argc, char** argv)
     {
         static constexpr int idx = 0;
         l_Pipeline[idx].Set_Character("Niva", "men1");
-        l_Pipeline[idx].Add_System(&PendingItemsSystem::singleton);
         l_Pipeline[idx].Add_System(&InventoryManagementSystem::singleton);
+        l_Pipeline[idx].Add_System(&PendingItemsSystem::singleton);
         l_Pipeline[idx].Add_System(&ToolCraftSystem::singleton);
         l_Pipeline[idx].Add_System(&WeaponCraftSystem::singleton);
         l_Pipeline[idx].Add_System(&TaskSystemMonster::singleton);
