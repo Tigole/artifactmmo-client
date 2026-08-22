@@ -355,7 +355,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
     InventoryManager::singleton.Get_Fight_Items(l_Character_Combat_Level, l_Weapons, l_Helmets, l_Body_Armor, l_Leg_Armor, l_Boots,
                                                 l_Shields, l_Rings, l_Amulets);
 
-    SYSTEM_PRINT("try to fight against '%s'", monster);
+    SYSTEM_PRINT("try to fight against '%s' x%d", monster, config.kill_count);
 
     SYSTEM_PRINT("equipped weapon: '%s'", context.weapon.c_str());
     for (std::size_t ii = 0; ii < l_Weapons.size(); ii++)
@@ -410,10 +410,10 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
         const int inventory_count = character.Get_Item_Count(item_code);
         if (bank_count > 0)
         {
-            context.utility2          = item_code;
-            context.utility2_quantity = 1;
-            context.utility2_inventory =
-                std::min(20, std::min(character.Get_Inventory_Remaining_Space() - 10, std::min(config.kill_count, bank_count)));
+            context.utility2           = item_code;
+            context.utility2_quantity  = 1;
+            context.utility2_inventory = std::max(
+                0, std::min(20, std::min(character.Get_Inventory_Remaining_Space() - 10, std::min(config.kill_count, bank_count))));
             l_Poison = 0;
         }
         else
@@ -462,11 +462,11 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
 
         if (item_code != nullptr && (InventoryManager::singleton.Get_Bank_Item_Count(item_code) > 0))
         {
-            context.utility2          = item_code;
-            context.utility2_quantity = 1;
-            context.utility2_inventory =
-                std::min(20, std::min(character.Get_Inventory_Remaining_Space() - 10,
-                                      std::min(config.kill_count, InventoryManager::singleton.Get_Bank_Item_Count(item_code))));
+            context.utility2           = item_code;
+            context.utility2_quantity  = 1;
+            context.utility2_inventory = std::max(
+                0, std::min(20, std::min(character.Get_Inventory_Remaining_Space() - 10,
+                                         std::min(config.kill_count, InventoryManager::singleton.Get_Bank_Item_Count(item_code)))));
             l_Character_Damages[idx] += 12;
             SYSTEM_PRINT("will equip '%s' x%d", item_code, context.utility2_quantity);
         }
@@ -568,7 +568,7 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
                 context.utility1          = hi.code;
                 context.utility1_quantity = required_potion_count;
                 context.utility1_inventory =
-                    std::min(required_potion_count * config.kill_count, max_potion_count) - context.utility1_quantity;
+                    std::max(0, std::min(required_potion_count * config.kill_count, max_potion_count) - context.utility1_quantity);
                 l_Character_Max_Life += required_potion_count * hi.heal;
                 SYSTEM_PRINT("will equip with '%s' x%d (l_Character_Max_Life: %d)", hi.code, required_potion_count, l_Character_Max_Life);
                 SYSTEM_PRINT(
