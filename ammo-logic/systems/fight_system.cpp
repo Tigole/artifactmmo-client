@@ -565,10 +565,10 @@ bool FightSystem::MayWin(const Character& character, const char* monster, FightC
             SYSTEM_PRINT("may win using '%s' x%d", hi.code, required_potion_count);
             if ((required_potion_count < max_potion_count) && (required_potion_count < 10))
             {
-                context.utility1          = hi.code;
-                context.utility1_quantity = required_potion_count;
-                context.utility1_inventory =
-                    std::max(0, std::min(required_potion_count * config.kill_count, max_potion_count) - context.utility1_quantity);
+                context.utility1           = hi.code;
+                context.utility1_quantity  = required_potion_count;
+                context.utility1_inventory = std::max(
+                    0, std::min(50, std::min(required_potion_count * config.kill_count, max_potion_count) - context.utility1_quantity));
                 l_Character_Max_Life += required_potion_count * hi.heal;
                 SYSTEM_PRINT("will equip with '%s' x%d (l_Character_Max_Life: %d)", hi.code, required_potion_count, l_Character_Max_Life);
                 SYSTEM_PRINT(
