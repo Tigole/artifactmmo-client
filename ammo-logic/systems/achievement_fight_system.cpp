@@ -39,15 +39,16 @@ void AchievementFightSystem::Fill_Pipeline(Character& pipeline)
 
     for (std::size_t ii = 0; ii < m_Target_Monsters.size(); ii++)
     {
-        const AchievementProgress ap = m_Target_Monsters[ii];
-        const char* l_Monster        = ap.target.c_str();
-        const MapCoord* l_Coord      = MonsterManager::singleton.Get_Monster_Coord(l_Monster, pipeline.Get_Map_Coord());
+        AchievementProgress ap  = m_Target_Monsters[ii];
+        const char* l_Monster   = ap.target.c_str();
+        const MapCoord* l_Coord = MonsterManager::singleton.Get_Monster_Coord(l_Monster, pipeline.Get_Map_Coord());
         FightContext fight_context;
         if ((l_Coord != nullptr) && (ap.progress < ap.total) &&
             (FightSystem::singleton.MayWin(pipeline, l_Monster, FightConfig::MonsterTaskConfig(ap.total - ap.progress), fight_context) ==
              true))
         {
             FightSystem::singleton.Fight_Against(this, pipeline, l_Monster, fight_context);
+            ap.progress++;
             return;
         }
     }
