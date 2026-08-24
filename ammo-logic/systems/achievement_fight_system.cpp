@@ -47,8 +47,10 @@ void AchievementFightSystem::Fill_Pipeline(Character& pipeline)
             (FightSystem::singleton.MayWin(pipeline, l_Monster, FightConfig::MonsterTaskConfig(ap.total - ap.progress), fight_context) ==
              true))
         {
-            FightSystem::singleton.Fight_Against(this, pipeline, l_Monster, fight_context);
-            ap.progress++;
+            if (FightSystem::singleton.Fight_Against(this, pipeline, l_Monster, fight_context) == true)
+            {
+                ap.progress++;
+            }
             return;
         }
     }

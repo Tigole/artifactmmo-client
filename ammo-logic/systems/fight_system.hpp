@@ -61,7 +61,7 @@ public:
 
     void Fill_Pipeline(Character& character) override;
 
-    void Fight_Against(const System* sys, Character& character, const char* monster, const FightContext& context);
+    bool Fight_Against(const System* sys, Character& character, const char* monster, const FightContext& context);
 
     void Add_Healing(const System* sys, Character& character);
 

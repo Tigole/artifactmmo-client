@@ -77,7 +77,7 @@ void FightSystem::Fill_Pipeline(Character& character)
     }
 }
 
-void FightSystem::Fight_Against(const System* sys, Character& character, const char* monster, const FightContext& context)
+bool FightSystem::Fight_Against(const System* sys, Character& character, const char* monster, const FightContext& context)
 {
     const MapCoord* l_Coord = MonsterManager::singleton.Get_Monster_Coord(monster, character.Get_Map_Coord());
     if (l_Coord != nullptr)
@@ -86,52 +86,52 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
         if (character.Get_Equiped_Weapon() != context.weapon)
         {
             Handle_Equipment(sys, character, bank_pos, context.weapon.c_str(), 1, Keywords::ItemSlot::weapon);
-            return;
+            return false;
         }
         if (character.Get_Equiped_Helmet() != context.helmet)
         {
             Handle_Equipment(sys, character, bank_pos, context.helmet.c_str(), 1, Keywords::ItemSlot::helmet);
-            return;
+            return false;
         }
         if (character.Get_Equiped_Body_Armor() != context.body_armor)
         {
             Handle_Equipment(sys, character, bank_pos, context.body_armor.c_str(), 1, Keywords::ItemSlot::body_armor);
-            return;
+            return false;
         }
         if (character.Get_Equiped_Leg_Armor() != context.leg_armor)
         {
             Handle_Equipment(sys, character, bank_pos, context.leg_armor.c_str(), 1, Keywords::ItemSlot::leg_armor);
-            return;
+            return false;
         }
         if (character.Get_Equiped_Boots() != context.boots)
         {
             Handle_Equipment(sys, character, bank_pos, context.boots.c_str(), 1, Keywords::ItemSlot::boots);
-            return;
+            return false;
         }
         if (character.Get_Equiped_Ring1() != context.ring1)
         {
             Handle_Equipment(sys, character, bank_pos, context.ring1.c_str(), 1, Keywords::ItemSlot::ring1);
-            return;
+            return false;
         }
         if (character.Get_Equiped_Ring2() != context.ring2)
         {
             Handle_Equipment(sys, character, bank_pos, context.ring2.c_str(), 1, Keywords::ItemSlot::ring2);
-            return;
+            return false;
         }
         if (character.Get_Equiped_Shield() != context.shield)
         {
             Handle_Equipment(sys, character, bank_pos, context.shield.c_str(), 1, Keywords::ItemSlot::shield);
-            return;
+            return false;
         }
         if (character.Get_Equiped_Amulet() != context.amulet)
         {
             Handle_Equipment(sys, character, bank_pos, context.amulet.c_str(), 1, Keywords::ItemSlot::amulet);
-            return;
+            return false;
         }
         if (context.utility1.empty() && character.Get_Equiped_Utility1().size() > 0)
         {
             character.Add_Unequip_Item(sys, Keywords::ItemSlot::utility1, character.Get_Equiped_Utility1_Quantity());
-            return;
+            return false;
         }
         if (character.Get_Item_Count(context.utility1.c_str()) == 0 && context.utility1_inventory != 0)
         {
@@ -143,7 +143,7 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             {
                 character.Add_Withdraw_Item(sys, { context.utility1, context.utility1_inventory });
             }
-            return;
+            return false;
         }
         if (context.utility1.size() > 0 &&
             (character.Get_Equiped_Utility1() != context.utility1 || character.Get_Equiped_Utility1_Quantity() < context.utility1_quantity))
@@ -154,12 +154,12 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
                 "character.Get_Equiped_Utility1_Quantity(): %d\n",
                 context.utility1.c_str(), character.Get_Equiped_Utility1().c_str(), context.utility1_quantity,
                 character.Get_Equiped_Utility1_Quantity());
-            return;
+            return false;
         }
         if (context.utility2.empty() && character.Get_Equiped_Utility2().size() > 0)
         {
             character.Add_Unequip_Item(sys, Keywords::ItemSlot::utility2, character.Get_Equiped_Utility2_Quantity());
-            return;
+            return false;
         }
         if (character.Get_Item_Count(context.utility2.c_str()) == 0 && context.utility2_inventory != 0)
         {
@@ -171,28 +171,28 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             {
                 character.Add_Withdraw_Item(sys, { context.utility2, context.utility2_inventory });
             }
-            return;
+            return false;
         }
         if (context.utility2.size() > 0 &&
             (character.Get_Equiped_Utility2() != context.utility2 || character.Get_Equiped_Utility2_Quantity() < context.utility2_quantity))
         {
             Handle_Equipment(sys, character, bank_pos, context.utility2.c_str(), context.utility2_quantity, Keywords::ItemSlot::utility2);
-            return;
+            return false;
         }
         if (character.Get_Equiped_Artifact1() != context.artifact1)
         {
             Handle_Equipment(sys, character, bank_pos, context.artifact1.c_str(), 1, Keywords::ItemSlot::artifact1);
-            return;
+            return false;
         }
         if (character.Get_Equiped_Artifact2() != context.artifact2)
         {
             Handle_Equipment(sys, character, bank_pos, context.artifact1.c_str(), 1, Keywords::ItemSlot::artifact2);
-            return;
+            return false;
         }
         if (character.Get_Equiped_Artifact3() != context.artifact3)
         {
             Handle_Equipment(sys, character, bank_pos, context.artifact1.c_str(), 1, Keywords::ItemSlot::artifact3);
-            return;
+            return false;
         }
         if (context.should_heal == true)
         {
@@ -200,7 +200,7 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             {
                 if (Equip_Healing_Stuff(sys, character, bank_pos) == true)
                 {
-                    return;
+                    return false;
                 }
                 Add_Healing(sys, character);
             }
@@ -210,7 +210,9 @@ void FightSystem::Fight_Against(const System* sys, Character& character, const c
             }
         }
         character.Add_Fight(sys, monster);
+        return true;
     }
+    return false;
 }
 
 void FightSystem::Add_Healing(const System* sys, Character& character)
